@@ -1,3 +1,4 @@
+import { Comment } from 'src/comments/entities/comment.entity';
 import { UserRole } from 'src/enums/user-roles.enum';
 import { Like } from 'src/likes/entities/likes.entity';
 import { Media } from 'src/media/entities/media.entity';
@@ -8,7 +9,6 @@ import {
   JoinColumn,
   OneToMany,
   OneToOne,
-  PrimaryColumn,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
@@ -26,16 +26,16 @@ export class User {
   @Column({
     type: 'enum',
     enum: UserRole,
-    default: UserRole.USER
-  }) 
+    default: UserRole.USER,
+  })
   role: UserRole;
-  @Column({length: 20})
+  @Column({ length: 20 })
   firstName: string;
-  @Column({length: 20})
+  @Column({ length: 20 })
   lastName: string;
-  @Column({type: 'date'})
+  @Column({ type: 'date' })
   dateOfBirth: Date;
-  @Column({nullable: true})
+  @Column({ nullable: true })
   bio: string;
   @CreateDateColumn()
   createdAt: Date;
@@ -47,6 +47,8 @@ export class User {
   @OneToOne(() => Media)
   @JoinColumn()
   coverPicture: string;
-  @OneToMany(() => Like , (like) => like.user)
+  @OneToMany(() => Like, (like) => like.user)
   likes: Like;
+  @OneToMany(() => Comment, (comment) => comment.user)
+  comments: Comment;
 }
