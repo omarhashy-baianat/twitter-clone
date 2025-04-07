@@ -1,3 +1,4 @@
+import { Otp } from 'src/auth/entities/otp.entity';
 import { Bookmark } from 'src/bookmarks/entities/bookmark.entity';
 import { Comment } from 'src/comments/entities/comment.entity';
 import { UserRole } from 'src/enums/user-roles.enum';
@@ -53,5 +54,7 @@ export class User {
   @OneToMany(() => Comment, (comment) => comment.user)
   comments: Comment;
   @OneToMany(() => Bookmark , bookmark => bookmark.user)
-  bookmarks: Bookmark[]
+  bookmarks: Bookmark[];
+  @OneToOne(() => Otp , (otp) => otp.user)
+  otp: Otp;
 }
