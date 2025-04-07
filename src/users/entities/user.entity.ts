@@ -35,9 +35,11 @@ export class User {
   dateOfBirth: Date;
   @Column({nullable: true})
   bio: string;
-  @Column()
-  profilePicture: string;
-  @Column()
+  @OneToOne(() => Media)
+  @JoinColumn()
+  profilePicture: Media;
+  @OneToOne(() => Media)
+  @JoinColumn()
   coverPicture: string;
   @CreateDateColumn()
   createdAt: Date;

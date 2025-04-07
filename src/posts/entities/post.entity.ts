@@ -7,6 +7,7 @@ import {
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
+import { Repost } from './repost.entity';
 
 @Entity()
 export class Post {
@@ -18,6 +19,8 @@ export class Post {
   createdAt: Date;
   @UpdateDateColumn()
   updatedAt: Date;
-  @OneToMany(() => Media , (media) => media.post)
-  media: Media
+  @OneToMany(() => Media, (media) => media.post)
+  media: Media;
+  @OneToMany(() => Repost ,repost => repost.post)
+  reposts: Repost[]
 }
