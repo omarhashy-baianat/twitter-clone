@@ -3,15 +3,15 @@ import {
   Column,
   CreateDateColumn,
   Entity,
+  ManyToOne,
   OneToMany,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
-import { Repost } from '../../reposts/entities/repost.entity';
-import { Comment } from 'src/comments/entities/comment.entity';
+import { Post } from '../../posts/entities/post.entity';
 
 @Entity()
-export class Post {
+export class Repost {
   @PrimaryGeneratedColumn()
   id: number;
   @Column()
@@ -20,10 +20,8 @@ export class Post {
   createdAt: Date;
   @UpdateDateColumn()
   updatedAt: Date;
-  @OneToMany(() => Media, (media) => media.post)
+  @OneToMany(() => Media, (media) => media.repost)
   media: Media;
-  @OneToMany(() => Repost, (repost) => repost.post)
-  reposts: Repost[];
-  @OneToMany(() => Comment, (comment) => comment.post)
-  comments: Comment[];
+  @ManyToOne(() => Post, (post) => post.reposts)
+  post: Post;
 }
