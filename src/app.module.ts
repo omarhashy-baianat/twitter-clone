@@ -3,7 +3,6 @@ import { AppService } from './app.service';
 import { GraphQLModule } from '@nestjs/graphql';
 import { ApolloDriver, ApolloDriverConfig } from '@nestjs/apollo';
 import { UsersModule } from './users/users.module';
-import { TweetsModule } from './tweets/tweets.module';
 import { AuthModule } from './auth/auth.module';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
@@ -12,8 +11,8 @@ import { CommentsModule } from './comments/comments.module';
 import { User } from './users/entities/user.entity';
 import { MediaModule } from './media/media.module';
 import { Media } from './media/entities/media.entity';
-import { ProfilesModule } from './profiles/profiles.module';
 import { AdminsModule } from './admins/admins.module';
+import { PostsModule } from './posts/posts.module';
 
 
 @Module({
@@ -45,13 +44,12 @@ import { AdminsModule } from './admins/admins.module';
       }
     ),
     UsersModule,
-    TweetsModule,
     AuthModule,
     LikesModule,
     CommentsModule,
     MediaModule,
-    ProfilesModule,
     AdminsModule,
+    PostsModule,
   ],
   providers: [AppService],
 })
