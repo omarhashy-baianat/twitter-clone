@@ -9,6 +9,7 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { LikesModule } from './likes/likes.module';
 import { CommentsModule } from './comments/comments.module';
+import { User } from './users/entities/user.entity';
 
 
 @Module({
@@ -32,7 +33,7 @@ import { CommentsModule } from './comments/comments.module';
             port: config.get('POSTGRES_PORT'),
             username: config.get('POSTGRES_USER'),
             password: config.get('POSTGRES_PASSWORD'),
-            entities: [],
+            entities: [User],
             database: config.get<string>("POSTGRES_DB"),
             synchronize : true
           }
