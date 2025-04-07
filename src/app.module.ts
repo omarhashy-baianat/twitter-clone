@@ -22,6 +22,7 @@ import { Like } from './likes/entities/likes.entity';
 import { BookmarksModule } from './bookmarks/bookmarks.module';
 import { Bookmark } from './bookmarks/entities/bookmark.entity';
 import { Otp } from './auth/entities/otp.entity';
+import { Follow } from './follows/entity/follow.entity';
 
 @Module({
   imports: [
@@ -42,7 +43,7 @@ import { Otp } from './auth/entities/otp.entity';
           port: config.get('POSTGRES_PORT'),
           username: config.get('POSTGRES_USER'),
           password: config.get('POSTGRES_PASSWORD'),
-          entities: [User, Media, Post, Repost, Comment, Like, Bookmark, Otp],
+          entities: [User, Media, Post, Repost, Comment, Like, Bookmark, Otp , Follow],
           database: config.get<string>('POSTGRES_DB'),
           synchronize: true,
           // dropSchema: true

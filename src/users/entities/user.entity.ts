@@ -2,6 +2,7 @@ import { Otp } from 'src/auth/entities/otp.entity';
 import { Bookmark } from 'src/bookmarks/entities/bookmark.entity';
 import { Comment } from 'src/comments/entities/comment.entity';
 import { UserRole } from 'src/enums/user-roles.enum';
+import { Follow } from 'src/follows/entity/follow.entity';
 import { Like } from 'src/likes/entities/likes.entity';
 import { Media } from 'src/media/entities/media.entity';
 import {
@@ -57,4 +58,8 @@ export class User {
   bookmarks: Bookmark[];
   @OneToOne(() => Otp , (otp) => otp.user)
   otp: Otp;
+  @OneToMany(() => Follow , (follow) => follow.id)
+  followers: Follow [];
+  @OneToMany(() => Follow , (follow) => follow.id)
+  following: Follow [];
 }
