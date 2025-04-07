@@ -10,8 +10,7 @@ export class Media {
     fileName : string
     @Column({
         type: 'enum',
-        enum: UserRole,
-        default: UserRole.NOT_ADMIN
+        enum: MediaType,
       }) 
     type: MediaType
     @CreateDateColumn()

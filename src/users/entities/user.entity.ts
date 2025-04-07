@@ -1,8 +1,11 @@
 import { UserRole } from 'src/enums/user-roles.enum';
+import { Media } from 'src/media/entities/media.entity';
 import {
   Column,
   CreateDateColumn,
   Entity,
+  JoinColumn,
+  OneToOne,
   PrimaryColumn,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
@@ -21,11 +24,25 @@ export class User {
   @Column({
     type: 'enum',
     enum: UserRole,
-    default: UserRole.NOT_ADMIN
+    default: UserRole.USER
   }) 
   role: UserRole;
+  @Column({length: 20})
+  firstName: string;
+  @Column({length: 20})
+  lastName: string;
+  @Column({type: 'date'})
+  dateOfBirth: Date;
+  @Column({nullable: true})
+  bio: string;
   @CreateDateColumn()
   createdAt: Date;
   @UpdateDateColumn()
   updatedAt: Date;
+  @OneToOne(() => Media)
+  @JoinColumn()
+  profilePicture: Media;
+  @OneToOne(() => Media)
+  @JoinColumn()
+  coverPicture: Media;
 }

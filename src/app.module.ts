@@ -39,7 +39,8 @@ import { FollowsModule } from './follows/follows.module';
             password: config.get('POSTGRES_PASSWORD'),
             entities: [User , Media],
             database: config.get<string>("POSTGRES_DB"),
-            synchronize : true
+            synchronize : true,
+            // dropSchema: true
           }
         }
       }
