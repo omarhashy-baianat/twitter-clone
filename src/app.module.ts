@@ -23,6 +23,8 @@ import { BookmarksModule } from './bookmarks/bookmarks.module';
 import { Bookmark } from './bookmarks/entities/bookmark.entity';
 import { Otp } from './auth/entities/otp.entity';
 import { Follow } from './follows/entity/follow.entity';
+import { APP_FILTER } from '@nestjs/core';
+import { GraphQLExceptionFilter } from './common/error/error.filter';
 
 @Module({
   imports: [
@@ -33,6 +35,7 @@ import { Follow } from './follows/entity/follow.entity';
     GraphQLModule.forRoot<ApolloDriverConfig>({
       driver: ApolloDriver,
       autoSchemaFile: 'src/schema.gql',
+      context: ({ req, res }) => ({ req, res }), 
     }),
     TypeOrmModule.forRootAsync({
       inject: [ConfigService],
@@ -43,7 +46,17 @@ import { Follow } from './follows/entity/follow.entity';
           port: config.get('POSTGRES_PORT'),
           username: config.get('POSTGRES_USER'),
           password: config.get('POSTGRES_PASSWORD'),
-          entities: [User, Media, Post, Repost, Comment, Like, Bookmark, Otp , Follow],
+          entities: [
+            User,
+            Media,
+            Post,
+            Repost,
+            Comment,
+            Like,
+            Bookmark,
+            Otp,
+            Follow,
+          ],
           database: config.get<string>('POSTGRES_DB'),
           synchronize: true,
           // dropSchema: true
@@ -61,6 +74,9 @@ import { Follow } from './follows/entity/follow.entity';
     RepostsModule,
     BookmarksModule,
   ],
-  providers: [AppService],
+  providers: [
+    AppService,
+    { provide: APP_FILTER, useClass: GraphQLExceptionFilter },
+  ],
 })
 export class AppModule {}

@@ -1,5 +1,6 @@
 import { Resolver , Query } from '@nestjs/graphql';
 import { AuthService } from './auth.service';
+import { UnauthorizedException } from '@nestjs/common';
 
 @Resolver()
 export class AuthResolver {
@@ -7,6 +8,7 @@ export class AuthResolver {
   }
     @Query(() => String)
     sayHello() {
+      throw new UnauthorizedException()
       return "Hello, world"
     }
 }
