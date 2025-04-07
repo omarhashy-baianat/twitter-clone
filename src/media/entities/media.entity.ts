@@ -1,6 +1,7 @@
 import { MediaType } from "src/enums/media-type.enum"
 import { UserRole } from "src/enums/user-roles.enum"
-import { Column, CreateDateColumn, Entity, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm"
+import { Post } from "src/posts/entities/post.entity"
+import { Column, CreateDateColumn, Entity, ManyToOne, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm"
 
 @Entity()
 export class Media {
@@ -17,4 +18,6 @@ export class Media {
     createdAt: Date
     @UpdateDateColumn()
     updatedAt: Date
+    @ManyToOne(() => Post , (post) => post.id)
+    post: Post;
 }

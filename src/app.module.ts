@@ -14,6 +14,7 @@ import { Media } from './media/entities/media.entity';
 import { AdminsModule } from './admins/admins.module';
 import { PostsModule } from './posts/posts.module';
 import { FollowsModule } from './follows/follows.module';
+import { Post } from './posts/entities/post.entity';
 
 
 @Module({
@@ -37,7 +38,7 @@ import { FollowsModule } from './follows/follows.module';
             port: config.get('POSTGRES_PORT'),
             username: config.get('POSTGRES_USER'),
             password: config.get('POSTGRES_PASSWORD'),
-            entities: [User , Media],
+            entities: [User , Media, Post],
             database: config.get<string>("POSTGRES_DB"),
             synchronize : true,
             // dropSchema: true
