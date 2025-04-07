@@ -9,6 +9,7 @@ import {
 } from 'typeorm';
 import { Repost } from '../../reposts/entities/repost.entity';
 import { Comment } from 'src/comments/entities/comment.entity';
+import { Like } from 'src/likes/entities/likes.entity';
 
 @Entity()
 export class Post {
@@ -26,4 +27,6 @@ export class Post {
   reposts: Repost[];
   @OneToMany(() => Comment, (comment) => comment.post)
   comments: Comment[];
+  @OneToMany(() => Like, (like) => like.post)
+  likes: Like[];
 }

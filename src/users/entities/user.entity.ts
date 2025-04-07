@@ -1,10 +1,12 @@
 import { UserRole } from 'src/enums/user-roles.enum';
+import { Like } from 'src/likes/entities/likes.entity';
 import { Media } from 'src/media/entities/media.entity';
 import {
   Column,
   CreateDateColumn,
   Entity,
   JoinColumn,
+  OneToMany,
   OneToOne,
   PrimaryColumn,
   PrimaryGeneratedColumn,
@@ -35,14 +37,16 @@ export class User {
   dateOfBirth: Date;
   @Column({nullable: true})
   bio: string;
+  @CreateDateColumn()
+  createdAt: Date;
+  @UpdateDateColumn()
+  updatedAt: Date;
   @OneToOne(() => Media)
   @JoinColumn()
   profilePicture: Media;
   @OneToOne(() => Media)
   @JoinColumn()
   coverPicture: string;
-  @CreateDateColumn()
-  createdAt: Date;
-  @UpdateDateColumn()
-  updatedAt: Date;
+  @OneToMany(() => Like , (like) => like.user)
+  likes: Like;
 }
