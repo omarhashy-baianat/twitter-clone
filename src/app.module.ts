@@ -12,6 +12,8 @@ import { CommentsModule } from './comments/comments.module';
 import { User } from './users/entities/user.entity';
 import { MediaModule } from './media/media.module';
 import { Media } from './media/entities/media.entity';
+import { ProfilesModule } from './profiles/profiles.module';
+import { AdminsModule } from './admins/admins.module';
 
 
 @Module({
@@ -48,6 +50,8 @@ import { Media } from './media/entities/media.entity';
     LikesModule,
     CommentsModule,
     MediaModule,
+    ProfilesModule,
+    AdminsModule,
   ],
   providers: [AppService],
 })
