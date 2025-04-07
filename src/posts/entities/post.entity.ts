@@ -8,6 +8,7 @@ import {
   UpdateDateColumn,
 } from 'typeorm';
 import { Repost } from './repost.entity';
+import { Comment } from 'src/comments/entities/comment.entity';
 
 @Entity()
 export class Post {
@@ -23,4 +24,7 @@ export class Post {
   media: Media;
   @OneToMany(() => Repost ,repost => repost.post)
   reposts: Repost[]
+  @OneToMany(() => Comment , comment => comment.post)
+  comments: Comment[]
+
 }

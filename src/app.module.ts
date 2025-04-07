@@ -16,6 +16,7 @@ import { PostsModule } from './posts/posts.module';
 import { FollowsModule } from './follows/follows.module';
 import { Post } from './posts/entities/post.entity';
 import { Repost } from './posts/entities/repost.entity';
+import { Comment } from './comments/entities/comment.entity';
 
 
 @Module({
@@ -39,7 +40,7 @@ import { Repost } from './posts/entities/repost.entity';
             port: config.get('POSTGRES_PORT'),
             username: config.get('POSTGRES_USER'),
             password: config.get('POSTGRES_PASSWORD'),
-            entities: [User , Media, Post, Repost],
+            entities: [User , Media, Post, Repost, Comment],
             database: config.get<string>("POSTGRES_DB"),
             synchronize : true,
             // dropSchema: true
