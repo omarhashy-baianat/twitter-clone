@@ -13,6 +13,7 @@ import { MediaModule } from './media/media.module';
 import { Media } from './media/entities/media.entity';
 import { AdminsModule } from './admins/admins.module';
 import { PostsModule } from './posts/posts.module';
+import { FollowsModule } from './follows/follows.module';
 
 
 @Module({
@@ -50,6 +51,7 @@ import { PostsModule } from './posts/posts.module';
     MediaModule,
     AdminsModule,
     PostsModule,
+    FollowsModule,
   ],
   providers: [AppService],
 })
