@@ -1,3 +1,4 @@
+import { Bookmark } from 'src/bookmarks/entities/bookmark.entity';
 import { Comment } from 'src/comments/entities/comment.entity';
 import { UserRole } from 'src/enums/user-roles.enum';
 import { Like } from 'src/likes/entities/likes.entity';
@@ -51,4 +52,6 @@ export class User {
   likes: Like;
   @OneToMany(() => Comment, (comment) => comment.user)
   comments: Comment;
+  @OneToMany(() => Bookmark , bookmark => bookmark.user)
+  bookmarks: Bookmark[]
 }

@@ -10,6 +10,7 @@ import {
 import { Repost } from '../../reposts/entities/repost.entity';
 import { Comment } from 'src/comments/entities/comment.entity';
 import { Like } from 'src/likes/entities/likes.entity';
+import { Bookmark } from 'src/bookmarks/entities/bookmark.entity';
 
 @Entity()
 export class Post {
@@ -29,4 +30,6 @@ export class Post {
   comments: Comment[];
   @OneToMany(() => Like, (like) => like.post)
   likes: Like[];
+  @OneToMany(() => Bookmark, (bookmark) => bookmark.post)
+  bookmarks: Bookmark[];
 }

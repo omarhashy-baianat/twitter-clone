@@ -19,6 +19,8 @@ import { Repost } from './reposts/entities/repost.entity';
 import { Comment } from './comments/entities/comment.entity';
 import { RepostsModule } from './reposts/reposts.module';
 import { Like } from './likes/entities/likes.entity';
+import { BookmarksModule } from './bookmarks/bookmarks.module';
+import { Bookmark } from './bookmarks/entities/bookmark.entity';
 
 @Module({
   imports: [
@@ -39,7 +41,7 @@ import { Like } from './likes/entities/likes.entity';
           port: config.get('POSTGRES_PORT'),
           username: config.get('POSTGRES_USER'),
           password: config.get('POSTGRES_PASSWORD'),
-          entities: [User, Media, Post, Repost, Comment, Like],
+          entities: [User, Media, Post, Repost, Comment, Like, Bookmark],
           database: config.get<string>('POSTGRES_DB'),
           synchronize: true,
           // dropSchema: true
@@ -55,6 +57,7 @@ import { Like } from './likes/entities/likes.entity';
     PostsModule,
     FollowsModule,
     RepostsModule,
+    BookmarksModule,
   ],
   providers: [AppService],
 })
