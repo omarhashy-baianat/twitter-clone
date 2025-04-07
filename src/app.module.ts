@@ -11,6 +11,7 @@ import { LikesModule } from './likes/likes.module';
 import { CommentsModule } from './comments/comments.module';
 import { User } from './users/entities/user.entity';
 import { MediaModule } from './media/media.module';
+import { Media } from './media/entities/media.entity';
 
 
 @Module({
@@ -34,7 +35,7 @@ import { MediaModule } from './media/media.module';
             port: config.get('POSTGRES_PORT'),
             username: config.get('POSTGRES_USER'),
             password: config.get('POSTGRES_PASSWORD'),
-            entities: [User],
+            entities: [User , Media],
             database: config.get<string>("POSTGRES_DB"),
             synchronize : true
           }
