@@ -10,6 +10,7 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { LikesModule } from './likes/likes.module';
 import { CommentsModule } from './comments/comments.module';
 import { User } from './users/entities/user.entity';
+import { MediaModule } from './media/media.module';
 
 
 @Module({
@@ -45,6 +46,7 @@ import { User } from './users/entities/user.entity';
     AuthModule,
     LikesModule,
     CommentsModule,
+    MediaModule,
   ],
   providers: [AppService],
 })
