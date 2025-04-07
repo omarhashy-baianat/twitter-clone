@@ -7,6 +7,8 @@ import { TweetsModule } from './tweets/tweets.module';
 import { AuthModule } from './auth/auth.module';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
+import { LikesModule } from './likes/likes.module';
+import { CommentsModule } from './comments/comments.module';
 
 
 @Module({
@@ -40,6 +42,8 @@ import { TypeOrmModule } from '@nestjs/typeorm';
     UsersModule,
     TweetsModule,
     AuthModule,
+    LikesModule,
+    CommentsModule,
   ],
   providers: [AppService],
 })
