@@ -23,7 +23,7 @@ import { BookmarksModule } from './bookmarks/bookmarks.module';
 import { Bookmark } from './bookmarks/entities/bookmark.entity';
 import { Otp } from './auth/entities/otp.entity';
 import { Follow } from './follows/entity/follow.entity';
-import { APP_FILTER } from '@nestjs/core';
+import { APP_FILTER, APP_INTERCEPTOR } from '@nestjs/core';
 import { GraphQLExceptionFilter } from './common/error/error.filter';
 
 @Module({
@@ -35,7 +35,7 @@ import { GraphQLExceptionFilter } from './common/error/error.filter';
     GraphQLModule.forRoot<ApolloDriverConfig>({
       driver: ApolloDriver,
       autoSchemaFile: 'src/schema.gql',
-      context: ({ req, res }) => ({ req, res }), 
+      context: ({ req, res }) => ({ req, res }),
     }),
     TypeOrmModule.forRootAsync({
       inject: [ConfigService],

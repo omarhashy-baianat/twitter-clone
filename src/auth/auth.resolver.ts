@@ -1,14 +1,20 @@
-import { Resolver , Query } from '@nestjs/graphql';
+import { Resolver, Query } from '@nestjs/graphql';
 import { AuthService } from './auth.service';
-import { UnauthorizedException } from '@nestjs/common';
+import {
+  BadRequestException,
+  NotFoundException,
+} from '@nestjs/common';
 
 @Resolver()
 export class AuthResolver {
-  constructor(private readonly authService: AuthService) {
+  constructor(private readonly authService: AuthService) {}
+  @Query(() => String)
+  sayHello() {
+    return 'Hello, world';
   }
-    @Query(() => String)
-    sayHello() {
-      throw new UnauthorizedException()
-      return "Hello, world"
-    }
+  @Query(() => String)
+  testException() {
+    throw new NotFoundException()
+    return 'Hello, world';
+  }
 }
