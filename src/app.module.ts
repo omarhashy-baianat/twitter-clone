@@ -25,6 +25,7 @@ import { Otp } from './auth/entities/otp.entity';
 import { Follow } from './follows/entity/follow.entity';
 import { APP_FILTER, APP_INTERCEPTOR } from '@nestjs/core';
 import { GraphQLExceptionFilter } from './common/error/error.filter';
+import { JwtTokenModule } from './jwt-token/jwt-token.module';
 
 @Module({
   imports: [
@@ -73,6 +74,7 @@ import { GraphQLExceptionFilter } from './common/error/error.filter';
     FollowsModule,
     RepostsModule,
     BookmarksModule,
+    JwtTokenModule,
   ],
   providers: [
     AppService,
