@@ -1,13 +1,19 @@
-import { Resolver, Query } from '@nestjs/graphql';
+import { Resolver, Query, Mutation } from '@nestjs/graphql';
 import { AuthService } from './auth.service';
 import { BadRequestException, NotFoundException } from '@nestjs/common';
-import { Test } from 'src/common/graphql/objects/test.object';
+import { TestData } from 'src/common/graphql/objects/test.object';
+import { UserData } from 'src/users/entities/user.entity';
 
 @Resolver()
 export class AuthResolver {
   constructor(private readonly authService: AuthService) {}
 
-  @Query(() => Test)
+  @Mutation(() => UserData)
+  seedSuperAdmin() {
+    return this.authService.seedSuperAdmin();
+  }
+
+  @Query(() => TestData)
   sayHello() {
     return {
       test: 'value',

@@ -2,18 +2,52 @@
 # THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
 # ------------------------------------------------------
 
-type TestData {
+type User {
+  id: String!
+  email: String!
+  username: String!
+  role: UserRole!
+  firstName: String!
+  lastName: String!
+  dateOfBirth: Date!
+  bio: String
+  verified: Boolean!
+  createdAt: Date!
+  updatedAt: Date!
+}
+
+enum UserRole {
+  SUPER_ADMIN
+  ADMIN
+  USER
+}
+
+type Test {
   test: String!
 }
 
-type BaseModel {
+"""Date custom scalar type"""
+scalar Date
+
+type Query {
+  sayHello: TestData!
+  testException: String!
+}
+
+type TestData {
   success: Boolean!
   statusCode: Int!
   message: String!
-  data: TestData!
+  data: Test!
 }
 
-type Query {
-  sayHello: BaseModel!
-  testException: String!
+type Mutation {
+  seedSuperAdmin: UserData!
+}
+
+type UserData {
+  success: Boolean!
+  statusCode: Int!
+  message: String!
+  data: User!
 }

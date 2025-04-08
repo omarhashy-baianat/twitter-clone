@@ -1,5 +1,4 @@
 import { Module } from '@nestjs/common';
-import { AppService } from './app.service';
 import { GraphQLModule } from '@nestjs/graphql';
 import { ApolloDriver, ApolloDriverConfig } from '@nestjs/apollo';
 import { UsersModule } from './users/users.module';
@@ -26,6 +25,7 @@ import { Follow } from './follows/entity/follow.entity';
 import { APP_FILTER, APP_INTERCEPTOR } from '@nestjs/core';
 import { GraphQLExceptionFilter } from './common/error/error.filter';
 import { JwtTokenModule } from './jwt-token/jwt-token.module';
+import { DateScalar } from './common/scalars/date.scalar';
 
 @Module({
   imports: [
@@ -60,7 +60,7 @@ import { JwtTokenModule } from './jwt-token/jwt-token.module';
           ],
           database: config.get<string>('POSTGRES_DB'),
           synchronize: true,
-          // dropSchema: true
+          // dropSchema: true,
         };
       },
     }),
@@ -77,8 +77,8 @@ import { JwtTokenModule } from './jwt-token/jwt-token.module';
     JwtTokenModule,
   ],
   providers: [
-    AppService,
     { provide: APP_FILTER, useClass: GraphQLExceptionFilter },
+    DateScalar,
   ],
 })
 export class AppModule {}

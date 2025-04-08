@@ -1,8 +1,8 @@
 import { Field, Int, ObjectType } from '@nestjs/graphql';
 
 export function objectTypeFactory<T>(TClass: new () => T) {
-  @ObjectType()
-  class BaseModel {
+  @ObjectType({ isAbstract: true })
+  class ResponseWrapper {
     @Field()
     success: Boolean;
     @Field(() => Int)
@@ -13,5 +13,7 @@ export function objectTypeFactory<T>(TClass: new () => T) {
     @Field(() => TClass)
     data: T;
   }
-  return BaseModel;
+  Object.defineProperty(ResponseWrapper, 'name', { value: `${TClass.name}Data` });
+
+  return ResponseWrapper;
 }

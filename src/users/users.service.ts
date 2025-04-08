@@ -18,7 +18,7 @@ export class UsersService {
     lastName: string,
     dateOfBirth: Date,
     role: UserRole = UserRole.USER,
-    verified: boolean = false
+    verified: boolean = false,
   ) {
     const user = this.userRepository.create({
       email,
@@ -31,5 +31,13 @@ export class UsersService {
       verified,
     });
     return this.userRepository.save(user);
+  }
+
+  findOneByEmail(email: string, relations: string[] = []) {
+    return this.userRepository.findOne({ where: { email }, relations });
+  }
+
+  findOneByUsername(email: string, relations: string[] = []) {
+    return this.userRepository.findOne({ where: { email }, relations });
   }
 }
