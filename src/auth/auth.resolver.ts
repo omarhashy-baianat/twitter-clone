@@ -1,6 +1,6 @@
 import { Resolver, Query } from '@nestjs/graphql';
 import { AuthService } from './auth.service';
-import { NotFoundException } from '@nestjs/common';
+import { BadRequestException, NotFoundException } from '@nestjs/common';
 import { Test } from 'src/common/graphql/objects/test.object';
 
 @Resolver()
@@ -15,7 +15,7 @@ export class AuthResolver {
   }
   @Query(() => String)
   testException() {
-    throw new NotFoundException();
+    throw new BadRequestException();
     return {
       success: true,
       statusCode: 200,

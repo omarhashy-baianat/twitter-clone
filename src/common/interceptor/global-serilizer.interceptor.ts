@@ -16,7 +16,7 @@ export class GlobalSerializer implements NestInterceptor {
           data,
           success: true,
           statusCode: 200,
-          message: 'Message Message Messagerghdrhd',
+          message: 'success',
         };
       }),
     );

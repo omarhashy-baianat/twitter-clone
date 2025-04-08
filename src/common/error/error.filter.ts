@@ -31,7 +31,7 @@ export class GraphQLExceptionFilter implements ExceptionFilter {
 
     response.status(status).json({
       success: false,
-      statusCode: status,
+      status: status,
       message,
     });
   }
