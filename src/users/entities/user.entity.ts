@@ -1,6 +1,7 @@
 import { Otp } from 'src/auth/entities/otp.entity';
 import { Bookmark } from 'src/bookmarks/entities/bookmark.entity';
 import { Comment } from 'src/comments/entities/comment.entity';
+import { AuthType } from 'src/enums/auth-type.emum';
 import { UserRole } from 'src/enums/user-roles.enum';
 import { Follow } from 'src/follows/entity/follow.entity';
 import { Like } from 'src/likes/entities/likes.entity';
@@ -28,9 +29,17 @@ export class User {
   password: string;
   @Column({
     type: 'enum',
+    enum: AuthType,
+    default: AuthType.EMAIL,
+  })
+  auth: AuthType;
+  @Column({
+    type: 'enum',
     enum: UserRole,
     default: UserRole.USER,
   })
+  @Column()
+  googleId: string;
   role: UserRole;
   @Column({ length: 20 })
   firstName: string;
@@ -54,12 +63,12 @@ export class User {
   likes: Like;
   @OneToMany(() => Comment, (comment) => comment.user)
   comments: Comment;
-  @OneToMany(() => Bookmark , bookmark => bookmark.user)
+  @OneToMany(() => Bookmark, (bookmark) => bookmark.user)
   bookmarks: Bookmark[];
-  @OneToOne(() => Otp , (otp) => otp.user)
+  @OneToOne(() => Otp, (otp) => otp.user)
   otp: Otp;
-  @OneToMany(() => Follow , (follow) => follow.id)
-  followers: Follow [];
-  @OneToMany(() => Follow , (follow) => follow.id)
-  following: Follow [];
+  @OneToMany(() => Follow, (follow) => follow.id)
+  followers: Follow[];
+  @OneToMany(() => Follow, (follow) => follow.id)
+  following: Follow[];
 }
