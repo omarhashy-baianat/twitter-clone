@@ -7,7 +7,6 @@ import {
   HttpStatus,
 } from '@nestjs/common';
 import { GqlArgumentsHost } from '@nestjs/graphql';
-import { timeStamp } from 'console';
 
 @Catch()
 export class GraphQLExceptionFilter implements ExceptionFilter {
@@ -28,11 +27,11 @@ export class GraphQLExceptionFilter implements ExceptionFilter {
         message = response.message || message;
       }
     }
-    console.log('res');
-    response?.status(status).json({
-      success: false,
-      status: status,
-      message,
-    });
+    if (response?.status)
+      response.status(status).json({
+        success: false,
+        status: status,
+        message,
+      });
   }
 }

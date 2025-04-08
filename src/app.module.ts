@@ -79,7 +79,7 @@ import { QueueModule } from './queue/queue.module';
     QueueModule,
   ],
   providers: [
-    { provide: APP_FILTER, useClass: GraphQLExceptionFilter },
+    // { provide: APP_FILTER, useClass: GraphQLExceptionFilter },
     { provide: APP_PIPE, useValue: new ValidationPipe({ transform: true }) },
     DateScalar,
   ],
