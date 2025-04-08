@@ -2,7 +2,18 @@
 # THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
 # ------------------------------------------------------
 
+type TestData {
+  test: String!
+}
+
+type Test {
+  success: Boolean!
+  statusCode: Int!
+  message: String!
+  data: TestData!
+}
+
 type Query {
-  sayHello: String!
+  sayHello: Test!
   testException: String!
 }

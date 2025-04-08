@@ -31,7 +31,6 @@ export class GraphQLExceptionFilter implements ExceptionFilter {
 
     response.status(status).json({
       success: false,
-      timeStamp: new Date().toISOString(),
       statusCode: status,
       message,
     });
