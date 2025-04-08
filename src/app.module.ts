@@ -26,6 +26,7 @@ import { APP_FILTER, APP_INTERCEPTOR } from '@nestjs/core';
 import { GraphQLExceptionFilter } from './common/error/error.filter';
 import { JwtTokenModule } from './jwt-token/jwt-token.module';
 import { DateScalar } from './common/scalars/date.scalar';
+import { QueueModule } from './queue/queue.module';
 
 @Module({
   imports: [
@@ -75,6 +76,7 @@ import { DateScalar } from './common/scalars/date.scalar';
     RepostsModule,
     BookmarksModule,
     JwtTokenModule,
+    QueueModule,
   ],
   providers: [
     { provide: APP_FILTER, useClass: GraphQLExceptionFilter },
