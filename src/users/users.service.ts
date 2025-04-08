@@ -3,6 +3,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { User } from './entities/user.entity';
 import { Repository } from 'typeorm';
 import { UserRole } from 'src/enums/user-roles.enum';
+import { AuthType } from 'src/enums/auth-type.emum';
 
 @Injectable()
 export class UsersService {
@@ -19,6 +20,7 @@ export class UsersService {
     dateOfBirth: Date,
     role: UserRole = UserRole.USER,
     verified: boolean = false,
+    auth: AuthType = AuthType.EMAIL,
   ) {
     const user = this.userRepository.create({
       email,
@@ -29,6 +31,7 @@ export class UsersService {
       password,
       dateOfBirth,
       verified,
+      auth,
     });
     return this.userRepository.save(user);
   }

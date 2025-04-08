@@ -1,4 +1,4 @@
-import { Module } from '@nestjs/common';
+import { Module, ValidationPipe } from '@nestjs/common';
 import { GraphQLModule } from '@nestjs/graphql';
 import { ApolloDriver, ApolloDriverConfig } from '@nestjs/apollo';
 import { UsersModule } from './users/users.module';
@@ -22,7 +22,7 @@ import { BookmarksModule } from './bookmarks/bookmarks.module';
 import { Bookmark } from './bookmarks/entities/bookmark.entity';
 import { Otp } from './auth/entities/otp.entity';
 import { Follow } from './follows/entity/follow.entity';
-import { APP_FILTER, APP_INTERCEPTOR } from '@nestjs/core';
+import { APP_FILTER, APP_INTERCEPTOR, APP_PIPE } from '@nestjs/core';
 import { GraphQLExceptionFilter } from './common/error/error.filter';
 import { JwtTokenModule } from './jwt-token/jwt-token.module';
 import { DateScalar } from './common/scalars/date.scalar';
@@ -80,6 +80,7 @@ import { QueueModule } from './queue/queue.module';
   ],
   providers: [
     { provide: APP_FILTER, useClass: GraphQLExceptionFilter },
+    { provide: APP_PIPE, useValue: new ValidationPipe({ transform: true }) },
     DateScalar,
   ],
 })

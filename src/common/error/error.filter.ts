@@ -28,8 +28,8 @@ export class GraphQLExceptionFilter implements ExceptionFilter {
         message = response.message || message;
       }
     }
-
-    response.status(status).json({
+    console.log('res');
+    response?.status(status).json({
       success: false,
       status: status,
       message,
