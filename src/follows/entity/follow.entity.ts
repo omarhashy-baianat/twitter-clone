@@ -3,8 +3,8 @@ import { CreateDateColumn, Entity, ManyToOne, PrimaryGeneratedColumn } from "typ
 
 @Entity()
 export class Follow {
-    @PrimaryGeneratedColumn()
-    id: number;
+    @PrimaryGeneratedColumn('uuid')
+    id: string;
     @ManyToOne(() => User , (user) => user.following)
     following: User;
     @ManyToOne(() => User , (user) => user.followers)

@@ -13,8 +13,8 @@ import {
 
 @Entity()
 export class Comment {
-  @PrimaryGeneratedColumn()
-  id: number;
+  @PrimaryGeneratedColumn('uuid')
+  id: string;
   @Column()
   content: string;
   @ManyToOne(() => Post, (post) => post.comments)

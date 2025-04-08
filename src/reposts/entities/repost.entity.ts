@@ -12,8 +12,8 @@ import { Post } from '../../posts/entities/post.entity';
 
 @Entity()
 export class Repost {
-  @PrimaryGeneratedColumn()
-  id: number;
+  @PrimaryGeneratedColumn('uuid')
+  id: string;
   @Column()
   content: string;
   @CreateDateColumn()

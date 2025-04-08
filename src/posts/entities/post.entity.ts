@@ -14,8 +14,8 @@ import { Bookmark } from 'src/bookmarks/entities/bookmark.entity';
 
 @Entity()
 export class Post {
-  @PrimaryGeneratedColumn()
-  id: number;
+  @PrimaryGeneratedColumn('uuid')
+  id: string;
   @Column()
   content: string;
   @CreateDateColumn()

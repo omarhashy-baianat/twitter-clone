@@ -14,8 +14,8 @@ import {
 
 @Entity()
 export class Media {
-  @PrimaryGeneratedColumn()
-  id: number;
+  @PrimaryGeneratedColumn('uuid')
+  id: string;
   @Column()
   fileName: string;
   @Column({

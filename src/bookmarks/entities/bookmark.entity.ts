@@ -4,8 +4,8 @@ import { CreateDateColumn, Entity, ManyToOne, PrimaryGeneratedColumn } from "typ
 
 @Entity()
 export class Bookmark {
-    @PrimaryGeneratedColumn()
-    id: number;
+    @PrimaryGeneratedColumn("uuid")
+    id: string;
     @CreateDateColumn()
     createAt: Date;
     @ManyToOne(() => Post , post => post.bookmarks)

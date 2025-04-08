@@ -4,8 +4,8 @@ import { CreateDateColumn, Entity, ManyToOne, PrimaryGeneratedColumn } from 'typ
 
 @Entity()
 export class Like {
-  @PrimaryGeneratedColumn()
-  id: number;
+  @PrimaryGeneratedColumn('uuid')
+  id: string;
   @ManyToOne(() => Post, (post) => post.likes)
   post: Post;
   @ManyToOne(() => User , (user) => user.likes)

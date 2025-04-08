@@ -6,7 +6,7 @@ type TestData {
   test: String!
 }
 
-type Test {
+type BaseModel {
   success: Boolean!
   statusCode: Int!
   message: String!
@@ -14,6 +14,6 @@ type Test {
 }
 
 type Query {
-  sayHello: Test!
+  sayHello: BaseModel!
   testException: String!
 }
