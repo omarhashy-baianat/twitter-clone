@@ -25,7 +25,7 @@ export class User {
   email: string;
   @Column({ length: 20 })
   username: string;
-  @Column()
+  @Column({ nullable: true })
   password: string;
   @Column({
     type: 'enum',
@@ -49,6 +49,8 @@ export class User {
   dateOfBirth: Date;
   @Column({ nullable: true })
   bio: string;
+  @Column({ default: false })
+  verified: boolean;
   @CreateDateColumn()
   createdAt: Date;
   @UpdateDateColumn()
