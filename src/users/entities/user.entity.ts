@@ -38,9 +38,9 @@ export class User {
     enum: UserRole,
     default: UserRole.USER,
   })
+  role: UserRole;
   @Column()
   googleId: string;
-  role: UserRole;
   @Column({ length: 20 })
   firstName: string;
   @Column({ length: 20 })
