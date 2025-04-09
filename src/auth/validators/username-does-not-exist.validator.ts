@@ -1,4 +1,5 @@
 import { Injectable, UnprocessableEntityException } from '@nestjs/common';
+import { ConfigService } from '@nestjs/config';
 import {
   ValidationArguments,
   ValidatorConstraint,
@@ -11,11 +12,21 @@ import { UsersService } from 'src/users/users.service';
 export class UsernameDoesNotExistValidator
   implements ValidatorConstraintInterface
 {
-  constructor(private usersService: UsersService) {}
+  constructor(
+    private usersService: UsersService,
+    private configService: ConfigService,
+  ) {}
 
   async validate(value: any, validationArguments?: ValidationArguments) {
+    const superAdminUsername = this.configService.getOrThrow(
+      'SUPER_ADMIN_USERNAME',
+    );
+    if (superAdminUsername == value) false;
     const user = await this.usersService.findOneByUsername(value);
-    if (user) throw new UnprocessableEntityException('User already exist');
-    return true;
+    return !user;
+  }
+
+  defaultMessage(args: ValidationArguments) {
+    return `User already exist`;
   }
 }

@@ -64,7 +64,7 @@ export class User {
   lastName: string;
 
   @Column({ type: 'date' })
-  @Field()
+  @Field(() => Date)
   dateOfBirth: Date;
 
   @Column({ nullable: true })

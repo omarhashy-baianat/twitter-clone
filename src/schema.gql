@@ -37,17 +37,27 @@ type Query {
 type TestData {
   success: Boolean!
   statusCode: Int!
-  message: String!
+  messages: [String!]!
   data: Test!
 }
 
 type Mutation {
   seedSuperAdmin: UserData!
+  registerWithEmail(userData: RegisterWithEmailDto!): UserData!
 }
 
 type UserData {
   success: Boolean!
   statusCode: Int!
-  message: String!
+  messages: [String!]!
   data: User!
+}
+
+input RegisterWithEmailDto {
+  firstName: String!
+  lastName: String!
+  dateOfBirth: Date!
+  username: String!
+  email: String!
+  password: String!
 }

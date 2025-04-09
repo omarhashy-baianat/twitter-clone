@@ -1,23 +1,21 @@
-import { BadRequestException } from '@nestjs/common';
 import { Scalar, CustomScalar } from '@nestjs/graphql';
 import { Kind, ValueNode } from 'graphql';
 
 @Scalar('Date', () => Date)
-export class DateScalar implements CustomScalar<number, Date> {
+export class DateScalar implements CustomScalar<number, Date | undefined> {
   description = 'Date custom scalar type';
 
   parseValue(value: number): Date {
-    return new Date(value); 
+    return new Date(value);
   }
 
   serialize(value: Date): number {
-    return value.getTime(); 
+    return value.getTime();
   }
 
-  parseLiteral(ast: ValueNode): Date {
-    if (ast.kind === Kind.INT) {
-      return new Date(ast.value);
+  parseLiteral(ast: ValueNode): Date | undefined {
+    if (ast.kind === Kind.INT || ast.kind === Kind.STRING) {
+      return new Date(parseInt(ast.value));
     }
-    throw new BadRequestException('invalid Date Value');
   }
 }

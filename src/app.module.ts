@@ -22,8 +22,7 @@ import { BookmarksModule } from './bookmarks/bookmarks.module';
 import { Bookmark } from './bookmarks/entities/bookmark.entity';
 import { Otp } from './auth/entities/otp.entity';
 import { Follow } from './follows/entity/follow.entity';
-import { APP_FILTER, APP_INTERCEPTOR, APP_PIPE } from '@nestjs/core';
-import { GraphQLExceptionFilter } from './common/error/error.filter';
+import { APP_PIPE } from '@nestjs/core';
 import { JwtTokenModule } from './jwt-token/jwt-token.module';
 import { DateScalar } from './common/scalars/date.scalar';
 import { QueueModule } from './queue/queue.module';
@@ -79,8 +78,12 @@ import { QueueModule } from './queue/queue.module';
     QueueModule,
   ],
   providers: [
-    // { provide: APP_FILTER, useClass: GraphQLExceptionFilter },
-    { provide: APP_PIPE, useValue: new ValidationPipe({ transform: true }) },
+    {
+      provide: APP_PIPE,
+      useValue: new ValidationPipe({
+        transform: true,
+      }),
+    },
     DateScalar,
   ],
 })

@@ -1,8 +1,9 @@
-import { Resolver, Query, Mutation } from '@nestjs/graphql';
+import { Resolver, Query, Mutation, Args } from '@nestjs/graphql';
 import { AuthService } from './auth.service';
 import { BadRequestException, NotFoundException } from '@nestjs/common';
 import { TestData } from 'src/common/graphql/objects/test.object';
 import { UserData } from 'src/users/entities/user.entity';
+import { RegisterWithEmailDto } from './Dtos/register-with-email.dto';
 
 @Resolver()
 export class AuthResolver {
@@ -11,6 +12,13 @@ export class AuthResolver {
   @Mutation(() => UserData)
   seedSuperAdmin() {
     return this.authService.seedSuperAdmin();
+  }
+
+  @Mutation(() => UserData)
+  registerWithEmail(
+    @Args('userData') registerWithEmailDto: RegisterWithEmailDto,
+  ) {
+    return this.authService.registerUserByEmail(registerWithEmailDto);
   }
 
   @Query(() => TestData)

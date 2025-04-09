@@ -18,9 +18,9 @@ export class UsersService {
     firstName: string,
     lastName: string,
     dateOfBirth: Date,
+    auth: AuthType = AuthType.EMAIL,
     role: UserRole = UserRole.USER,
     verified: boolean = false,
-    auth: AuthType = AuthType.EMAIL,
   ) {
     const user = this.userRepository.create({
       email,

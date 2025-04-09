@@ -12,7 +12,8 @@ import {
   Validate,
 } from 'class-validator';
 import { EmailDoesNotExistValidator } from '../validators/email-does-not-exist.validator';
-import { UsernameDoesNotExistValidator } from '../validators/usernme-does-not-exist.validator';
+import { UsernameDoesNotExistValidator } from '../validators/username-does-not-exist.validator';
+import { ageValidator } from '../validators/age-validator.validator';
 
 @InputType()
 export class RegisterWithEmailDto {
@@ -33,7 +34,8 @@ export class RegisterWithEmailDto {
   lastName: string;
 
   @IsDate()
-  @Field()
+  @Field(() => Date)
+  @Validate(ageValidator)
   dateOfBirth: Date;
 
   @IsString()
@@ -43,7 +45,7 @@ export class RegisterWithEmailDto {
   @IsAlphanumeric()
   @Transform(({ value }) => value.trim())
   @Field()
-@Validate(UsernameDoesNotExistValidator)
+  @Validate(UsernameDoesNotExistValidator)
   username: string;
 
   @IsEmail()

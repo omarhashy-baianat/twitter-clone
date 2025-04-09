@@ -7,8 +7,8 @@ export function objectTypeFactory<T>(TClass: new () => T) {
     success: Boolean;
     @Field(() => Int)
     statusCode: number;
-    @Field()
-    message: string;
+    @Field(() => [String])
+    messages: string[];
 
     @Field(() => TClass)
     data: T;
