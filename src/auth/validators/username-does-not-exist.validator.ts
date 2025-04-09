@@ -23,6 +23,10 @@ export class UsernameDoesNotExistValidator
     );
     if (superAdminUsername == value) false;
     const user = await this.usersService.findOneByUsername(value);
+    if (user && !user.verified) {
+      await this.usersService.removeUser(user);
+      return true;
+    }
     return !user;
   }
 

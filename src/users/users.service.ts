@@ -43,4 +43,8 @@ export class UsersService {
   findOneByUsername(email: string, relations: string[] = []) {
     return this.userRepository.findOne({ where: { email }, relations });
   }
+
+  removeUser(user: User) {
+    return this.userRepository.remove(user);
+  }
 }
