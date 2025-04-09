@@ -17,6 +17,8 @@ import * as moment from 'moment';
 import { ResetUserPasswordDto } from './Dtos/reset-user-password.dto';
 import { User } from 'src/users/entities/user.entity';
 import { VerifyResetPasswordDto } from './Dtos/verify-reset-password.dto';
+import { JwtService } from '@nestjs/jwt';
+import { LoginWithEmailDto } from './Dtos/login-with-email.dto';
 
 @Injectable()
 export class AuthService {
@@ -25,6 +27,7 @@ export class AuthService {
     private usersService: UsersService,
     private otpService: OtpService,
     private queueService: QueueService,
+    private jwtService: JwtService,
   ) {}
 
   async seedSuperAdmin() {
@@ -151,5 +154,25 @@ export class AuthService {
     return this.usersService.updateUser(user, {
       password: hashedPassword,
     });
+  }
+
+  async loginWithEmail(loginUserDto: LoginWithEmailDto) {
+    const user = await this.usersService.findOneByEmail(loginUserDto.email);
+    if (!user) throw new UnauthorizedException('wrong email or password');
+    if (!user.verified) throw new UnauthorizedException('unauthorized access');
+
+    const passwordMatch = await bcrypt.compare(
+      loginUserDto.password,
+      user.password,
+    );
+
+    if (!passwordMatch)
+      throw new UnauthorizedException('wrong email or password');
+
+    return {
+      token: this.jwtService.sign({
+        userId: user.id,
+      }),
+    };
   }
 }

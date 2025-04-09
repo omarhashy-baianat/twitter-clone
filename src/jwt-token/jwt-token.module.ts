@@ -18,6 +18,6 @@ import { JwtModule } from '@nestjs/jwt';
       },
     }),
   ],
-  exports: [],
+  exports: [JwtModule],
 })
 export class JwtTokenModule {}

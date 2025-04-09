@@ -8,6 +8,8 @@ import { Transactional } from 'typeorm-transactional';
 import { VerifyUserEmailDto } from './Dtos/verify-user-email.dto';
 import { ResetUserPasswordDto } from './Dtos/reset-user-password.dto';
 import { VerifyResetPasswordDto } from './Dtos/verify-reset-password.dto';
+import { jwtTokenData } from 'src/common/graphql/objects/jwt-token.object';
+import { LoginWithEmailDto } from './Dtos/login-with-email.dto';
 
 @Resolver()
 export class AuthResolver {
@@ -46,9 +48,15 @@ export class AuthResolver {
   async verifyResetUserPassword(
     @Args('newPasswordData') verifyResetUserPasswordDto: VerifyResetPasswordDto,
   ) {
-    return this.authService.verifyResetUserPassword(
-      verifyResetUserPasswordDto,
-    );
+    return this.authService.verifyResetUserPassword(verifyResetUserPasswordDto);
+  }
+
+  @Mutation(() => jwtTokenData)
+  @Transactional()
+  async loginWithEmail(
+    @Args('userCredentialsData') loginWithEmailDto: LoginWithEmailDto,
+  ) {
+    return this.authService.loginWithEmail(loginWithEmailDto);
   }
 
   @Query(() => MessageData)

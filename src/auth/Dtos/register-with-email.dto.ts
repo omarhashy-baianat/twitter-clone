@@ -7,6 +7,7 @@ import {
   IsEmail,
   IsNotEmpty,
   IsString,
+  IsStrongPassword,
   MaxLength,
   MinLength,
   Validate,
@@ -58,7 +59,7 @@ export class RegisterWithEmailDto {
   @IsNotEmpty()
   @MaxLength(255)
   @MinLength(5)
-  @IsAlphanumeric()
+  @IsStrongPassword()
   @Transform(({ value }) => value.trim())
   @Field()
   password: string;
