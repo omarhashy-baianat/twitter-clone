@@ -14,7 +14,8 @@ import { OtpType } from 'src/enums/otp-type.enum';
 import { QueueService } from 'src/queue/queue.service';
 import { VerifyUserEmailDto } from './Dtos/verify-user-email.dto';
 import * as moment from 'moment';
-import { Otp } from './entities/otp.entity';
+import { ResetUserPasswordDto } from './Dtos/reset-user-password.dto';
+import { User } from 'src/users/entities/user.entity';
 
 @Injectable()
 export class AuthService {
@@ -70,7 +71,7 @@ export class AuthService {
     );
 
     const otp = await this.otpService.generateOtp(user, OtpType.VERIFY_EMAIL);
-    this.queueService.sendEmailVerificationEmail(otp.otp, user.email);
+    this.queueService.sendVerificationEmail(otp.otp, user.email);
     return user;
   }
 
@@ -92,5 +93,32 @@ export class AuthService {
       throw new BadRequestException('expired OTP');
     this.otpService.removeOtp(user.otp);
     return this.usersService.updateUser(user, { verified: true });
+  }
+
+  async resetUserPassword(resetUserPasswordDto: ResetUserPasswordDto) {
+    const user = await this.usersService.findOneByEmail(
+      resetUserPasswordDto.email,
+    );
+    if (!user || !user.verified)
+      throw new BadRequestException('invalid request');
+
+    const existingOtp = await this.otpService.findOtp(
+      {
+        user: { id: user.id },
+      },
+      ['user'],
+    );
+
+    if (existingOtp) {
+      const twoMinAgo = moment().subtract(2, 'minute').toDate();
+      if (twoMinAgo.getTime() < existingOtp.createdAt.getTime())
+        throw new BadRequestException(
+          'OTP can not be resent before two minutes',
+        );
+      await this.otpService.removeOtp(existingOtp);
+    }
+    const otp = await this.otpService.generateOtp(user, OtpType.RESET_PASSWORD);
+    this.queueService.sendResetPasswordEmail(otp.otp, user.email);
+    return { message: 'OTP set successfully' };
   }
 }

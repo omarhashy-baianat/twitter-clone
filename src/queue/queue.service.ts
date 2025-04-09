@@ -5,13 +5,22 @@ import { Queue } from 'bullmq';
 @Injectable()
 export class QueueService {
   constructor(@InjectQueue('email') private emailQueue: Queue) {}
-  sendEmailVerificationEmail(otp: string, emailAddress: string) {
+
+  sendVerificationEmail(otp: string, emailAddress: string) {
     const email = {
-      subject: 'twitter clone email verification',
+      subject: 'twitter-clone email verification',
       text: `otp is ${otp}`,
       to: emailAddress,
     };
-    console.log("hkh [dj")
-    this.emailQueue.add('verify use email', email);
+    this.emailQueue.add('verify user email', email);
+  }
+
+  sendResetPasswordEmail(otp: string, emailAddress: string) {
+    const email = {
+      subject: 'twitter-clone reset password',
+      text: `otp is ${otp}`,
+      to: emailAddress,
+    };
+    this.emailQueue.add('reset password email', email);
   }
 }

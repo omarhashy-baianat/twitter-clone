@@ -21,9 +21,7 @@ export class NodemailerService {
   }
 
   async sendEmail(msg) {
-    console.log('hi')
     msg.from = this.configService.getOrThrow('GOOGLE_EMAIL');
     const enf = this.transporter.sendMail(msg);
-    console.log(enf)
   }
 }

@@ -9,7 +9,6 @@ export class EmailProcessor extends WorkerHost {
   }
   async process(job: Job): Promise<any> {
     const data = job.data;
-    console.log(data)
     await this.nodeMailerService.sendEmail(data);
   }
 }

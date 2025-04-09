@@ -1,17 +1,11 @@
 import { Field, InputType } from '@nestjs/graphql';
 import { Transform } from 'class-transformer';
-import { IsEmail, IsNotEmpty, IsString } from 'class-validator';
+import { IsEmail } from 'class-validator';
 
 @InputType()
-export class VerifyUserEmailDto {
+export class ResetUserPasswordDto {
   @IsEmail()
   @Transform(({ value }) => value.trim())
   @Field()
   email: string;
-
-  @IsString()
-  @IsNotEmpty()
-  @Transform(({ value }) => value.trim())
-  @Field()
-  otp: string;
 }
