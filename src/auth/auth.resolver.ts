@@ -4,6 +4,7 @@ import { BadRequestException, NotFoundException } from '@nestjs/common';
 import { TestData } from 'src/common/graphql/objects/test.object';
 import { UserData } from 'src/users/entities/user.entity';
 import { RegisterWithEmailDto } from './Dtos/register-with-email.dto';
+import { Transactional } from 'typeorm-transactional';
 
 @Resolver()
 export class AuthResolver {
@@ -15,6 +16,7 @@ export class AuthResolver {
   }
 
   @Mutation(() => UserData)
+  @Transactional()
   registerWithEmail(
     @Args('userData') registerWithEmailDto: RegisterWithEmailDto,
   ) {

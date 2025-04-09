@@ -1,18 +1,19 @@
 import { BadRequestException, Injectable } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
-import { User } from 'src/users/entities/user.entity';
 import { UsersService } from 'src/users/users.service';
 import * as bcrypt from 'bcrypt';
 import { UserRole } from 'src/enums/user-roles.enum';
 import { RegisterWithEmailDto } from './Dtos/register-with-email.dto';
 import { AuthType } from 'src/enums/auth-type.emum';
-import { first } from 'rxjs';
+import { OtpService } from './otp.servise';
+import { OtpType } from 'src/enums/otp-type.enum';
 
 @Injectable()
 export class AuthService {
   constructor(
     private configService: ConfigService,
     private usersService: UsersService,
+    private otpService: OtpService,
   ) {}
 
   async seedSuperAdmin() {
@@ -29,7 +30,7 @@ export class AuthService {
       throw new BadRequestException('superAdmin already exists');
     const hashedPassword = await bcrypt.hash(password, 10);
 
-    const user = this.usersService.createUserWithEmail(
+    const user = await this.usersService.createUserWithEmail(
       email,
       username,
       hashedPassword,
@@ -59,6 +60,8 @@ export class AuthService {
       registerUserByEmailDto.dateOfBirth,
     );
 
+    const otp = await this.otpService.generateOtp(user,OtpType.VERIFY_EMAIL);
+    
     return user;
   }
 }

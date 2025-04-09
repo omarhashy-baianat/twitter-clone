@@ -17,12 +17,10 @@ export class GraphQLExceptionFilter implements ExceptionFilter {
 
     let status = HttpStatus.INTERNAL_SERVER_ERROR;
     let messages = ['Internal server error'];
-    let error = 'Internal server error';
 
     if (exception instanceof HttpException) {
       status = exception.getStatus();
       const exceptionResponse = exception.getResponse() as any;
-      error = exceptionResponse.error || error;
       if (typeof exceptionResponse === 'string') {
         messages = [exceptionResponse];
       } else if (Array.isArray(exceptionResponse.message)) {
@@ -36,7 +34,6 @@ export class GraphQLExceptionFilter implements ExceptionFilter {
       response.status(status).json({
         success: false,
         status: status,
-        error,
         messages,
       });
   }
