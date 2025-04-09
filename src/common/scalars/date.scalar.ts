@@ -9,12 +9,12 @@ export class DateScalar implements CustomScalar<number, Date | undefined> {
     return new Date(value);
   }
 
-  serialize(value: Date): number {
+  serialize(value: Date) {
     return value.getTime();
   }
 
   parseLiteral(ast: ValueNode): Date | undefined {
-    if (ast.kind === Kind.INT || ast.kind === Kind.STRING) {
+    if (ast.kind === Kind.INT) {
       return new Date(parseInt(ast.value));
     }
   }

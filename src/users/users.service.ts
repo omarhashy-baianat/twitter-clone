@@ -1,7 +1,10 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { User } from './entities/user.entity';
-import { Repository } from 'typeorm';
+import {
+  CustomRepositoryCannotInheritRepositoryError,
+  Repository,
+} from 'typeorm';
 import { UserRole } from 'src/enums/user-roles.enum';
 import { AuthType } from 'src/enums/auth-type.emum';
 
@@ -40,8 +43,17 @@ export class UsersService {
     return this.userRepository.findOne({ where: { email }, relations });
   }
 
-  findOneByUsername(email: string, relations: string[] = []) {
-    return this.userRepository.findOne({ where: { email }, relations });
+  findOneByUsername(username: string, relations: string[] = []) {
+    return this.userRepository.findOne({ where: { username }, relations });
+  }
+
+  findOneById(id: string, relations: string[] = []) {
+    return this.userRepository.findOne({ where: { id }, relations });
+  }
+
+  updateUser(user: User, partialUser: Partial<User>) {
+    const updatedUser = this.userRepository.merge(user, partialUser);
+    return this.userRepository.save(updatedUser);
   }
 
   removeUser(user: User) {

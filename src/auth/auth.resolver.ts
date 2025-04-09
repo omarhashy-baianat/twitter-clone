@@ -5,6 +5,7 @@ import { TestData } from 'src/common/graphql/objects/test.object';
 import { UserData } from 'src/users/entities/user.entity';
 import { RegisterWithEmailDto } from './Dtos/register-with-email.dto';
 import { Transactional } from 'typeorm-transactional';
+import { VerifyUserEmailDto } from './Dtos/verify-user-email.dto';
 
 @Resolver()
 export class AuthResolver {
@@ -21,6 +22,12 @@ export class AuthResolver {
     @Args('userData') registerWithEmailDto: RegisterWithEmailDto,
   ) {
     return this.authService.registerUserByEmail(registerWithEmailDto);
+  }
+
+  @Mutation(() => UserData)
+  @Transactional()
+  verifyUserEmail(@Args('otpData') verifyUserEmailDto: VerifyUserEmailDto) {
+    return this.authService.verifyUserEmail(verifyUserEmailDto);
   }
 
   @Query(() => TestData)

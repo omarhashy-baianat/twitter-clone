@@ -7,6 +7,7 @@ import { UsernameDoesNotExistValidator } from './validators/username-does-not-ex
 import { OtpService } from './otp.servise';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { Otp } from './entities/otp.entity';
+import { QueueModule } from 'src/queue/queue.module';
 
 @Module({
   providers: [
@@ -16,6 +17,6 @@ import { Otp } from './entities/otp.entity';
     UsernameDoesNotExistValidator,
     OtpService,
   ],
-  imports: [TypeOrmModule.forFeature([Otp]), UsersModule],
+  imports: [TypeOrmModule.forFeature([Otp]), UsersModule, QueueModule],
 })
 export class AuthModule {}

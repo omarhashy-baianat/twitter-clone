@@ -63,7 +63,7 @@ export class User {
   @Field()
   lastName: string;
 
-  @Column({ type: 'date' })
+  @Column()
   @Field(() => Date)
   dateOfBirth: Date;
 

@@ -1,4 +1,8 @@
-import { BadRequestException, Injectable } from '@nestjs/common';
+import {
+  BadRequestException,
+  Injectable,
+  UnauthorizedException,
+} from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { UsersService } from 'src/users/users.service';
 import * as bcrypt from 'bcrypt';
@@ -7,6 +11,10 @@ import { RegisterWithEmailDto } from './Dtos/register-with-email.dto';
 import { AuthType } from 'src/enums/auth-type.emum';
 import { OtpService } from './otp.servise';
 import { OtpType } from 'src/enums/otp-type.enum';
+import { QueueService } from 'src/queue/queue.service';
+import { VerifyUserEmailDto } from './Dtos/verify-user-email.dto';
+import * as moment from 'moment';
+import { Otp } from './entities/otp.entity';
 
 @Injectable()
 export class AuthService {
@@ -14,6 +22,7 @@ export class AuthService {
     private configService: ConfigService,
     private usersService: UsersService,
     private otpService: OtpService,
+    private queueService: QueueService,
   ) {}
 
   async seedSuperAdmin() {
@@ -60,8 +69,28 @@ export class AuthService {
       registerUserByEmailDto.dateOfBirth,
     );
 
-    const otp = await this.otpService.generateOtp(user,OtpType.VERIFY_EMAIL);
-    
+    const otp = await this.otpService.generateOtp(user, OtpType.VERIFY_EMAIL);
+    this.queueService.sendEmailVerificationEmail(otp.otp, user.email);
     return user;
+  }
+
+  async verifyUserEmail(verifyUserEmailDto: VerifyUserEmailDto) {
+    const user = await this.usersService.findOneByEmail(
+      verifyUserEmailDto.email,
+      ['otp'],
+    );
+
+    if (!user || !user.otp || user.verified)
+      throw new BadRequestException('invalid request');
+
+    const fiveMinAgo = moment().subtract(5, 'minute').toDate();
+
+    if (user.otp.otp != verifyUserEmailDto.otp)
+      throw new UnauthorizedException('invalid OTP');
+
+    if (fiveMinAgo.getTime() > user.otp.createdAt.getTime())
+      throw new BadRequestException('expired OTP');
+    this.otpService.removeOtp(user.otp);
+    return this.usersService.updateUser(user, { verified: true });
   }
 }

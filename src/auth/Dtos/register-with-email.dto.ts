@@ -51,6 +51,7 @@ export class RegisterWithEmailDto {
   @IsEmail()
   @Field()
   @Validate(EmailDoesNotExistValidator)
+  @Transform(({ value }) => value.trim())
   email: string;
 
   @IsString()

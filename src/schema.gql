@@ -44,6 +44,7 @@ type TestData {
 type Mutation {
   seedSuperAdmin: UserData!
   registerWithEmail(userData: RegisterWithEmailDto!): UserData!
+  verifyUserEmail(otpData: VerifyUserEmailDto!): UserData!
 }
 
 type UserData {
@@ -60,4 +61,9 @@ input RegisterWithEmailDto {
   username: String!
   email: String!
   password: String!
+}
+
+input VerifyUserEmailDto {
+  email: String!
+  otp: String!
 }

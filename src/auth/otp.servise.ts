@@ -1,4 +1,8 @@
-import { Injectable, InternalServerErrorException, NotFoundException } from '@nestjs/common';
+import {
+  Injectable,
+  InternalServerErrorException,
+  NotFoundException,
+} from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Otp } from './entities/otp.entity';
 import { Repository } from 'typeorm';
@@ -11,12 +15,17 @@ export class OtpService {
   constructor(@InjectRepository(Otp) private otpRepository: Repository<Otp>) {}
 
   async generateOtp(user: User, type: OtpType) {
-    const otpString = OtpGenerator.generate(6);
+    const otpString = OtpGenerator.generate(6, {
+      upperCaseAlphabets: false,
+      lowerCaseAlphabets: false,
+      specialChars: false,
+      digits: true,
+    });
     const otp = this.otpRepository.create({ otp: otpString, type, user });
     return this.otpRepository.save(otp);
   }
 
-  findOtpBy(where: object, relations: string[] = []) {
+  findOtp(where: object, relations: string[] = []) {
     return this.otpRepository.findOne({ where, relations });
   }
 
