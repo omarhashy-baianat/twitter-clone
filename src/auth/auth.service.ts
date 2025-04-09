@@ -16,6 +16,7 @@ import { VerifyUserEmailDto } from './Dtos/verify-user-email.dto';
 import * as moment from 'moment';
 import { ResetUserPasswordDto } from './Dtos/reset-user-password.dto';
 import { User } from 'src/users/entities/user.entity';
+import { VerifyResetPasswordDto } from './Dtos/verify-reset-password.dto';
 
 @Injectable()
 export class AuthService {
@@ -84,10 +85,10 @@ export class AuthService {
     if (!user || !user.otp || user.verified)
       throw new BadRequestException('invalid request');
 
-    const fiveMinAgo = moment().subtract(5, 'minute').toDate();
-
     if (user.otp.otp != verifyUserEmailDto.otp)
       throw new UnauthorizedException('invalid OTP');
+
+    const fiveMinAgo = moment().subtract(5, 'minute').toDate();
 
     if (fiveMinAgo.getTime() > user.otp.createdAt.getTime())
       throw new BadRequestException('expired OTP');
@@ -120,5 +121,35 @@ export class AuthService {
     const otp = await this.otpService.generateOtp(user, OtpType.RESET_PASSWORD);
     this.queueService.sendResetPasswordEmail(otp.otp, user.email);
     return { message: 'OTP set successfully' };
+  }
+
+  async verifyResetUserPassword(
+    verifyResetPasswordDto: VerifyResetPasswordDto,
+  ) {
+    const user = await this.usersService.findOneByEmail(
+      verifyResetPasswordDto.email,
+      ['otp'],
+    );
+
+    if (!user || !user.otp || !user.verified)
+      throw new BadRequestException('invalid request');
+
+    if (user.otp.otp != verifyResetPasswordDto.otp)
+      throw new UnauthorizedException('expired OTP');
+
+    const fiveMinAgo = moment().subtract(5, 'minute').toDate();
+
+    if (fiveMinAgo.getTime() > user.otp.createdAt.getTime())
+      throw new BadRequestException('expired OTP');
+
+    const hashedPassword = await bcrypt.hash(
+      verifyResetPasswordDto.password,
+      10,
+    );
+
+    this.otpService.removeOtp(user.otp);
+    return this.usersService.updateUser(user, {
+      password: hashedPassword,
+    });
   }
 }

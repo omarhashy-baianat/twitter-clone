@@ -10,7 +10,7 @@ import {
 } from 'class-validator';
 
 @InputType()
-export class verifyResetPassword {
+export class VerifyResetPasswordDto {
   @IsEmail()
   @Transform(({ value }) => value.trim())
   @Field()

@@ -46,6 +46,7 @@ type Mutation {
   registerWithEmail(userData: RegisterWithEmailDto!): UserData!
   verifyUserEmail(otpData: VerifyUserEmailDto!): UserData!
   resetUserPassword(userData: ResetUserPasswordDto!): MessageData!
+  verifyResetUserPassword(newPasswordData: VerifyResetPasswordDto!): UserData!
 }
 
 type UserData {
@@ -71,4 +72,10 @@ input VerifyUserEmailDto {
 
 input ResetUserPasswordDto {
   email: String!
+}
+
+input VerifyResetPasswordDto {
+  email: String!
+  otp: String!
+  password: String!
 }

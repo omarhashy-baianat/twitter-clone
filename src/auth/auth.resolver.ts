@@ -2,11 +2,12 @@ import { Resolver, Query, Mutation, Args } from '@nestjs/graphql';
 import { AuthService } from './auth.service';
 import { BadRequestException, NotFoundException } from '@nestjs/common';
 import { MessageData } from 'src/common/graphql/objects/test.object';
-import { UserData } from 'src/users/entities/user.entity';
+import { User, UserData } from 'src/users/entities/user.entity';
 import { RegisterWithEmailDto } from './Dtos/register-with-email.dto';
 import { Transactional } from 'typeorm-transactional';
 import { VerifyUserEmailDto } from './Dtos/verify-user-email.dto';
 import { ResetUserPasswordDto } from './Dtos/reset-user-password.dto';
+import { VerifyResetPasswordDto } from './Dtos/verify-reset-password.dto';
 
 @Resolver()
 export class AuthResolver {
@@ -38,6 +39,16 @@ export class AuthResolver {
     @Args('userData') resetUserPasswordDto: ResetUserPasswordDto,
   ) {
     return this.authService.resetUserPassword(resetUserPasswordDto);
+  }
+
+  @Mutation(() => UserData)
+  @Transactional()
+  async verifyResetUserPassword(
+    @Args('newPasswordData') verifyResetUserPasswordDto: VerifyResetPasswordDto,
+  ) {
+    return this.authService.verifyResetUserPassword(
+      verifyResetUserPasswordDto,
+    );
   }
 
   @Query(() => MessageData)
