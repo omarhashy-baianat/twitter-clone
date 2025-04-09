@@ -2,8 +2,8 @@ import { Field, ObjectType } from '@nestjs/graphql';
 import { objectTypeFactory } from './base-model.object';
 
 @ObjectType()
-class Test {
+class Message {
     @Field()
-    test: string;
+    message: string;
 }
-export const TestData = objectTypeFactory<Test>(Test)
+export const MessageData = objectTypeFactory<Message>(Message)

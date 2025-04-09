@@ -22,23 +22,23 @@ enum UserRole {
   USER
 }
 
-type Test {
-  test: String!
+type Message {
+  message: String!
 }
 
 """Date custom scalar type"""
 scalar Date
 
 type Query {
-  sayHello: TestData!
+  sayHello: MessageData!
   testException: String!
 }
 
-type TestData {
+type MessageData {
   success: Boolean!
   statusCode: Int!
   messages: [String!]!
-  data: Test!
+  data: Message!
 }
 
 type Mutation {

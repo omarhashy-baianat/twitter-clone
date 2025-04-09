@@ -1,7 +1,7 @@
 import { Resolver, Query, Mutation, Args } from '@nestjs/graphql';
 import { AuthService } from './auth.service';
 import { BadRequestException, NotFoundException } from '@nestjs/common';
-import { TestData } from 'src/common/graphql/objects/test.object';
+import { MessageData } from 'src/common/graphql/objects/test.object';
 import { UserData } from 'src/users/entities/user.entity';
 import { RegisterWithEmailDto } from './Dtos/register-with-email.dto';
 import { Transactional } from 'typeorm-transactional';
@@ -30,10 +30,10 @@ export class AuthResolver {
     return this.authService.verifyUserEmail(verifyUserEmailDto);
   }
 
-  @Query(() => TestData)
+  @Query(() => MessageData)
   sayHello() {
     return {
-      test: 'value',
+      message: 'Hello, world',
     };
   }
   @Query(() => String)
