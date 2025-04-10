@@ -11,6 +11,7 @@ import { VerifyResetPasswordDto } from './Dtos/verify-reset-password.dto';
 import { jwtTokenData } from 'src/common/graphql/objects/jwt-token.object';
 import { LoginWithEmailDto } from './Dtos/login-with-email.dto';
 import { RegisterWithGoogleDto } from './Dtos/register-with-google.dto';
+import { LoginWithGoogleDto } from './Dtos/login-with-google.dto';
 
 @Resolver()
 export class AuthResolver {
@@ -66,6 +67,14 @@ export class AuthResolver {
     @Args('userCredentialsData') loginWithEmailDto: LoginWithEmailDto,
   ) {
     return this.authService.loginWithEmail(loginWithEmailDto);
+  }
+
+  @Mutation(() => jwtTokenData)
+  @Transactional()
+  async loginWithGoogle(
+    @Args('userCredentialsData') loginWithGoogleDto: LoginWithGoogleDto,
+  ) {
+    return this.authService.loginWithGoogle(loginWithGoogleDto);
   }
 
   @Query(() => MessageData)

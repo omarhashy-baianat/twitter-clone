@@ -214,7 +214,7 @@ export class AuthService {
       throw new UnauthorizedException('unauthorized access');
 
     return {
-      toke: this.jwtService.sign({
+      token: this.jwtService.sign({
         userId: user.id,
       }),
     };

@@ -59,6 +59,7 @@ type Mutation {
   resetUserPassword(userData: ResetUserPasswordDto!): MessageData!
   verifyResetUserPassword(newPasswordData: VerifyResetPasswordDto!): UserData!
   loginWithEmail(userCredentialsData: LoginWithEmailDto!): jwtTokenData!
+  loginWithGoogle(userCredentialsData: LoginWithGoogleDto!): jwtTokenData!
 }
 
 type UserData {
@@ -108,4 +109,8 @@ type jwtTokenData {
 input LoginWithEmailDto {
   email: String!
   password: String!
+}
+
+input LoginWithGoogleDto {
+  token: String!
 }
