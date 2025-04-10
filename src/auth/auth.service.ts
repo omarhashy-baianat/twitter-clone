@@ -15,10 +15,12 @@ import { QueueService } from 'src/queue/queue.service';
 import { VerifyUserEmailDto } from './Dtos/verify-user-email.dto';
 import * as moment from 'moment';
 import { ResetUserPasswordDto } from './Dtos/reset-user-password.dto';
-import { User } from 'src/users/entities/user.entity';
 import { VerifyResetPasswordDto } from './Dtos/verify-reset-password.dto';
 import { JwtService } from '@nestjs/jwt';
 import { LoginWithEmailDto } from './Dtos/login-with-email.dto';
+import { GoogleAuthService } from './google-auth.service';
+import { RegisterWithGoogleDto } from './Dtos/register-with-google.dto';
+import { LoginWithGoogleDto } from './Dtos/login-with-google.dto';
 
 @Injectable()
 export class AuthService {
@@ -28,6 +30,7 @@ export class AuthService {
     private otpService: OtpService,
     private queueService: QueueService,
     private jwtService: JwtService,
+    private googleAuthService: GoogleAuthService,
   ) {}
 
   async seedSuperAdmin() {
@@ -52,8 +55,8 @@ export class AuthService {
       lastName,
       new Date(parseInt(dateOfBirth)),
       AuthType.EMAIL,
-      UserRole.SUPER_ADMIN,
       true,
+      UserRole.SUPER_ADMIN,
     );
 
     return user;
@@ -76,6 +79,28 @@ export class AuthService {
 
     const otp = await this.otpService.generateOtp(user, OtpType.VERIFY_EMAIL);
     this.queueService.sendVerificationEmail(otp.otp, user.email);
+    return user;
+  }
+
+  async registerUserWithGoogle(registerUserByGoogleDto: RegisterWithGoogleDto) {
+    const tokenData = await this.googleAuthService.validateGoogleToken(
+      registerUserByGoogleDto.token,
+    );
+
+    if (await this.usersService.findOneByEmail(tokenData.email))
+      throw new BadRequestException('User already exist');
+
+    const user = await this.usersService.createUserWithEmail(
+      tokenData.email,
+      registerUserByGoogleDto.username,
+      undefined,
+      tokenData.given_name,
+      tokenData.family_name,
+      registerUserByGoogleDto.dateOfBirth,
+      AuthType.GOOGLE,
+      true,
+    );
+
     return user;
   }
 
@@ -103,7 +128,7 @@ export class AuthService {
     const user = await this.usersService.findOneByEmail(
       resetUserPasswordDto.email,
     );
-    if (!user || !user.verified)
+    if (!user || !user.verified || user.auth == AuthType.GOOGLE)
       throw new BadRequestException('invalid request');
 
     const existingOtp = await this.otpService.findOtp(
@@ -159,7 +184,8 @@ export class AuthService {
   async loginWithEmail(loginUserDto: LoginWithEmailDto) {
     const user = await this.usersService.findOneByEmail(loginUserDto.email);
     if (!user) throw new UnauthorizedException('wrong email or password');
-    if (!user.verified) throw new UnauthorizedException('unauthorized access');
+    if (!user.verified || user.auth != AuthType.EMAIL)
+      throw new UnauthorizedException('unauthorized access');
 
     const passwordMatch = await bcrypt.compare(
       loginUserDto.password,
@@ -171,6 +197,24 @@ export class AuthService {
 
     return {
       token: this.jwtService.sign({
+        userId: user.id,
+      }),
+    };
+  }
+
+  async loginWithGoogle(loginWithGoogleDto: LoginWithGoogleDto) {
+    const tokenData = await this.googleAuthService.validateGoogleToken(
+      loginWithGoogleDto.token,
+    );
+
+    const user = await this.usersService.findOneByEmail(tokenData.email);
+
+    if (!user) throw new UnauthorizedException('user does not exist');
+    if (user.auth != AuthType.GOOGLE)
+      throw new UnauthorizedException('unauthorized access');
+
+    return {
+      toke: this.jwtService.sign({
         userId: user.id,
       }),
     };

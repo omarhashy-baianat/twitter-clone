@@ -26,11 +26,11 @@ export class User {
   @Field()
   id: string;
 
-  @Column({unique: true})
+  @Column({ unique: true })
   @Field()
   email: string;
 
-  @Column({ length: 20, unique: true})
+  @Column({ length: 20, unique: true })
   @Field()
   username: string;
 
@@ -42,6 +42,7 @@ export class User {
     enum: AuthType,
     default: AuthType.EMAIL,
   })
+  @Field(() => AuthType)
   auth: AuthType;
 
   @Column({
@@ -52,7 +53,7 @@ export class User {
   @Field(() => UserRole)
   role: UserRole;
 
-  @Column({nullable: true , unique: true})
+  @Column({ nullable: true, unique: true })
   googleId: string;
 
   @Column({ length: 20 })
@@ -74,7 +75,7 @@ export class User {
   @Column({ default: false })
   @Field()
   verified: boolean;
- 
+
   @CreateDateColumn()
   @Field(() => Date)
   createdAt: Date;
@@ -86,28 +87,29 @@ export class User {
   @OneToOne(() => Media)
   @JoinColumn()
   profilePicture: Media;
-  
+
   @OneToOne(() => Media)
   @JoinColumn()
   coverPicture: string;
-  
+
   @OneToMany(() => Like, (like) => like.user)
   likes: Like;
-  
+
   @OneToMany(() => Comment, (comment) => comment.user)
   comments: Comment;
-  
+
   @OneToMany(() => Bookmark, (bookmark) => bookmark.user)
   bookmarks: Bookmark[];
-  
+
   @OneToOne(() => Otp, (otp) => otp.user)
   otp: Otp;
-  
+
   @OneToMany(() => Follow, (follow) => follow.id)
   followers: Follow[];
-  
+
   @OneToMany(() => Follow, (follow) => follow.id)
   following: Follow[];
 }
 
-export const UserData = objectTypeFactory<User>(User)
+export const UserData = objectTypeFactory<User>(User);
+

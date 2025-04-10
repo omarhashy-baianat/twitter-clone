@@ -17,13 +17,13 @@ export class UsersService {
   createUserWithEmail(
     email: string,
     username: string,
-    password: string,
+    password: string | undefined,
     firstName: string,
     lastName: string,
     dateOfBirth: Date,
     auth: AuthType = AuthType.EMAIL,
-    role: UserRole = UserRole.USER,
     verified: boolean = false,
+    role: UserRole = UserRole.USER,
   ) {
     const user = this.userRepository.create({
       email,

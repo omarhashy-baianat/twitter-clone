@@ -10,6 +10,7 @@ import { ResetUserPasswordDto } from './Dtos/reset-user-password.dto';
 import { VerifyResetPasswordDto } from './Dtos/verify-reset-password.dto';
 import { jwtTokenData } from 'src/common/graphql/objects/jwt-token.object';
 import { LoginWithEmailDto } from './Dtos/login-with-email.dto';
+import { RegisterWithGoogleDto } from './Dtos/register-with-google.dto';
 
 @Resolver()
 export class AuthResolver {
@@ -27,6 +28,14 @@ export class AuthResolver {
     @Args('userData') registerWithEmailDto: RegisterWithEmailDto,
   ) {
     return this.authService.registerUserByEmail(registerWithEmailDto);
+  }
+
+  @Mutation(() => UserData)
+  @Transactional()
+  async registerWithGoogle(
+    @Args('usrData') registerWithGoogleDto: RegisterWithGoogleDto,
+  ) {
+    return this.authService.registerUserWithGoogle(registerWithGoogleDto);
   }
 
   @Mutation(() => UserData)

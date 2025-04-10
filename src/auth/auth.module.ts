@@ -8,6 +8,7 @@ import { OtpService } from './otp.servise';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { Otp } from './entities/otp.entity';
 import { QueueModule } from 'src/queue/queue.module';
+import { GoogleAuthService } from './google-auth.service';
 
 @Module({
   providers: [
@@ -16,6 +17,7 @@ import { QueueModule } from 'src/queue/queue.module';
     EmailDoesNotExistValidator,
     UsernameDoesNotExistValidator,
     OtpService,
+    GoogleAuthService,
   ],
   imports: [TypeOrmModule.forFeature([Otp]), UsersModule, QueueModule],
 })
