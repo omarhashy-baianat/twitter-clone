@@ -17,6 +17,7 @@ import { LoginWithEmailDto } from './Dtos/login-with-email.dto';
 import { RegisterWithGoogleDto } from './Dtos/register-with-google.dto';
 import { LoginWithGoogleDto } from './Dtos/login-with-google.dto';
 import { IsLoggedIn } from 'src/guards/is-loged-in.guard';
+import { CurrentUser } from 'src/decorators/current-user.decorator';
 
 @Resolver()
 export class AuthResolver {
@@ -82,8 +83,13 @@ export class AuthResolver {
     return this.authService.loginWithGoogle(loginWithGoogleDto);
   }
 
-  @Query(() => MessageData)
   @UseGuards(IsLoggedIn)
+  @Query(() => UserData)
+  async getProfile(@CurrentUser() currentUser: User) {
+    return currentUser;
+  }
+
+  @Query(() => MessageData)
   sayHello() {
     return {
       message: 'Hello, world',

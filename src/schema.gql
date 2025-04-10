@@ -40,8 +40,16 @@ type jwtToken {
 scalar Date
 
 type Query {
+  getProfile: UserData!
   sayHello: MessageData!
   testException: String!
+}
+
+type UserData {
+  success: Boolean!
+  statusCode: Int!
+  messages: [String!]!
+  data: User!
 }
 
 type MessageData {
@@ -60,13 +68,6 @@ type Mutation {
   verifyResetUserPassword(newPasswordData: VerifyResetPasswordDto!): UserData!
   loginWithEmail(userCredentialsData: LoginWithEmailDto!): jwtTokenData!
   loginWithGoogle(userCredentialsData: LoginWithGoogleDto!): jwtTokenData!
-}
-
-type UserData {
-  success: Boolean!
-  statusCode: Int!
-  messages: [String!]!
-  data: User!
 }
 
 input RegisterWithEmailDto {

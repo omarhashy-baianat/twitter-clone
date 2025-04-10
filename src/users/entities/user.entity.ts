@@ -53,9 +53,6 @@ export class User {
   @Field(() => UserRole)
   role: UserRole;
 
-  @Column({ nullable: true, unique: true })
-  googleId: string;
-
   @Column({ length: 20 })
   @Field()
   firstName: string;
@@ -112,4 +109,3 @@ export class User {
 }
 
 export const UserData = objectTypeFactory<User>(User);
-
