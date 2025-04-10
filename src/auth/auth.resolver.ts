@@ -1,6 +1,10 @@
 import { Resolver, Query, Mutation, Args } from '@nestjs/graphql';
 import { AuthService } from './auth.service';
-import { BadRequestException, NotFoundException } from '@nestjs/common';
+import {
+  BadRequestException,
+  NotFoundException,
+  UseGuards,
+} from '@nestjs/common';
 import { MessageData } from 'src/common/graphql/objects/test.object';
 import { User, UserData } from 'src/users/entities/user.entity';
 import { RegisterWithEmailDto } from './Dtos/register-with-email.dto';
@@ -12,6 +16,7 @@ import { jwtTokenData } from 'src/common/graphql/objects/jwt-token.object';
 import { LoginWithEmailDto } from './Dtos/login-with-email.dto';
 import { RegisterWithGoogleDto } from './Dtos/register-with-google.dto';
 import { LoginWithGoogleDto } from './Dtos/login-with-google.dto';
+import { IsLoggedIn } from 'src/guards/is-loged-in.guard';
 
 @Resolver()
 export class AuthResolver {
@@ -78,6 +83,7 @@ export class AuthResolver {
   }
 
   @Query(() => MessageData)
+  @UseGuards(IsLoggedIn)
   sayHello() {
     return {
       message: 'Hello, world',

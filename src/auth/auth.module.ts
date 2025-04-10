@@ -19,6 +19,6 @@ import { GoogleAuthService } from './google-auth.service';
     OtpService,
     GoogleAuthService,
   ],
-  imports: [TypeOrmModule.forFeature([Otp]), UsersModule, QueueModule],
+  imports: [TypeOrmModule.forFeature([Otp]), QueueModule],
 })
 export class AuthModule {}
