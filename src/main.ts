@@ -14,6 +14,7 @@ async function bootstrap() {
   initializeTransactionalContext();
   const app = await NestFactory.create(AppModule);
   const dataSource = app.get<DataSource>(getDataSourceToken());
+
   addTransactionalDataSource(dataSource);
   useContainer(app.select(AppModule), { fallbackOnErrors: true });
   app.useGlobalInterceptors(new GlobalSerializer());

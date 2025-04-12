@@ -5,7 +5,7 @@ import {
   NotFoundException,
   UseGuards,
 } from '@nestjs/common';
-import { MessageData } from 'src/common/graphql/objects/test.object';
+import { MessageData } from 'src/common/graphql/objects/message.object';
 import { User, UserData } from 'src/users/entities/user.entity';
 import { RegisterWithEmailDto } from './Dtos/register-with-email.dto';
 import { Transactional } from 'typeorm-transactional';

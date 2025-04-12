@@ -1,0 +1,40 @@
+request body for regular inputs 
+{
+  query: 'query GetProfile {\n' +
+    '    getProfile {\n' +
+    '        success\n' +
+    '        statusCode\n' +
+    '        messages\n' +
+    '        data {\n' +
+    '            id\n' +
+    '            email\n' +
+    '            username\n' +
+    '            auth\n' +
+    '            role\n' +
+    '            firstName\n' +
+    '            lastName\n' +
+    '            dateOfBirth\n' +
+    '            bio\n' +
+    '            verified\n' +
+    '            createdAt\n' +
+    '            updatedAt\n' +
+    '        }\n' +
+    '    }\n' +
+    '}\n',
+  operationName: 'GetProfile',
+  variables: {}
+}
+
+request with files
+operations:
+{
+  "query": "mutation UploadFile($file: Upload!) { uploadFile(file: $file) { url filename } }",
+  "variables": { "file": null }
+}
+
+map:
+{
+  "0": ["variables.file"]
+}
+
+0: (file binary here)

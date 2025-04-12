@@ -1,4 +1,4 @@
-import { Module, ValidationPipe } from '@nestjs/common';
+import { MiddlewareConsumer, Module, NestModule, ValidationPipe } from '@nestjs/common';
 import { GraphQLModule } from '@nestjs/graphql';
 import { ApolloDriver, ApolloDriverConfig } from '@nestjs/apollo';
 import { UsersModule } from './users/users.module';
@@ -26,6 +26,8 @@ import { APP_PIPE } from '@nestjs/core';
 import { JwtTokenModule } from './jwt-token/jwt-token.module';
 import { DateScalar } from './common/scalars/date.scalar';
 import { QueueModule } from './queue/queue.module';
+import { count } from 'console';
+import { FileHandler } from './middlewares/file-handler.middleware';
 
 @Module({
   imports: [
@@ -85,6 +87,13 @@ import { QueueModule } from './queue/queue.module';
       }),
     },
     DateScalar,
+    
   ],
 })
-export class AppModule {}
+export class AppModule implements NestModule {
+  configure(consumer: MiddlewareConsumer) {
+    consumer.apply(FileHandler).forRoutes("*")
+
+  }
+
+}

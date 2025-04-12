@@ -2,6 +2,29 @@
 # THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
 # ------------------------------------------------------
 
+type Media {
+  id: String!
+  fileName: String!
+  type: MediaType!
+  target: MediaTarget!
+  createdAt: Date!
+  updatedAt: Date!
+  mediaUrl: String!
+}
+
+enum MediaType {
+  VIDEO
+  PHOTO
+}
+
+enum MediaTarget {
+  PROFILE_PICTURE
+  PROFILE_COVER
+  COMMENT
+  POST
+  REPOST
+}
+
 type User {
   id: String!
   email: String!
@@ -36,8 +59,9 @@ type jwtToken {
   token: String!
 }
 
-"""Date custom scalar type"""
 scalar Date
+
+scalar File
 
 type Query {
   getProfile: UserData!
@@ -68,6 +92,7 @@ type Mutation {
   verifyResetUserPassword(newPasswordData: VerifyResetPasswordDto!): UserData!
   loginWithEmail(userCredentialsData: LoginWithEmailDto!): jwtTokenData!
   loginWithGoogle(userCredentialsData: LoginWithGoogleDto!): jwtTokenData!
+  UploadFile(fileData: uploadFileDto!): MessageData!
 }
 
 input RegisterWithEmailDto {
@@ -114,4 +139,9 @@ input LoginWithEmailDto {
 
 input LoginWithGoogleDto {
   token: String!
+}
+
+input uploadFileDto {
+  type: MediaTarget!
+  file: File
 }

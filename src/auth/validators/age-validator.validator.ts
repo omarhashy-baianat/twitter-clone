@@ -10,7 +10,7 @@ import * as moment from 'moment';
 @Injectable()
 export class ageValidator implements ValidatorConstraintInterface {
   async validate(value: Date, validationArguments?: ValidationArguments) {
-    const thirteenYearsAgo = moment().subtract(13, 'years').toDate();    
+    const thirteenYearsAgo = moment().subtract(13, 'years').toDate();
     return value.getTime() <= thirteenYearsAgo.getTime();
   }
 
