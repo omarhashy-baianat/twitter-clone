@@ -17,6 +17,8 @@ export class MediaService {
     file: Express.Multer.File,
     req: any,
   ) {
+    if (req.fileError) throw new BadRequestException('invalid file');
+
     const allowedVideoTypes = ['video/mp4', 'video/avi', 'video/mkv'];
     const allowedImageTypes = ['image/jpeg', 'image/png', 'image/gif'];
 
@@ -24,8 +26,6 @@ export class MediaService {
 
     if (allowedVideoTypes.includes(file.mimetype)) mediaType = MediaType.VIDEO;
     else mediaType = MediaType.IMAGE;
-
-    if (req.fileError) throw new BadRequestException('invalid file');
 
     if (
       (uploadFileDto.target == MediaTarget.PROFILE_COVER ||
