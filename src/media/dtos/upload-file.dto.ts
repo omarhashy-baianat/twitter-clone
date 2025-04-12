@@ -5,7 +5,7 @@ import { MediaTarget } from 'src/enums/media-target.enum';
 @InputType()
 export class uploadFileDto {
   @Field(() => MediaTarget)
-  type: MediaTarget;
+  target: MediaTarget;
 
   @Field(() => File , {nullable : true})
   file: Express.Multer.File;

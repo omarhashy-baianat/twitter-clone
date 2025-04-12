@@ -14,7 +14,7 @@ type Media {
 
 enum MediaType {
   VIDEO
-  PHOTO
+  IMAGE
 }
 
 enum MediaTarget {
@@ -92,7 +92,7 @@ type Mutation {
   verifyResetUserPassword(newPasswordData: VerifyResetPasswordDto!): UserData!
   loginWithEmail(userCredentialsData: LoginWithEmailDto!): jwtTokenData!
   loginWithGoogle(userCredentialsData: LoginWithGoogleDto!): jwtTokenData!
-  UploadFile(fileData: uploadFileDto!): MessageData!
+  UploadFile(fileData: uploadFileDto!): MediaData!
 }
 
 input RegisterWithEmailDto {
@@ -141,7 +141,14 @@ input LoginWithGoogleDto {
   token: String!
 }
 
+type MediaData {
+  success: Boolean!
+  statusCode: Int!
+  messages: [String!]!
+  data: Media!
+}
+
 input uploadFileDto {
-  type: MediaTarget!
+  target: MediaTarget!
   file: File
 }
