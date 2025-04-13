@@ -68,14 +68,14 @@ export class PostsService {
     return { message: 'post removed successfully' };
   }
 
-  findPostById(id: string, relations: string[] = []) {
+  private findPostById(id: string, relations: string[] = []) {
     return this.postRepository.findOne({
       where: { id },
       relations,
     });
   }
 
-  removePostByPost(post: Post) {
+  private removePostByPost(post: Post) {
     return this.postRepository.remove(post);
   }
 }

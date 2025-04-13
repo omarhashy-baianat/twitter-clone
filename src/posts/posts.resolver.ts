@@ -8,6 +8,7 @@ import { CreatePostDto } from './dtos/create-post.dto';
 import { CurrentUser } from 'src/decorators/current-user.decorator';
 import { User } from 'src/users/entities/user.entity';
 import { UpdatePostDto } from './dtos/update-post.dto';
+import { MessageData } from 'src/common/graphql/objects/message.object';
 
 @Resolver()
 export class PostsResolver {
@@ -33,5 +34,10 @@ export class PostsResolver {
     return this.postsService.updatePost(updatePostDto, currentUser);
   }
 
-  
+  @Transactional()
+  @UseGuards(IsLoggedIn)
+  @Mutation(() => MessageData)
+  deletePost(@Args('postId') postId: string, @CurrentUser() user: User) {
+    return this.postsService.deletePost(postId, user);
+  }
 }
