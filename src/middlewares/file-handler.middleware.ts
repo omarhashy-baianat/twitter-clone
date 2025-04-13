@@ -12,7 +12,6 @@ export class FileHandler implements NestMiddleware {
     const contentType = req.headers['content-type'] || '';
     if (!contentType.includes('multipart/form-data')) {
       next();
-
       return;
     }
     MulterFileHandler.single('0')(req, res, function (error) {

@@ -56,6 +56,7 @@ export class Media {
 
   @ManyToOne(() => User, { nullable: false })
   user: User;
+  
   @ManyToOne(() => Post, (post) => post.id)
   post: Post;
   @ManyToOne(() => Repost, (repost) => repost.media)

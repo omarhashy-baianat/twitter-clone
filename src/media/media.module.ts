@@ -8,5 +8,6 @@ import { FileScaler } from 'src/common/scalars/file.scalar';
 @Module({
   providers: [MediaService, MediaResolver, FileScaler],
   imports: [TypeOrmModule.forFeature([Media])],
+  exports: [MediaService],
 })
 export class MediaModule {}

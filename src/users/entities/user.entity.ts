@@ -87,7 +87,7 @@ export class User {
 
   @OneToOne(() => Media)
   @JoinColumn()
-  coverPicture: string;
+  coverPicture: Media;
 
   @OneToMany(() => Like, (like) => like.user)
   likes: Like;

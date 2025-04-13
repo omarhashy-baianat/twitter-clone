@@ -19,7 +19,7 @@ export class EmailDoesNotExistValidator
 
   async validate(value: any, validationArguments?: ValidationArguments) {
     const superAdminEmail = this.configService.getOrThrow('SUPER_ADMIN_EMAIL');
-    if (superAdminEmail == value) throw false;
+    if (superAdminEmail == value) return false;
     const user = await this.usersService.findOneByEmail(value);
     if (user && !user.verified) {
       await this.usersService.removeUser(user);

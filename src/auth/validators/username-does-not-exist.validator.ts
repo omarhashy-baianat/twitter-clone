@@ -21,7 +21,7 @@ export class UsernameDoesNotExistValidator
     const superAdminUsername = this.configService.getOrThrow(
       'SUPER_ADMIN_USERNAME',
     );
-    if (superAdminUsername == value) false;
+    if (superAdminUsername == value) return false;
     const user = await this.usersService.findOneByUsername(value);
     if (user && !user.verified) {
       await this.usersService.removeUser(user);

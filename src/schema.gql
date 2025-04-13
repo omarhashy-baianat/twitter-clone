@@ -84,6 +84,8 @@ type MessageData {
 }
 
 type Mutation {
+  updateUserProfile(profileData: UpdateProfileDto!): UserData!
+  UploadFile(fileData: uploadFileDto!): MediaData!
   seedSuperAdmin: UserData!
   registerWithEmail(userData: RegisterWithEmailDto!): UserData!
   registerWithGoogle(usrData: RegisterWithGoogleDto!): UserData!
@@ -92,7 +94,26 @@ type Mutation {
   verifyResetUserPassword(newPasswordData: VerifyResetPasswordDto!): UserData!
   loginWithEmail(userCredentialsData: LoginWithEmailDto!): jwtTokenData!
   loginWithGoogle(userCredentialsData: LoginWithGoogleDto!): jwtTokenData!
-  UploadFile(fileData: uploadFileDto!): MediaData!
+}
+
+input UpdateProfileDto {
+  firstName: String
+  lastName: String
+  bio: String
+  profilePictureId: String
+  coverPictureId: String
+}
+
+type MediaData {
+  success: Boolean!
+  statusCode: Int!
+  messages: [String!]!
+  data: Media!
+}
+
+input uploadFileDto {
+  target: MediaTarget!
+  file: File
 }
 
 input RegisterWithEmailDto {
@@ -139,16 +160,4 @@ input LoginWithEmailDto {
 
 input LoginWithGoogleDto {
   token: String!
-}
-
-type MediaData {
-  success: Boolean!
-  statusCode: Int!
-  messages: [String!]!
-  data: Media!
-}
-
-input uploadFileDto {
-  target: MediaTarget!
-  file: File
 }
