@@ -18,7 +18,7 @@ export class MediaService {
     uploadFileDto: uploadFileDto,
     file: Express.Multer.File,
     req: any,
-    user: User
+    user: User,
   ) {
     if (req.fileError) throw new BadRequestException('invalid file');
 
@@ -41,9 +41,16 @@ export class MediaService {
       fileName: file.filename,
       type: mediaType,
       target: uploadFileDto.target,
-      user
+      user,
     });
 
     return this.mediaRepository.save(media);
+  }
+
+  getMediaById(id: string, relations: string[] = []) {
+    return this.mediaRepository.findOne({
+      where: { id },
+      relations,
+    });
   }
 }
