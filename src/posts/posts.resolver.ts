@@ -4,7 +4,7 @@ import { Transactional } from 'typeorm-transactional';
 import { UnauthorizedException, UseGuards } from '@nestjs/common';
 import { IsLoggedIn } from 'src/guards/is-loged-in.guard';
 import { PostData } from './entities/post.entity';
-import { createPostDto } from './dtos/create-post.dto';
+import { CreatePostDto } from './dtos/create-post.dto';
 import { CurrentUser } from 'src/decorators/current-user.decorator';
 import { User } from 'src/users/entities/user.entity';
 
@@ -16,7 +16,7 @@ export class PostsResolver {
   @UseGuards(IsLoggedIn)
   @Mutation(() => PostData)
   createPost(
-    @Args('postData') createPostDto: createPostDto,
+    @Args('postData') createPostDto: CreatePostDto,
     @CurrentUser() currentUser: User,
   ) {
     return this.postsService.createPost(createPostDto, currentUser);

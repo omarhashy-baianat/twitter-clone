@@ -12,14 +12,18 @@ import { MediaTarget } from 'src/enums/media-target.enum';
 import { FileIdValidator } from 'src/validators/file-id.validator';
 
 @InputType()
-export class CreatePostDto {
+export class UpdatePostDto {
+  @IsString()
+  @IsUUID('4')
+  id: string;
+
+  @Field({ nullable: true })
   @IsString()
   @IsNotEmpty()
   @MaxLength(255)
-  @Field()
+  @IsOptional()
   content: string;
 
-  @IsOptional()
   @ArrayMaxSize(4)
   @IsUUID('4', { each: true })
   @Validate(FileIdValidator, [null, MediaTarget.POST], {

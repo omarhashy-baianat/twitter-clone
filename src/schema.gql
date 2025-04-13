@@ -103,7 +103,7 @@ type Mutation {
   verifyResetUserPassword(newPasswordData: VerifyResetPasswordDto!): UserData!
   loginWithEmail(userCredentialsData: LoginWithEmailDto!): jwtTokenData!
   loginWithGoogle(userCredentialsData: LoginWithGoogleDto!): jwtTokenData!
-  createPost(postData: createPostDto!): PostData!
+  createPost(postData: CreatePostDto!): PostData!
 }
 
 input UpdateProfileDto {
@@ -179,7 +179,7 @@ type PostData {
   data: Post!
 }
 
-input createPostDto {
+input CreatePostDto {
   content: String!
   mediaIds: [String!]
 }
