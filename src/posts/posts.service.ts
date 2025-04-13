@@ -60,6 +60,10 @@ export class PostsService {
     return this.postRepository.save(updatedPost);
   }
 
+  async getPost(id: string) {
+    return this.getPostById(id, ['post', 'media']);
+  }
+
   async deletePost(id: string, user: User) {
     const post = await this.findPostById(id, ['user']);
     if (!post) throw new NotFoundException();
@@ -68,14 +72,21 @@ export class PostsService {
     return { message: 'post removed successfully' };
   }
 
-  private findPostById(id: string, relations: string[] = []) {
+  findPostById(id: string, relations: string[] = []) {
     return this.postRepository.findOne({
       where: { id },
       relations,
     });
   }
 
-  private removePostByPost(post: Post) {
+  removePostByPost(post: Post) {
     return this.postRepository.remove(post);
+  }
+
+  getPostById(id: string, relations: string[] = []) {
+    return this.postRepository.findOne({
+      where: { id },
+      relations,
+    });
   }
 }
