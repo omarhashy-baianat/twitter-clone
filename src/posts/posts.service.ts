@@ -11,6 +11,7 @@ import { CreatePostDto } from './dtos/create-post.dto';
 import { MediaService } from 'src/media/media.service';
 import { User } from 'src/users/entities/user.entity';
 import { UpdatePostDto } from './dtos/update-post.dto';
+import { validate as isUUID } from 'uuid';
 
 @Injectable()
 export class PostsService {
@@ -61,10 +62,12 @@ export class PostsService {
   }
 
   async getPost(id: string) {
-    return this.getPostById(id, ['post', 'media']);
+    if (!isUUID(id)) throw new BadRequestException('id should be a valid uuid');
+    return this.getPostById(id, ['media', 'user']);
   }
 
   async deletePost(id: string, user: User) {
+    if (!isUUID(id)) throw new BadRequestException('id should be a valid uuid');
     const post = await this.findPostById(id, ['user']);
     if (!post) throw new NotFoundException();
     if (post.user.id != user.id) throw new UnauthorizedException();

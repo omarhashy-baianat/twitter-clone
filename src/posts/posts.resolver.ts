@@ -1,7 +1,7 @@
-import { Args, Mutation, Resolver } from '@nestjs/graphql';
+import { Args, Mutation, Query, Resolver } from '@nestjs/graphql';
 import { PostsService } from './posts.service';
 import { Transactional } from 'typeorm-transactional';
-import { UnauthorizedException, UseGuards } from '@nestjs/common';
+import { UseGuards } from '@nestjs/common';
 import { IsLoggedIn } from 'src/guards/is-loged-in.guard';
 import { PostData } from './entities/post.entity';
 import { CreatePostDto } from './dtos/create-post.dto';
@@ -13,6 +13,11 @@ import { MessageData } from 'src/common/graphql/objects/message.object';
 @Resolver()
 export class PostsResolver {
   constructor(private readonly postsService: PostsService) {}
+
+  @Query(() => PostData)
+  getPost(@Args('id') id: string) {
+    return this.postsService.getPost(id);
+  }
 
   @Transactional()
   @UseGuards(IsLoggedIn)

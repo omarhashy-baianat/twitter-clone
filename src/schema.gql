@@ -76,6 +76,7 @@ type Query {
   getProfile: UserData!
   sayHello: MessageData!
   testException: String!
+  getPost(id: String!): PostData!
 }
 
 type UserData {
@@ -90,6 +91,13 @@ type MessageData {
   statusCode: Int!
   messages: [String!]!
   data: Message!
+}
+
+type PostData {
+  success: Boolean!
+  statusCode: Int!
+  messages: [String!]!
+  data: Post!
 }
 
 type Mutation {
@@ -172,13 +180,6 @@ input LoginWithEmailDto {
 
 input LoginWithGoogleDto {
   token: String!
-}
-
-type PostData {
-  success: Boolean!
-  statusCode: Int!
-  messages: [String!]!
-  data: Post!
 }
 
 input CreatePostDto {
