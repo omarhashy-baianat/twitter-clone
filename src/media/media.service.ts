@@ -5,6 +5,7 @@ import { Repository } from 'typeorm';
 import { uploadFileDto } from './dtos/upload-file.dto';
 import { MediaTarget } from 'src/enums/media-target.enum';
 import { MediaType } from 'src/enums/media-type.enum';
+import { removeFile } from 'src/common/utils/remove-file.util';
 
 @Injectable()
 export class MediaService {
@@ -20,7 +21,6 @@ export class MediaService {
     if (req.fileError) throw new BadRequestException('invalid file');
 
     const allowedVideoTypes = ['video/mp4', 'video/avi', 'video/mkv'];
-    const allowedImageTypes = ['image/jpeg', 'image/png', 'image/gif'];
 
     let mediaType: MediaType;
 
@@ -31,9 +31,10 @@ export class MediaService {
       (uploadFileDto.target == MediaTarget.PROFILE_COVER ||
         uploadFileDto.target == MediaTarget.PROFILE_PICTURE) &&
       mediaType != MediaType.IMAGE
-    )
+    ) {
+      removeFile(file.filename);
       throw new BadRequestException('invalid file type');
-
+    }
     const media = this.mediaRepository.create({
       fileName: file.filename,
       type: mediaType,
