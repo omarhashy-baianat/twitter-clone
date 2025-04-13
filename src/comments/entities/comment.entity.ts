@@ -1,4 +1,5 @@
 import { Field, ObjectType } from '@nestjs/graphql';
+import { objectTypeFactory } from 'src/common/graphql/objects/base-model.object';
 import { Media } from 'src/media/entities/media.entity';
 import { Post } from 'src/posts/entities/post.entity';
 import { User } from 'src/users/entities/user.entity';
@@ -42,3 +43,5 @@ export class Comment {
   @ManyToOne(() => Post, (post) => post.comments)
   post: Post;
 }
+
+export const CommentData = objectTypeFactory<Comment>(Comment);

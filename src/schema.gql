@@ -2,6 +2,15 @@
 # THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
 # ------------------------------------------------------
 
+type Comment {
+  id: String!
+  content: String!
+  createdAt: Date!
+  updatedAt: Date!
+  user: User!
+  media: [Media!]
+}
+
 type Media {
   id: String!
   fileName: String!
@@ -111,6 +120,7 @@ type Mutation {
   verifyResetUserPassword(newPasswordData: VerifyResetPasswordDto!): UserData!
   loginWithEmail(userCredentialsData: LoginWithEmailDto!): jwtTokenData!
   loginWithGoogle(userCredentialsData: LoginWithGoogleDto!): jwtTokenData!
+  createComment(commentData: CreateCommentDto!): CommentData!
   createPost(postData: CreatePostDto!): PostData!
   updatePost(updatePostData: UpdatePostDto!): PostData!
   deletePost(postId: String!): MessageData!
@@ -180,6 +190,19 @@ input LoginWithEmailDto {
 
 input LoginWithGoogleDto {
   token: String!
+}
+
+type CommentData {
+  success: Boolean!
+  statusCode: Int!
+  messages: [String!]!
+  data: Comment!
+}
+
+input CreateCommentDto {
+  content: String!
+  postId: String!
+  mediaIds: [String!]
 }
 
 input CreatePostDto {

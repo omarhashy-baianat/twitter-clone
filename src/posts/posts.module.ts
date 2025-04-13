@@ -4,10 +4,11 @@ import { PostsResolver } from './posts.resolver';
 import { MediaModule } from 'src/media/media.module';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { Post } from './entities/post.entity';
+import { PostIdValidator } from 'src/validators/post-id.validator';
 
 @Module({
-  providers: [PostsResolver, PostsService],
+  providers: [PostsResolver, PostsService, PostIdValidator],
   imports: [TypeOrmModule.forFeature([Post]), MediaModule],
-  exports: [PostsService]
+  exports: [PostsService],
 })
 export class PostsModule {}

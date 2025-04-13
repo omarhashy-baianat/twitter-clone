@@ -31,7 +31,7 @@ export class CreateCommentDto {
   @IsOptional()
   @ArrayMaxSize(4)
   @IsUUID('all', { each: true })
-  @Validate(FileIdValidator, [null, MediaTarget.POST], {
+  @Validate(FileIdValidator, [null, MediaTarget.COMMENT], {
     each: true,
     message: 'Invalid file ID or file does not match media type/target',
   })
