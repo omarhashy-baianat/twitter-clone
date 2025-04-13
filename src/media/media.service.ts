@@ -6,6 +6,7 @@ import { uploadFileDto } from './dtos/upload-file.dto';
 import { MediaTarget } from 'src/enums/media-target.enum';
 import { MediaType } from 'src/enums/media-type.enum';
 import { removeFile } from 'src/common/utils/remove-file.util';
+import { User } from 'src/users/entities/user.entity';
 
 @Injectable()
 export class MediaService {
@@ -17,6 +18,7 @@ export class MediaService {
     uploadFileDto: uploadFileDto,
     file: Express.Multer.File,
     req: any,
+    user: User
   ) {
     if (req.fileError) throw new BadRequestException('invalid file');
 
@@ -39,6 +41,7 @@ export class MediaService {
       fileName: file.filename,
       type: mediaType,
       target: uploadFileDto.target,
+      user
     });
 
     return this.mediaRepository.save(media);

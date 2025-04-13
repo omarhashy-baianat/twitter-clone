@@ -5,11 +5,13 @@ import { MediaTarget } from 'src/enums/media-target.enum';
 import { MediaType } from 'src/enums/media-type.enum';
 import { Post } from 'src/posts/entities/post.entity';
 import { Repost } from 'src/reposts/entities/repost.entity';
+import { User } from 'src/users/entities/user.entity';
 import {
   Column,
   CreateDateColumn,
   Entity,
   ManyToOne,
+  OneToOne,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
@@ -52,6 +54,8 @@ export class Media {
     return `/files/${this.fileName}`;
   }
 
+  @ManyToOne(() => User, { nullable: false })
+  user: User;
   @ManyToOne(() => Post, (post) => post.id)
   post: Post;
   @ManyToOne(() => Repost, (repost) => repost.media)

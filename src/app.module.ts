@@ -1,4 +1,9 @@
-import { MiddlewareConsumer, Module, NestModule, ValidationPipe } from '@nestjs/common';
+import {
+  MiddlewareConsumer,
+  Module,
+  NestModule,
+  ValidationPipe,
+} from '@nestjs/common';
 import { GraphQLModule } from '@nestjs/graphql';
 import { ApolloDriver, ApolloDriverConfig } from '@nestjs/apollo';
 import { UsersModule } from './users/users.module';
@@ -38,6 +43,7 @@ import { FileHandler } from './middlewares/file-handler.middleware';
     GraphQLModule.forRoot<ApolloDriverConfig>({
       driver: ApolloDriver,
       autoSchemaFile: 'src/schema.gql',
+      path: '/graphql',
       context: ({ req, res }) => ({ req, res }),
     }),
     TypeOrmModule.forRootAsync({
@@ -87,13 +93,10 @@ import { FileHandler } from './middlewares/file-handler.middleware';
       }),
     },
     DateScalar,
-    
   ],
 })
 export class AppModule implements NestModule {
   configure(consumer: MiddlewareConsumer) {
-    consumer.apply(FileHandler).forRoutes("*")
-
+    consumer.apply(FileHandler).forRoutes('/graphql');
   }
-
 }
