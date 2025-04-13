@@ -1,6 +1,7 @@
 import {
   BadRequestException,
   Injectable,
+  NotFoundException,
   UnauthorizedException,
 } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
@@ -59,10 +60,22 @@ export class PostsService {
     return this.postRepository.save(updatedPost);
   }
 
+  async deletePost(id: string, user: User) {
+    const post = await this.findPostById(id, ['user']);
+    if (!post) throw new NotFoundException();
+    if (post.user.id != user.id) throw new UnauthorizedException();
+    await this.removePostByPost(post);
+    return { message: 'post removed successfully' };
+  }
+
   findPostById(id: string, relations: string[] = []) {
     return this.postRepository.findOne({
       where: { id },
       relations,
     });
+  }
+
+  removePostByPost(post: Post) {
+    return this.postRepository.remove(post);
   }
 }
