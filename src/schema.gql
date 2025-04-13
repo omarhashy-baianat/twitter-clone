@@ -104,6 +104,7 @@ type Mutation {
   loginWithEmail(userCredentialsData: LoginWithEmailDto!): jwtTokenData!
   loginWithGoogle(userCredentialsData: LoginWithGoogleDto!): jwtTokenData!
   createPost(postData: CreatePostDto!): PostData!
+  updatePost(updatePostData: UpdatePostDto!): PostData!
 }
 
 input UpdateProfileDto {
@@ -181,5 +182,11 @@ type PostData {
 
 input CreatePostDto {
   content: String!
+  mediaIds: [String!]
+}
+
+input UpdatePostDto {
+  id: String!
+  content: String
   mediaIds: [String!]
 }

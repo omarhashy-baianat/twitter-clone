@@ -15,16 +15,18 @@ import { FileIdValidator } from 'src/validators/file-id.validator';
 export class UpdatePostDto {
   @IsString()
   @IsUUID('4')
+  @Field()
   id: string;
 
-  @Field({ nullable: true })
   @IsString()
   @IsNotEmpty()
   @MaxLength(255)
   @IsOptional()
+  @Field({ nullable: true })
   content: string;
 
   @ArrayMaxSize(4)
+  @IsOptional()
   @IsUUID('4', { each: true })
   @Validate(FileIdValidator, [null, MediaTarget.POST], {
     each: true,
