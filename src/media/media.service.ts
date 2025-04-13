@@ -1,7 +1,7 @@
 import { BadRequestException, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Media } from './entities/media.entity';
-import { Repository } from 'typeorm';
+import { In, Repository } from 'typeorm';
 import { uploadFileDto } from './dtos/upload-file.dto';
 import { MediaTarget } from 'src/enums/media-target.enum';
 import { MediaType } from 'src/enums/media-type.enum';
@@ -50,6 +50,13 @@ export class MediaService {
   getMediaById(id: string, relations: string[] = []) {
     return this.mediaRepository.findOne({
       where: { id },
+      relations,
+    });
+  }
+
+  getManyByIds(ids: string[], relations: string[] = []) {
+    return this.mediaRepository.find({
+      where: { id: In(ids) },
       relations,
     });
   }

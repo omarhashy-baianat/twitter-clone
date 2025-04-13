@@ -54,15 +54,19 @@ export class Media {
     return `/files/${this.fileName}`;
   }
 
-  @ManyToOne(() => User, { nullable: false })
+  @ManyToOne(() => User)
   user: User;
-  
-  @ManyToOne(() => Post, (post) => post.id)
+
+  @ManyToOne(() => Post, (post) => post.id, { onDelete: 'CASCADE' })
   post: Post;
-  @ManyToOne(() => Repost, (repost) => repost.media)
+  @ManyToOne(() => Repost, (repost) => repost.media, { onDelete: 'CASCADE' })
   repost: Repost;
-  @ManyToOne(() => Comment, (comment) => comment.media)
+  @ManyToOne(() => Comment, (comment) => comment.media, { onDelete: 'CASCADE' })
   comment: Comment;
+  @OneToOne(() => User, (user) => user.profilePicture, { onDelete: 'CASCADE' })
+  userProfilePicture: User;
+  @OneToOne(() => User, (user) => user.coverPicture, { onDelete: 'CASCADE' })
+  userCoverPicture: User;
 }
 
 export const MediaData = objectTypeFactory<Media>(Media);

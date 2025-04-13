@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import { constants } from 'buffer';
+import { validate as isUUID } from 'uuid';
 import {
   ValidationArguments,
   ValidatorConstraint,
@@ -14,6 +14,7 @@ import { MediaService } from 'src/media/media.service';
 export class FileIdValidator implements ValidatorConstraintInterface {
   constructor(private mediaService: MediaService) {}
   async validate(value: string, validationArguments?: ValidationArguments) {
+    if (!isUUID(value)) return false;
     if (!validationArguments?.constraints.length)
       throw new Error('validation arguments can not be null');
     const [mediaType, mediaTarget] = validationArguments.constraints as [
@@ -21,15 +22,31 @@ export class FileIdValidator implements ValidatorConstraintInterface {
       MediaTarget,
     ];
 
-    const media = await this.mediaService.getMediaById(value, ['user']);
-
+    const media = await this.mediaService.getMediaById(value, [
+      'user',
+      'post',
+      'repost',
+      'comment',
+      'userProfilePicture',
+      'userCoverPicture',
+    ]);
     if (!media) return false;
-    if (media.type != mediaType) return false;
-    if (media.target != mediaTarget) return false;
+    if (
+      media?.post?.id ||
+      media?.repost?.id ||
+      media?.comment?.id ||
+      media?.userProfilePicture?.id ||
+      media?.userCoverPicture?.id
+    )
+      return false;
+
+    if (mediaType && media.type != mediaType) return false;
+
+    if (mediaTarget && media.target != mediaTarget) return false;
 
     return true;
   }
   defaultMessage(args: ValidationArguments) {
-    return `invalid file`;
+    return `invalid fileId`;
   }
 }

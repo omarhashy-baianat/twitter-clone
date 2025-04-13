@@ -25,6 +25,15 @@ enum MediaTarget {
   REPOST
 }
 
+type Post {
+  id: String!
+  content: String!
+  createdAt: Date!
+  updatedAt: Date!
+  media: [Media!]
+  user: User!
+}
+
 type User {
   id: String!
   email: String!
@@ -94,6 +103,7 @@ type Mutation {
   verifyResetUserPassword(newPasswordData: VerifyResetPasswordDto!): UserData!
   loginWithEmail(userCredentialsData: LoginWithEmailDto!): jwtTokenData!
   loginWithGoogle(userCredentialsData: LoginWithGoogleDto!): jwtTokenData!
+  createPost(postData: createPostDto!): PostData!
 }
 
 input UpdateProfileDto {
@@ -160,4 +170,16 @@ input LoginWithEmailDto {
 
 input LoginWithGoogleDto {
   token: String!
+}
+
+type PostData {
+  success: Boolean!
+  statusCode: Int!
+  messages: [String!]!
+  data: Post!
+}
+
+input createPostDto {
+  content: String!
+  mediaIds: [String!]
 }

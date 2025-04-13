@@ -8,6 +8,7 @@ import { UserRole } from 'src/enums/user-roles.enum';
 import { Follow } from 'src/follows/entity/follow.entity';
 import { Like } from 'src/likes/entities/likes.entity';
 import { Media } from 'src/media/entities/media.entity';
+import { Post } from 'src/posts/entities/post.entity';
 import {
   Column,
   CreateDateColumn,
@@ -81,11 +82,11 @@ export class User {
   @Field(() => Date)
   updatedAt: Date;
 
-  @OneToOne(() => Media)
+  @OneToOne(() => Media, (media) => media.userProfilePicture)
   @JoinColumn()
   profilePicture: Media;
 
-  @OneToOne(() => Media)
+  @OneToOne(() => Media, (media) => media.userCoverPicture)
   @JoinColumn()
   coverPicture: Media;
 
@@ -106,6 +107,9 @@ export class User {
 
   @OneToMany(() => Follow, (follow) => follow.id)
   following: Follow[];
+
+  @OneToMany(() => Post, (post) => post.user)
+  posts: Post[];
 }
 
 export const UserData = objectTypeFactory<User>(User);
