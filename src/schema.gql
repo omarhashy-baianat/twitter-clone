@@ -85,6 +85,7 @@ type Query {
   getProfile: UserData!
   sayHello: MessageData!
   testException: String!
+  getComment(id: String!): CommentData!
   getPost(id: String!): PostData!
 }
 
@@ -100,6 +101,13 @@ type MessageData {
   statusCode: Int!
   messages: [String!]!
   data: Message!
+}
+
+type CommentData {
+  success: Boolean!
+  statusCode: Int!
+  messages: [String!]!
+  data: Comment!
 }
 
 type PostData {
@@ -122,6 +130,7 @@ type Mutation {
   loginWithGoogle(userCredentialsData: LoginWithGoogleDto!): jwtTokenData!
   createComment(commentData: CreateCommentDto!): CommentData!
   updateComment(commentData: UpdateCommentDto!): CommentData!
+  deleteComment(id: String!): MessageData!
   createPost(postData: CreatePostDto!): PostData!
   updatePost(updatePostData: UpdatePostDto!): PostData!
   deletePost(postId: String!): MessageData!
@@ -191,13 +200,6 @@ input LoginWithEmailDto {
 
 input LoginWithGoogleDto {
   token: String!
-}
-
-type CommentData {
-  success: Boolean!
-  statusCode: Int!
-  messages: [String!]!
-  data: Comment!
 }
 
 input CreateCommentDto {

@@ -1,6 +1,7 @@
 import {
   BadRequestException,
   Injectable,
+  NotFoundException,
   UnauthorizedException,
 } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
@@ -12,6 +13,7 @@ import { User } from 'src/users/entities/user.entity';
 import { PostsService } from 'src/posts/posts.service';
 import { Post } from 'src/posts/entities/post.entity';
 import { UpdateCommentDto } from './dtos/update-comment.dto';
+import { validate as isUUID } from 'uuid';
 
 @Injectable()
 export class CommentsService {
@@ -44,7 +46,7 @@ export class CommentsService {
   }
 
   async updateComment(updateCommentDto: UpdateCommentDto, user: User) {
-    const comment = await this.getCommentById(updateCommentDto.id, [
+    const comment = await this.findCommentById(updateCommentDto.id, [
       'user',
       'media',
     ]);
@@ -73,7 +75,25 @@ export class CommentsService {
     return this.commentRepository.save(updatedComment);
   }
 
-  async getCommentById(id: string, relations: string[] = []) {
+  async deleteComment(id: string, user: User) {
+    if (!isUUID(id)) throw new BadRequestException('id should be a valid uuid');
+    const comment = await this.findCommentById(id, ['user']);
+    if (!comment) throw new NotFoundException();
+    if (comment.user.id != user.id) throw new UnauthorizedException();
+    await this.removeByComment(comment);
+    return { message: 'comment removed successfully' };
+  }
+
+  async getComment(id: string) {
+    if (!isUUID(id)) throw new BadRequestException('id should be a valid uuid');
+    return this.findCommentById(id, ['user', 'media']);
+  }
+
+  findCommentById(id: string, relations: string[] = []) {
     return this.commentRepository.findOne({ where: { id }, relations });
+  }
+
+  removeByComment(comment: Comment) {
+    return this.commentRepository.remove(comment);
   }
 }
