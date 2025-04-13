@@ -44,7 +44,7 @@ export class PostsService {
       throw new UnauthorizedException('unauthorized access');
     const partialPost: Partial<Post> = {};
 
-    if (updatePostDto?.mediaIds?.length) {
+    if (updatePostDto?.mediaIds) {
       const mediaArray = await this.mediaService.getManyByIds(
         updatePostDto.mediaIds,
         ['user'],

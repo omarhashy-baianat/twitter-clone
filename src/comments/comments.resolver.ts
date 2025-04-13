@@ -7,6 +7,7 @@ import { Transactional } from 'typeorm-transactional';
 import { UseGuards } from '@nestjs/common';
 import { IsLoggedIn } from 'src/guards/is-loged-in.guard';
 import { CommentData } from './entities/comment.entity';
+import { UpdateCommentDto } from './dtos/update-comment.dto';
 
 @Resolver()
 export class CommentsResolver {
@@ -20,5 +21,15 @@ export class CommentsResolver {
     @CurrentUser() user: User,
   ) {
     return this.commentsService.createComment(createCommentDto, user);
+  }
+
+  @Transactional()
+  @UseGuards(IsLoggedIn)
+  @Mutation(() => CommentData)
+  updateComment(
+    @Args('commentData') updateCommentDto: UpdateCommentDto,
+    @CurrentUser() user: User,
+  ) {
+    return this.commentsService.updateComment(updateCommentDto, user);
   }
 }

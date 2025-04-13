@@ -121,6 +121,7 @@ type Mutation {
   loginWithEmail(userCredentialsData: LoginWithEmailDto!): jwtTokenData!
   loginWithGoogle(userCredentialsData: LoginWithGoogleDto!): jwtTokenData!
   createComment(commentData: CreateCommentDto!): CommentData!
+  updateComment(commentData: UpdateCommentDto!): CommentData!
   createPost(postData: CreatePostDto!): PostData!
   updatePost(updatePostData: UpdatePostDto!): PostData!
   deletePost(postId: String!): MessageData!
@@ -202,6 +203,12 @@ type CommentData {
 input CreateCommentDto {
   content: String!
   postId: String!
+  mediaIds: [String!]
+}
+
+input UpdateCommentDto {
+  id: String!
+  content: String!
   mediaIds: [String!]
 }
 
