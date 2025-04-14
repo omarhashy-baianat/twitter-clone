@@ -22,7 +22,10 @@ export class BookmarksService {
     const post = await this.postsService.getPostById(postId);
     if (!post) throw new NotFoundException('post does not exist');
 
-    return this.getBookmarkByPostAndUser(post, user, ['post.user', 'post.media']);
+    return this.getBookmarkByPostAndUser(post, user, [
+      'post.user',
+      'post.media',
+    ]);
   }
 
   async createBookmark(postId: string, user: User) {
@@ -34,6 +37,7 @@ export class BookmarksService {
     if (existedBookmark)
       throw new BadRequestException('Bookmark already exist');
 
+    await this.postsService.addBookmark(post);
     const Bookmark = this.BookmarkRepository.create({
       post,
       user,
@@ -48,6 +52,7 @@ export class BookmarksService {
     const Bookmark = await this.getBookmarkByPostAndUser(post, user);
     if (!Bookmark) throw new BadRequestException('Bookmark does not exist');
 
+    await this.postsService.removeBookmark(post);
     await this.BookmarkRepository.remove(Bookmark);
 
     return {

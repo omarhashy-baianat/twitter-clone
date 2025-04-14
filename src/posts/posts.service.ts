@@ -112,13 +112,13 @@ export class PostsService {
     post.likesCounter--;
     return this.postRepository.save(post);
   }
-  
+
   addBookmark(post: Post) {
     post.bookmarksCounter++;
     return this.postRepository.save(post);
   }
 
-  removeRemoveBookmark(post: Post) {
+  removeBookmark(post: Post) {
     post.bookmarksCounter--;
     return this.postRepository.save(post);
   }
