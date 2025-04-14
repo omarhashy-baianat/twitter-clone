@@ -12,6 +12,16 @@ type Comment {
   post: Post!
 }
 
+type Repost {
+  id: String!
+  content: String!
+  createdAt: Date!
+  updatedAt: Date!
+  user: User!
+  media: [Media!]
+  post: Post!
+}
+
 type Media {
   id: String!
   fileName: String!
@@ -183,6 +193,7 @@ type Mutation {
   deleteComment(id: String!): MessageData!
   createFollow(followingId: String!): FollowData!
   deleteFollow(followingId: String!): MessageData!
+  createRepost(repostData: CreateRepostDto!): RepostData!
   createBookmark(postId: String!): BookmarkData!
   removeBookmark(PostId: String!): MessageData!
 }
@@ -273,5 +284,18 @@ input CreateCommentDto {
 input UpdateCommentDto {
   id: String!
   content: String!
+  mediaIds: [String!]
+}
+
+type RepostData {
+  success: Boolean!
+  statusCode: Int!
+  messages: [String!]!
+  data: Repost
+}
+
+input CreateRepostDto {
+  content: String!
+  postId: String!
   mediaIds: [String!]
 }

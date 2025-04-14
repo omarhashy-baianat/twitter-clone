@@ -9,6 +9,7 @@ import { Follow } from 'src/follows/entity/follow.entity';
 import { Like } from 'src/likes/entities/likes.entity';
 import { Media } from 'src/media/entities/media.entity';
 import { Post } from 'src/posts/entities/post.entity';
+import { Repost } from 'src/reposts/entities/repost.entity';
 import {
   Column,
   CreateDateColumn,
@@ -110,6 +111,9 @@ export class User {
 
   @OneToMany(() => Post, (post) => post.user)
   posts: Post[];
+
+  @OneToMany(() => Repost, (repost) => repost.user)
+  reposts: Repost[];
 }
 
 export const UserData = objectTypeFactory<User>(User);

@@ -21,7 +21,7 @@ export class LikesService {
     const post = await this.postsService.getPostById(postId);
     if (!post) throw new NotFoundException('post does not exist');
 
-    return this.getLikeByPostAndUser(post, user);
+    return this.getLikeByPostAndUser(post, user, ['post.user', 'post.media']);
   }
 
   async createLike(postId: string, user: User) {
@@ -53,7 +53,7 @@ export class LikesService {
     };
   }
 
-   getLikeByPostAndUser(post: Post, user: User, relations: string[] = []) {
+  getLikeByPostAndUser(post: Post, user: User, relations: string[] = []) {
     return this.likeRepository.findOne({
       where: {
         post: { id: post.id },

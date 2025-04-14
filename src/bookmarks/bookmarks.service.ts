@@ -22,7 +22,7 @@ export class BookmarksService {
     const post = await this.postsService.getPostById(postId);
     if (!post) throw new NotFoundException('post does not exist');
 
-    return this.getBookmarkByPostAndUser(post, user);
+    return this.getBookmarkByPostAndUser(post, user, ['post.user', 'post.media']);
   }
 
   async createBookmark(postId: string, user: User) {

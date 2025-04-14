@@ -28,9 +28,10 @@ export class CommentsService {
       ['user'],
     );
 
-    const post = (await this.postsService.getPostById(
-      createCommentDto.postId,
-    )) as Post;
+    const post = (await this.postsService.getPostById(createCommentDto.postId, [
+      'user',
+      'media',
+    ])) as Post;
 
     mediaArray.forEach((media) => {
       if (media.user.id != user.id)
@@ -49,7 +50,9 @@ export class CommentsService {
     const comment = await this.findCommentById(updateCommentDto.id, [
       'user',
       'media',
-      'post'
+      'post',
+      'post.user',
+      'post.media',
     ]);
     if (!comment) throw new BadRequestException('comment does not exist');
     if (comment.user.id != user.id)
@@ -87,7 +90,13 @@ export class CommentsService {
 
   async getComment(id: string) {
     if (!isUUID(id)) throw new BadRequestException('id should be a valid uuid');
-    return this.findCommentById(id, ['user', 'media' , 'post']);
+    return this.findCommentById(id, [
+      'user',
+      'media',
+      'post',
+      'post.user',
+      'post.media',
+    ]);
   }
 
   findCommentById(id: string, relations: string[] = []) {

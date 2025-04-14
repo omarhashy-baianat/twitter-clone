@@ -13,7 +13,7 @@ import { FileIdValidator } from 'src/validators/file-id.validator';
 import { PostIdValidator } from 'src/validators/post-id.validator';
 
 @InputType()
-export class CreateCommentDto {
+export class CreateRepostDto {
   @IsString()
   @IsNotEmpty()
   @MaxLength(255)
@@ -30,7 +30,7 @@ export class CreateCommentDto {
   @IsOptional()
   @ArrayMaxSize(4)
   @IsUUID('all', { each: true })
-  @Validate(FileIdValidator, [null, MediaTarget.COMMENT], {
+  @Validate(FileIdValidator, [null, MediaTarget.REPOST], {
     each: true,
     message: 'Invalid file ID or file does not match media type/target',
   })

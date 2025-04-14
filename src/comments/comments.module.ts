@@ -6,9 +6,8 @@ import { Comment } from './entities/comment.entity';
 import { MediaModule } from 'src/media/media.module';
 import { PostsModule } from 'src/posts/posts.module';
 
-
 @Module({
-  providers: [CommentsResolver, CommentsService ,],
+  providers: [CommentsResolver, CommentsService],
   imports: [TypeOrmModule.forFeature([Comment]), MediaModule, PostsModule],
 })
 export class CommentsModule {}
