@@ -120,6 +120,7 @@ type Query {
   getPost(id: String!): PostData!
   getComment(id: String!): CommentData!
   getFollow(followingId: String!): FollowData!
+  getRepost(id: String!): RepostData!
   getUserBookmark(postId: String!): BookmarkData!
 }
 
@@ -163,6 +164,13 @@ type FollowData {
   statusCode: Int!
   messages: [String!]!
   data: Follow
+}
+
+type RepostData {
+  success: Boolean!
+  statusCode: Int!
+  messages: [String!]!
+  data: Repost
 }
 
 type BookmarkData {
@@ -287,13 +295,6 @@ input UpdateCommentDto {
   id: String!
   content: String!
   mediaIds: [String!]
-}
-
-type RepostData {
-  success: Boolean!
-  statusCode: Int!
-  messages: [String!]!
-  data: Repost
 }
 
 input CreateRepostDto {

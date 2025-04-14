@@ -1,4 +1,4 @@
-import { Args, Mutation, Resolver } from '@nestjs/graphql';
+import { Args, Mutation, Query, Resolver } from '@nestjs/graphql';
 import { RepostsService } from './reposts.service';
 import { Transactional } from 'typeorm-transactional';
 import { UseGuards } from '@nestjs/common';
@@ -13,6 +13,11 @@ import { MessageData } from 'src/common/graphql/objects/message.object';
 @Resolver()
 export class RepostsResolver {
   constructor(private readonly repostsService: RepostsService) {}
+
+  @Query(() => RepostData)
+  getRepost(@Args('id') id: string) {
+    return this.repostsService.getRepost(id);
+  }
 
   @Transactional()
   @UseGuards(IsLoggedIn)
