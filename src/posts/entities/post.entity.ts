@@ -27,6 +27,34 @@ export class Post {
   @Field()
   content: string;
 
+  @Column({
+    type: 'int',
+    unsigned: true,
+    default: 0,
+  })
+  commentsCounter: number;
+
+  @Column({
+    type: 'int',
+    unsigned: true,
+    default: 0,
+  })
+  likesCounter: number;
+
+  @Column({
+    type: 'int',
+    unsigned: true,
+    default: 0,
+  })
+  repostsCounter: number;
+
+  @Column({
+    type: 'int',
+    unsigned: true,
+    default: 0,
+  })
+  bookmarksCounter: number;
+
   @CreateDateColumn()
   @Field(() => Date)
   createdAt: Date;
