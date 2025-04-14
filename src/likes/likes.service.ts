@@ -1,4 +1,45 @@
-import { Injectable } from '@nestjs/common';
+import {
+  BadRequestException,
+  Injectable,
+  NotFoundException,
+} from '@nestjs/common';
+import { InjectRepository } from '@nestjs/typeorm';
+import { PostsService } from 'src/posts/posts.service';
+import { User } from 'src/users/entities/user.entity';
+import { Repository } from 'typeorm';
+import { Like } from './entities/likes.entity';
+import { Post } from 'src/posts/entities/post.entity';
 
 @Injectable()
-export class LikesService {}
+export class LikesService {
+  constructor(
+    @InjectRepository(Like) private likeRepository: Repository<Like>,
+    private postsService: PostsService,
+  ) {}
+
+  async createLike(postId: string, user: User) {
+    const post = await this.postsService.getPostById(postId, ['media', 'user']);
+    if (!post) throw new NotFoundException('post does not exist');
+
+    const existedLike = await this.getLikeByUserAndPost(post, user);
+    
+    if (existedLike) throw new BadRequestException('like already exist');
+
+    const like = this.likeRepository.create({
+      post,
+      user,
+    });
+
+    return this.likeRepository.save(like);
+  }
+
+  async getLikeByUserAndPost(post: Post, user: User, relations: string[] = []) {
+    return this.likeRepository.findOne({
+      where: {
+        post: { id: post.id },
+        user: { id: user.id },
+      },
+      relations: [...new Set([...['post', 'user'], ...relations])],
+    });
+  }
+}
