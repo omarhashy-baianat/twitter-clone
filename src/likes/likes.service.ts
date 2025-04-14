@@ -48,6 +48,7 @@ export class LikesService {
     const like = await this.getLikeByPostAndUser(post, user);
     if (!like) throw new BadRequestException('like does not exist');
 
+    this.postsService.removeLike(post);
     await this.likeRepository.remove(like);
 
     return {

@@ -109,8 +109,17 @@ export class PostsService {
   }
 
   removeLike(post: Post) {
-    post.likesCounter++;
+    post.likesCounter--;
     return this.postRepository.save(post);
   }
   
+  addBookmark(post: Post) {
+    post.bookmarksCounter++;
+    return this.postRepository.save(post);
+  }
+
+  removeRemoveBookmark(post: Post) {
+    post.bookmarksCounter--;
+    return this.postRepository.save(post);
+  }
 }
