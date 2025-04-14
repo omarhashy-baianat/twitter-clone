@@ -1,4 +1,4 @@
-import { Field } from '@nestjs/graphql';
+import { Field, ObjectType } from '@nestjs/graphql';
 import { objectTypeFactory } from 'src/common/graphql/objects/base-model.object';
 import { User } from 'src/users/entities/user.entity';
 import {
@@ -9,6 +9,7 @@ import {
 } from 'typeorm';
 
 @Entity()
+@ObjectType()
 export class Follow {
   @PrimaryGeneratedColumn('uuid')
   @Field()

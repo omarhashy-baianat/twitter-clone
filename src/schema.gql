@@ -57,6 +57,13 @@ type Bookmark {
   createAt: Date!
 }
 
+type Follow {
+  id: String!
+  following: User!
+  follower: User!
+  createdAt: Date!
+}
+
 type User {
   id: String!
   email: String!
@@ -102,6 +109,7 @@ type Query {
   getUserLike(postId: String!): LikeData!
   getPost(id: String!): PostData!
   getComment(id: String!): CommentData!
+  getFollow(followingId: String!): FollowData!
   getUserBookmark(postId: String!): BookmarkData!
 }
 
@@ -140,6 +148,13 @@ type CommentData {
   data: Comment
 }
 
+type FollowData {
+  success: Boolean!
+  statusCode: Int!
+  messages: [String!]!
+  data: Follow
+}
+
 type BookmarkData {
   success: Boolean!
   statusCode: Int!
@@ -166,6 +181,8 @@ type Mutation {
   createComment(commentData: CreateCommentDto!): CommentData!
   updateComment(commentData: UpdateCommentDto!): CommentData!
   deleteComment(id: String!): MessageData!
+  createFollow(followingId: String!): FollowData!
+  deleteFollow(followingId: String!): MessageData!
   createBookmark(postId: String!): BookmarkData!
   removeBookmark(PostId: String!): MessageData!
 }

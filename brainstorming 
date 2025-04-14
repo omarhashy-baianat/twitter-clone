@@ -38,3 +38,8 @@ map:
 }
 
 0: (file binary here)
+
+
+// pageInfo : limit , page , totalPages , totalCount , hasNext , hasPrevious
+// items{
+// }

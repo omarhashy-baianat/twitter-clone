@@ -1,4 +1,8 @@
-import { BadRequestException, Injectable } from '@nestjs/common';
+import {
+  BadRequestException,
+  Injectable,
+  NotFoundException,
+} from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { UsersService } from 'src/users/users.service';
 import { Follow } from './entity/follow.entity';
@@ -12,10 +16,17 @@ export class FollowsService {
     private usersService: UsersService,
   ) {}
 
+  async getFollow(followId: string, user: User) {
+    const following = await this.usersService.findOneById(followId);
+    if (!following) throw new NotFoundException('like does not exist');
+    return this.getFollowByFollowerAndFollowing(user, following);
+  }
+
   async createFollow(followingId: string, user: User) {
     //user is the follower
     const following = await this.usersService.findOneById(followingId);
-    if (!following) throw new BadRequestException('invalid followingId');
+    if (!following || !following.verified)
+      throw new BadRequestException('invalid followingId');
     if (followingId === user.id)
       throw new BadRequestException('user can not follow himself');
 
@@ -35,7 +46,7 @@ export class FollowsService {
     const following = await this.usersService.findOneById(followingId);
     if (!following) throw new BadRequestException('invalid followingId');
 
-    const follow = await this.getFollowByFollowerAndFollowing(following, user);
+    const follow = await this.getFollowByFollowerAndFollowing(user, following);
     if (!follow) throw new BadRequestException('follow does not exist');
 
     await this.followRepository.remove(follow);
@@ -52,8 +63,12 @@ export class FollowsService {
   ) {
     return this.followRepository.findOne({
       where: {
-        follower,
-        following,
+        follower: {
+          id: follower.id,
+        },
+        following: {
+          id: following.id,
+        },
       },
       relations: [...new Set([...['follower', 'following'], ...relations])],
     });
