@@ -89,7 +89,7 @@ export class CommentsService {
   }
 
   async getComment(id: string) {
-    if (!isUUID(id)) throw new BadRequestException('id should be a valid uuid');
+    if (!isUUID(id)) throw new BadRequestException('Id should be a valid uuid');
     return this.findCommentById(id, [
       'user',
       'media',
