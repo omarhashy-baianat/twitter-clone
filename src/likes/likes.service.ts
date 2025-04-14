@@ -21,14 +21,14 @@ export class LikesService {
     const post = await this.postsService.getPostById(postId);
     if (!post) throw new NotFoundException('post does not exist');
 
-    return this.getLikeByUserAndPost(post, user);
+    return this.getLikeByPostAndUser(post, user);
   }
-  
+
   async createLike(postId: string, user: User) {
     const post = await this.postsService.getPostById(postId, ['media', 'user']);
     if (!post) throw new NotFoundException('post does not exist');
 
-    const existedLike = await this.getLikeByUserAndPost(post, user);
+    const existedLike = await this.getLikeByPostAndUser(post, user);
 
     if (existedLike) throw new BadRequestException('like already exist');
 
@@ -43,7 +43,7 @@ export class LikesService {
     const post = await this.postsService.getPostById(postId);
     if (!post) throw new NotFoundException('post does not exist');
 
-    const like = await this.getLikeByUserAndPost(post, user);
+    const like = await this.getLikeByPostAndUser(post, user);
     if (!like) throw new BadRequestException('like does not exist');
 
     await this.likeRepository.remove(like);
@@ -53,7 +53,7 @@ export class LikesService {
     };
   }
 
-  async getLikeByUserAndPost(post: Post, user: User, relations: string[] = []) {
+   getLikeByPostAndUser(post: Post, user: User, relations: string[] = []) {
     return this.likeRepository.findOne({
       where: {
         post: { id: post.id },

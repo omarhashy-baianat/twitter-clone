@@ -50,6 +50,13 @@ type Post {
   user: User!
 }
 
+type Bookmark {
+  id: String!
+  post: Post!
+  user: User!
+  createAt: Date!
+}
+
 type User {
   id: String!
   email: String!
@@ -95,6 +102,7 @@ type Query {
   getUserLike(postId: String!): LikeData!
   getPost(id: String!): PostData!
   getComment(id: String!): CommentData!
+  getUserBookmark(postId: String!): BookmarkData!
 }
 
 type UserData {
@@ -132,6 +140,13 @@ type CommentData {
   data: Comment
 }
 
+type BookmarkData {
+  success: Boolean!
+  statusCode: Int!
+  messages: [String!]!
+  data: Bookmark
+}
+
 type Mutation {
   updateUserProfile(profileData: UpdateProfileDto!): UserData!
   UploadFile(fileData: uploadFileDto!): MediaData!
@@ -151,6 +166,8 @@ type Mutation {
   createComment(commentData: CreateCommentDto!): CommentData!
   updateComment(commentData: UpdateCommentDto!): CommentData!
   deleteComment(id: String!): MessageData!
+  createBookmark(postId: String!): BookmarkData!
+  removeBookmark(PostId: String!): MessageData!
 }
 
 input UpdateProfileDto {

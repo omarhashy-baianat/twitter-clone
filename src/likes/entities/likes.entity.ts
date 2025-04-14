@@ -23,6 +23,7 @@ export class Like {
   @ManyToOne(() => User, (user) => user.likes)
   @Field(() => User)
   user: User;
+  
   @CreateDateColumn()
   createdAt: Date;
 }
