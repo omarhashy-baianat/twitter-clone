@@ -207,7 +207,7 @@ type Mutation {
   deleteFollow(followingId: String!): MessageData!
   createRepost(repostData: CreateRepostDto!): RepostData!
   updateRepost(repostData: UpdateRepostDto!): RepostData!
-  deleteRepost(id: String!): MessageData!
+  deleteRepost(repostId: String!): MessageData!
   createBookmark(postId: String!): BookmarkData!
   removeBookmark(PostId: String!): MessageData!
 }

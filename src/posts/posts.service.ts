@@ -122,4 +122,14 @@ export class PostsService {
     post.bookmarksCounter--;
     return this.postRepository.save(post);
   }
+
+  addRepost(post: Post) {
+    post.repostsCounter++;
+    return this.postRepository.save(post);
+  }
+
+  removeRepost(post: Post) {
+    post.repostsCounter--;
+    return this.postRepository.save(post);
+  }
 }

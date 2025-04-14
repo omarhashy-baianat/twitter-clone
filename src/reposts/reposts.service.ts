@@ -40,6 +40,8 @@ export class RepostsService {
         throw new UnauthorizedException('unauthorized request');
     });
 
+    this.postsService.addRepost(post);
+
     const repost = this.repostRepository.create({
       media: mediaArray,
       content: createRepostDto.content,
@@ -81,9 +83,10 @@ export class RepostsService {
 
   async deleteRepost(id: string, user: User) {
     if (!isUUID(id)) throw new BadRequestException('ID should be a valid uuid');
-    const repost = await this.findRepostById(id, ['user']);
+    const repost = await this.findRepostById(id, ['user','post']);
     if (!repost) throw new NotFoundException();
     if (repost.user.id != user.id) throw new UnauthorizedException();
+    await this.postsService.removeRepost(repost.post)
     await this.removeByRepost(repost);
     return { message: 'repost removed successfully' };
   }

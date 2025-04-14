@@ -42,7 +42,7 @@ export class RepostsResolver {
   @Transactional()
   @UseGuards(IsLoggedIn)
   @Mutation(() => MessageData)
-  deleteRepost(@Args('id') id: string, @CurrentUser() user: User) {
+  deleteRepost(@Args('repostId') id: string, @CurrentUser() user: User) {
     return this.repostsService.deleteRepost(id, user);
   }
 }
