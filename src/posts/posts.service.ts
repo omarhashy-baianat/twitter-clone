@@ -98,9 +98,19 @@ export class PostsService {
     return this.postRepository.save(post);
   }
 
-
   removeComment(post: Post) {
     post.commentsCounter--;
     return this.postRepository.save(post);
   }
+
+  addLike(post: Post) {
+    post.likesCounter++;
+    return this.postRepository.save(post);
+  }
+
+  removeLike(post: Post) {
+    post.likesCounter++;
+    return this.postRepository.save(post);
+  }
+  
 }

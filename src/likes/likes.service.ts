@@ -32,6 +32,8 @@ export class LikesService {
 
     if (existedLike) throw new BadRequestException('like already exist');
 
+    await this.postsService.addLike(post);
+
     const like = this.likeRepository.create({
       post,
       user,
