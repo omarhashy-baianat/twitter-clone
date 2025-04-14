@@ -41,5 +41,4 @@ map:
 
 
 // pageInfo : limit , page , totalPages , totalCount , hasNext , hasPrevious
-// items{
-// }
+// items[]
