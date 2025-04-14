@@ -9,6 +9,7 @@ type Comment {
   updatedAt: Date!
   user: User!
   media: [Media!]
+  post: Post!
 }
 
 type Media {
@@ -91,6 +92,7 @@ type Query {
   getProfile: UserData!
   sayHello: MessageData!
   testException: String!
+  getUserLike(postId: String!): LikeData!
   getPost(id: String!): PostData!
   getComment(id: String!): CommentData!
 }
@@ -99,28 +101,35 @@ type UserData {
   success: Boolean!
   statusCode: Int!
   messages: [String!]!
-  data: User!
+  data: User
 }
 
 type MessageData {
   success: Boolean!
   statusCode: Int!
   messages: [String!]!
-  data: Message!
+  data: Message
+}
+
+type LikeData {
+  success: Boolean!
+  statusCode: Int!
+  messages: [String!]!
+  data: Like
 }
 
 type PostData {
   success: Boolean!
   statusCode: Int!
   messages: [String!]!
-  data: Post!
+  data: Post
 }
 
 type CommentData {
   success: Boolean!
   statusCode: Int!
   messages: [String!]!
-  data: Comment!
+  data: Comment
 }
 
 type Mutation {
@@ -156,7 +165,7 @@ type MediaData {
   success: Boolean!
   statusCode: Int!
   messages: [String!]!
-  data: Media!
+  data: Media
 }
 
 input uploadFileDto {
@@ -198,7 +207,7 @@ type jwtTokenData {
   success: Boolean!
   statusCode: Int!
   messages: [String!]!
-  data: jwtToken!
+  data: jwtToken
 }
 
 input LoginWithEmailDto {
@@ -208,13 +217,6 @@ input LoginWithEmailDto {
 
 input LoginWithGoogleDto {
   token: String!
-}
-
-type LikeData {
-  success: Boolean!
-  statusCode: Int!
-  messages: [String!]!
-  data: Like!
 }
 
 input CreatePostDto {

@@ -10,10 +10,12 @@ export function objectTypeFactory<T>(TClass: new () => T) {
     @Field(() => [String])
     messages: string[];
 
-    @Field(() => TClass)
+    @Field(() => TClass, { nullable: true })
     data: T;
   }
-  Object.defineProperty(ResponseWrapper, 'name', { value: `${TClass.name}Data` });
+  Object.defineProperty(ResponseWrapper, 'name', {
+    value: `${TClass.name}Data`,
+  });
 
   return ResponseWrapper;
 }

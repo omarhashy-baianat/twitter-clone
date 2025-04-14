@@ -49,6 +49,7 @@ export class CommentsService {
     const comment = await this.findCommentById(updateCommentDto.id, [
       'user',
       'media',
+      'post'
     ]);
     if (!comment) throw new BadRequestException('comment does not exist');
     if (comment.user.id != user.id)
@@ -86,7 +87,7 @@ export class CommentsService {
 
   async getComment(id: string) {
     if (!isUUID(id)) throw new BadRequestException('id should be a valid uuid');
-    return this.findCommentById(id, ['user', 'media']);
+    return this.findCommentById(id, ['user', 'media' , 'post']);
   }
 
   findCommentById(id: string, relations: string[] = []) {

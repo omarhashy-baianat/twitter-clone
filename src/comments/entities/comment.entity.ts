@@ -41,6 +41,7 @@ export class Comment {
   media: Media[];
 
   @ManyToOne(() => Post, (post) => post.comments)
+  @Field(() => Post)
   post: Post;
 }
 

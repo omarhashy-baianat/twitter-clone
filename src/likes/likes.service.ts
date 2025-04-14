@@ -17,6 +17,13 @@ export class LikesService {
     private postsService: PostsService,
   ) {}
 
+  async getLike(postId: string, user: User) {
+    const post = await this.postsService.getPostById(postId);
+    if (!post) throw new NotFoundException('post does not exist');
+
+    return this.getLikeByUserAndPost(post, user);
+  }
+  
   async createLike(postId: string, user: User) {
     const post = await this.postsService.getPostById(postId, ['media', 'user']);
     if (!post) throw new NotFoundException('post does not exist');

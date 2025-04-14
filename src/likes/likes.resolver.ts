@@ -1,4 +1,4 @@
-import { Args, Mutation, Resolver } from '@nestjs/graphql';
+import { Args, Mutation, Query, Resolver } from '@nestjs/graphql';
 import { LikesService } from './likes.service';
 import { Transactional } from 'typeorm-transactional';
 import { UseGuards } from '@nestjs/common';
@@ -11,6 +11,12 @@ import { MessageData } from 'src/common/graphql/objects/message.object';
 @Resolver()
 export class LikesResolver {
   constructor(private readonly likesService: LikesService) {}
+
+  @Query(() => LikeData)
+  @UseGuards(IsLoggedIn)
+  getUserLike(@Args('postId') id: string, @CurrentUser() user: User) {
+    return this.likesService.getLike(id, user);
+  }
 
   @Transactional()
   @UseGuards(IsLoggedIn)
