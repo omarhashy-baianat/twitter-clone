@@ -54,6 +54,10 @@ type Like {
 type Post {
   id: String!
   content: String!
+  commentsCounter: Float!
+  likesCounter: Float!
+  repostsCounter: Float!
+  bookmarksCounter: Float!
   createdAt: Date!
   updatedAt: Date!
   media: [Media!]

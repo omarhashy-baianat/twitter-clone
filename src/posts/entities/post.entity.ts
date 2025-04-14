@@ -32,6 +32,7 @@ export class Post {
     unsigned: true,
     default: 0,
   })
+  @Field()
   commentsCounter: number;
 
   @Column({
@@ -39,6 +40,7 @@ export class Post {
     unsigned: true,
     default: 0,
   })
+  @Field()
   likesCounter: number;
 
   @Column({
@@ -46,6 +48,7 @@ export class Post {
     unsigned: true,
     default: 0,
   })
+  @Field()
   repostsCounter: number;
 
   @Column({
@@ -53,6 +56,7 @@ export class Post {
     unsigned: true,
     default: 0,
   })
+  @Field()
   bookmarksCounter: number;
 
   @CreateDateColumn()

@@ -37,6 +37,7 @@ export class CommentsService {
       if (media.user.id != user.id)
         throw new UnauthorizedException('unauthorized request');
     });
+    await this.postsService.addComment(post);
     const comment = this.commentRepository.create({
       media: mediaArray,
       content: createCommentDto.content,
@@ -81,9 +82,10 @@ export class CommentsService {
 
   async deleteComment(id: string, user: User) {
     if (!isUUID(id)) throw new BadRequestException('ID should be a valid uuid');
-    const comment = await this.findCommentById(id, ['user']);
+    const comment = await this.findCommentById(id, ['user', 'post']);
     if (!comment) throw new NotFoundException();
     if (comment.user.id != user.id) throw new UnauthorizedException();
+    await this.postsService.removeComment(comment.post);
     await this.removeByComment(comment);
     return { message: 'comment removed successfully' };
   }

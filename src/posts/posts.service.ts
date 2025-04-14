@@ -92,4 +92,15 @@ export class PostsService {
       relations,
     });
   }
+
+  addComment(post: Post) {
+    post.commentsCounter++;
+    return this.postRepository.save(post);
+  }
+
+
+  removeComment(post: Post) {
+    post.commentsCounter--;
+    return this.postRepository.save(post);
+  }
 }
