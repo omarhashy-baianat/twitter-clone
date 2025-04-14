@@ -1,6 +1,7 @@
 import {
   BadRequestException,
   Injectable,
+  NotFoundException,
   UnauthorizedException,
 } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
@@ -13,6 +14,7 @@ import { User } from 'src/users/entities/user.entity';
 import { Post } from 'src/posts/entities/post.entity';
 import { validate as isUUID } from 'uuid';
 import { UpdateRepostDto } from './dtos/update-repost.dto';
+import { UserRole } from 'src/enums/user-roles.enum';
 
 @Injectable()
 export class RepostsService {
@@ -75,6 +77,15 @@ export class RepostsService {
     partialRepost.content = updateRepostDto.content;
     const updatedRepost = this.repostRepository.merge(repost, partialRepost);
     return this.repostRepository.save(updatedRepost);
+  }
+
+  async deleteRepost(id: string, user: User) {
+    if (!isUUID(id)) throw new BadRequestException('ID should be a valid uuid');
+    const repost = await this.findRepostById(id, ['user']);
+    if (!repost) throw new NotFoundException();
+    if (repost.user.id != user.id) throw new UnauthorizedException();
+    await this.removeByRepost(repost);
+    return { message: 'repost removed successfully' };
   }
 
   async getRepost(id: string) {

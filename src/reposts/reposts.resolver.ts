@@ -8,6 +8,7 @@ import { CreateRepostDto } from './dtos/create-repost.dto';
 import { CurrentUser } from 'src/decorators/current-user.decorator';
 import { User } from 'src/users/entities/user.entity';
 import { UpdateRepostDto } from './dtos/update-repost.dto';
+import { MessageData } from 'src/common/graphql/objects/message.object';
 
 @Resolver()
 export class RepostsResolver {
@@ -31,5 +32,12 @@ export class RepostsResolver {
     @CurrentUser() user: User,
   ) {
     return this.repostsService.updateRepost(repostData, user);
+  }
+
+  @Transactional()
+  @UseGuards(IsLoggedIn)
+  @Mutation(() => MessageData)
+  deleteRepost(@Args('id') id: string, @CurrentUser() user: User) {
+    return this.repostsService.deleteRepost(id, user);
   }
 }

@@ -80,7 +80,7 @@ export class CommentsService {
   }
 
   async deleteComment(id: string, user: User) {
-    if (!isUUID(id)) throw new BadRequestException('id should be a valid uuid');
+    if (!isUUID(id)) throw new BadRequestException('ID should be a valid uuid');
     const comment = await this.findCommentById(id, ['user']);
     if (!comment) throw new NotFoundException();
     if (comment.user.id != user.id) throw new UnauthorizedException();
