@@ -135,6 +135,7 @@ type Mutation {
   loginWithEmail(userCredentialsData: LoginWithEmailDto!): jwtTokenData!
   loginWithGoogle(userCredentialsData: LoginWithGoogleDto!): jwtTokenData!
   createLike(postId: String!): LikeData!
+  removeLike(PostId: String!): MessageData!
   createPost(postData: CreatePostDto!): PostData!
   updatePost(updatePostData: UpdatePostDto!): PostData!
   deletePost(postId: String!): MessageData!

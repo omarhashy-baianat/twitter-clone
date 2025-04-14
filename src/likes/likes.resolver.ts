@@ -5,7 +5,8 @@ import { UseGuards } from '@nestjs/common';
 import { IsLoggedIn } from 'src/guards/is-loged-in.guard';
 import { CurrentUser } from 'src/decorators/current-user.decorator';
 import { User } from 'src/users/entities/user.entity';
-import { Like, LikeData } from './entities/likes.entity';
+import { LikeData } from './entities/likes.entity';
+import { MessageData } from 'src/common/graphql/objects/message.object';
 
 @Resolver()
 export class LikesResolver {
@@ -17,5 +18,11 @@ export class LikesResolver {
   createLike(@Args('postId') postId: string, @CurrentUser() user: User) {
     return this.likesService.createLike(postId, user);
   }
-}
 
+  @Transactional()
+  @UseGuards(IsLoggedIn)
+  @Mutation(() => MessageData)
+  removeLike(@Args('PostId') id: string, @CurrentUser() user: User) {
+    return this.likesService.deleteLike(id, user);
+  }
+}

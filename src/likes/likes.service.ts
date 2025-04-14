@@ -22,15 +22,28 @@ export class LikesService {
     if (!post) throw new NotFoundException('post does not exist');
 
     const existedLike = await this.getLikeByUserAndPost(post, user);
-    
+
     if (existedLike) throw new BadRequestException('like already exist');
 
     const like = this.likeRepository.create({
       post,
       user,
     });
-
     return this.likeRepository.save(like);
+  }
+
+  async deleteLike(postId: string, user: User) {
+    const post = await this.postsService.getPostById(postId);
+    if (!post) throw new NotFoundException('post does not exist');
+
+    const like = await this.getLikeByUserAndPost(post, user);
+    if (!like) throw new BadRequestException('like does not exist');
+
+    await this.likeRepository.remove(like);
+
+    return {
+      message: 'like removed successfully',
+    };
   }
 
   async getLikeByUserAndPost(post: Post, user: User, relations: string[] = []) {
