@@ -35,6 +35,8 @@ import { count } from 'console';
 import { FileHandler } from './middlewares/file-handler.middleware';
 import { DataloaderModule } from './dataloader/dataloader.module';
 import { SearchModule } from './search/search.module';
+import { NotificationsModule } from './notifications/notifications.module';
+import { ActiveDevices } from './notifications/entities/active-devices.entity';
 
 @Module({
   imports: [
@@ -67,6 +69,7 @@ import { SearchModule } from './search/search.module';
             Bookmark,
             Otp,
             Follow,
+            ActiveDevices,
           ],
           database: config.get<string>('POSTGRES_DB'),
           synchronize: true,
@@ -89,6 +92,7 @@ import { SearchModule } from './search/search.module';
     QueueModule,
     DataloaderModule,
     SearchModule,
+    NotificationsModule,
   ],
   providers: [
     {
