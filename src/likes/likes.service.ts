@@ -9,12 +9,14 @@ import { User } from 'src/users/entities/user.entity';
 import { Repository } from 'typeorm';
 import { Like } from './entities/likes.entity';
 import { Post } from 'src/posts/entities/post.entity';
+import { NotificationsService } from 'src/notifications/notifications.service';
 
 @Injectable()
 export class LikesService {
   constructor(
     @InjectRepository(Like) private likeRepository: Repository<Like>,
     private postsService: PostsService,
+    private notificationsService: NotificationsService,
   ) {}
 
   async getLike(postId: string, user: User) {
@@ -38,7 +40,14 @@ export class LikesService {
       post,
       user,
     });
-    return this.likeRepository.save(like);
+
+    const savedLike = await this.likeRepository.save(like);
+    this.notificationsService.sendNotification(
+      post.user,
+      'post liked',
+      'your post has been liked',
+    );
+    return savedLike;
   }
 
   async deleteLike(postId: string, user: User) {

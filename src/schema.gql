@@ -245,6 +245,7 @@ type Mutation {
   createPost(postData: CreatePostDto!): PostData!
   updatePost(updatePostData: UpdatePostDto!): PostData!
   deletePost(postId: String!): MessageData!
+  subscribeToNotifications(subscriptionData: SubscribeToNotificationsDto!): MessageData!
   createComment(commentData: CreateCommentDto!): CommentData!
   updateComment(commentData: UpdateCommentDto!): CommentData!
   deleteComment(id: String!): MessageData!
@@ -255,7 +256,6 @@ type Mutation {
   deleteRepost(repostId: String!): MessageData!
   createBookmark(postId: String!): BookmarkData!
   removeBookmark(PostId: String!): MessageData!
-  subscribeToNotifications(subscriptionData: SubscribeToNotificationsDto!): MessageData!
 }
 
 input UpdateProfileDto {
@@ -335,6 +335,10 @@ input UpdatePostDto {
   mediaIds: [String!]
 }
 
+input SubscribeToNotificationsDto {
+  token: String!
+}
+
 input CreateCommentDto {
   content: String!
   postId: String!
@@ -357,8 +361,4 @@ input UpdateRepostDto {
   id: String!
   content: String!
   mediaIds: [String!]
-}
-
-input SubscribeToNotificationsDto {
-  token: String!
 }
