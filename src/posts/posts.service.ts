@@ -132,4 +132,6 @@ export class PostsService {
     post.repostsCounter--;
     return this.postRepository.save(post);
   }
+
 }
+

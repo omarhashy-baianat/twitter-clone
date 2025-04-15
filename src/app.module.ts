@@ -33,6 +33,7 @@ import { DateScalar } from './common/scalars/date.scalar';
 import { QueueModule } from './queue/queue.module';
 import { count } from 'console';
 import { FileHandler } from './middlewares/file-handler.middleware';
+import { DataloaderModule } from './dataloader/dataloader.module';
 
 @Module({
   imports: [
@@ -69,6 +70,7 @@ import { FileHandler } from './middlewares/file-handler.middleware';
           database: config.get<string>('POSTGRES_DB'),
           synchronize: true,
           // dropSchema: true,
+          // logging: ['query'],
         };
       },
     }),
@@ -84,6 +86,7 @@ import { FileHandler } from './middlewares/file-handler.middleware';
     BookmarksModule,
     JwtTokenModule,
     QueueModule,
+    DataloaderModule,
   ],
   providers: [
     {

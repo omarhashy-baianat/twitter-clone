@@ -3,12 +3,14 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { User } from './entities/user.entity';
 import {
   CustomRepositoryCannotInheritRepositoryError,
+  In,
   Repository,
 } from 'typeorm';
 import { UserRole } from 'src/enums/user-roles.enum';
 import { AuthType } from 'src/enums/auth-type.emum';
 import { UpdateProfileDto } from './dtos/update-profile.dto';
 import { MediaService } from 'src/media/media.service';
+import { Post } from 'src/posts/entities/post.entity';
 
 @Injectable()
 export class UsersService {
@@ -75,6 +77,14 @@ export class UsersService {
 
   findOneByEmail(email: string, relations: string[] = []) {
     return this.userRepository.findOne({ where: { email }, relations });
+  }
+
+  findManyByIds(ids: (string | null)[]) {
+    return this.userRepository.find({
+      where: {
+        id: In(ids),
+      },
+    });
   }
 
   findOneByUsername(username: string, relations: string[] = []) {

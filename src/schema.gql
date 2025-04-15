@@ -2,6 +2,15 @@
 # THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
 # ------------------------------------------------------
 
+type PageInfo {
+  limit: Int!
+  page: Int!
+  totalPages: Int!
+  totalCount: Int!
+  hasNext: Boolean!
+  hasPrevious: Boolean!
+}
+
 type Comment {
   id: String!
   content: String!
@@ -123,6 +132,7 @@ type Query {
   getUserLike(postId: String!): LikeData!
   getPost(id: String!): PostData!
   getComment(id: String!): CommentData!
+  getPostComment(postId: String!, Page: Float): ResponseWrapperData!
   getFollow(followingId: String!): FollowData!
   getRepost(id: String!): RepostData!
   getUserBookmark(postId: String!): BookmarkData!
@@ -161,6 +171,18 @@ type CommentData {
   statusCode: Int!
   messages: [String!]!
   data: Comment
+}
+
+type ResponseWrapperData {
+  success: Boolean!
+  statusCode: Int!
+  messages: [String!]!
+  data: ResponseWrapper
+}
+
+type ResponseWrapper {
+  pageInfo: PageInfo!
+  items: [Comment!]
 }
 
 type FollowData {

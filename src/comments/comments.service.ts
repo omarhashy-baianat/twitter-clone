@@ -14,6 +14,10 @@ import { PostsService } from 'src/posts/posts.service';
 import { Post } from 'src/posts/entities/post.entity';
 import { UpdateCommentDto } from './dtos/update-comment.dto';
 import { validate as isUUID } from 'uuid';
+import { paginationSerializer } from 'src/common/utils/pagination-serializer.util';
+import { getSkip } from 'src/common/utils/get-skip.util';
+import { UsersService } from 'src/users/users.service';
+import { RowComments } from 'src/common/types/row-comment.type';
 
 @Injectable()
 export class CommentsService {
@@ -21,6 +25,7 @@ export class CommentsService {
     @InjectRepository(Comment) private commentRepository: Repository<Comment>,
     private mediaService: MediaService,
     private postsService: PostsService,
+    private userService: UsersService,
   ) {}
   async createComment(createCommentDto: CreateCommentDto, user: User) {
     const mediaArray = await this.mediaService.getManyByIds(
@@ -101,6 +106,19 @@ export class CommentsService {
     ]);
   }
 
+  async getPostComments(postId: string, page: number = 1) {
+    const post = await this.postsService.findPostById(postId);
+    if (!post) throw new NotFoundException();
+    const limit = 3;
+    const comments = await this.findManyCommentsByPost(post, limit, page);
+    return paginationSerializer<Comment>(
+      page,
+      limit,
+      post.commentsCounter,
+      comments,
+    );
+  }
+
   findCommentById(id: string, relations: string[] = []) {
     return this.commentRepository.findOne({ where: { id }, relations });
   }
@@ -109,5 +127,32 @@ export class CommentsService {
     return this.commentRepository.remove(comment);
   }
 
-  
+  async findRowCommentsByIds(ids: string[]): Promise<RowComments[]> {
+    const queryBuilder = this.commentRepository
+      .createQueryBuilder('comment')
+      .where('comment.id IN (:...ids)', { ids });
+    const rowComments = await queryBuilder.getRawMany();
+    return rowComments;
+  }
+
+  async findManyCommentsByPost(
+    post: Post,
+    take: number,
+    page: number,
+    relations: string[] = [],
+  ) {
+    const skip = getSkip(page, post.commentsCounter, take);
+
+    const comments = await this.commentRepository.find({
+      skip,
+      take,
+      where: {
+        post: {
+          id: post.id,
+        },
+      },
+      relations,
+    });
+    return comments;
+  }
 }
