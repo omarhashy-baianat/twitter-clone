@@ -34,6 +34,7 @@ import { QueueModule } from './queue/queue.module';
 import { count } from 'console';
 import { FileHandler } from './middlewares/file-handler.middleware';
 import { DataloaderModule } from './dataloader/dataloader.module';
+import { SearchModule } from './search/search.module';
 
 @Module({
   imports: [
@@ -87,6 +88,7 @@ import { DataloaderModule } from './dataloader/dataloader.module';
     JwtTokenModule,
     QueueModule,
     DataloaderModule,
+    SearchModule,
   ],
   providers: [
     {

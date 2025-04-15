@@ -6,7 +6,7 @@ import {
 } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Comment } from './entities/comment.entity';
-import { Repository } from 'typeorm';
+import { Like, Repository } from 'typeorm';
 import { MediaService } from 'src/media/media.service';
 import { CreateCommentDto } from './dtos/create-comment.dto';
 import { User } from 'src/users/entities/user.entity';
@@ -95,6 +95,22 @@ export class CommentsService {
     return { message: 'comment removed successfully' };
   }
 
+  async searchComments(keyWord: string, page: number) {
+    const take = 2;
+    const skip = (page - 1) * take;
+    return this.commentRepository.findAndCount({
+      where: {
+        content: Like(`%${keyWord}%`),
+      },
+      skip,
+      take,
+      order: {
+        createdAt: 'DESC',
+      },
+      relations: ['user', 'media', 'post', 'post.user', 'post.media'],
+    });
+  }
+
   async getComment(id: string) {
     if (!isUUID(id)) throw new BadRequestException('Id should be a valid uuid');
     return this.findCommentById(id, [
@@ -114,7 +130,7 @@ export class CommentsService {
       'media',
       'post',
       'post.user',
-      'post.media'
+      'post.media',
     ]);
     return paginationSerializer<Comment>(
       page,
@@ -157,6 +173,9 @@ export class CommentsService {
         },
       },
       relations,
+      order: {
+        createdAt: 'DESC',
+      },
     });
     return comments;
   }

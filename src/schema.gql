@@ -132,10 +132,11 @@ type Query {
   getUserLike(postId: String!): LikeData!
   getPost(id: String!): PostData!
   getComment(id: String!): CommentData!
-  getPostComment(postId: String!, Page: Float): ResponseWrapperData!
+  getPostComment(postId: String!, Page: Float): CommentPageData!
   getFollow(followingId: String!): FollowData!
   getRepost(id: String!): RepostData!
   getUserBookmark(postId: String!): BookmarkData!
+  search(filter: SearchFilterDto!): undefinedPageData!
 }
 
 type UserData {
@@ -173,14 +174,14 @@ type CommentData {
   data: Comment
 }
 
-type ResponseWrapperData {
+type CommentPageData {
   success: Boolean!
   statusCode: Int!
   messages: [String!]!
-  data: ResponseWrapper
+  data: CommentPage
 }
 
-type ResponseWrapper {
+type CommentPage {
   pageInfo: PageInfo!
   items: [Comment!]
 }
@@ -204,6 +205,28 @@ type BookmarkData {
   statusCode: Int!
   messages: [String!]!
   data: Bookmark
+}
+
+type undefinedPageData {
+  success: Boolean!
+  statusCode: Int!
+  messages: [String!]!
+  data: undefinedPage
+}
+
+type undefinedPage {
+  pageInfo: PageInfo!
+  items: [SearchUnion!]
+}
+
+union SearchUnion = Post | Comment | User
+
+input SearchFilterDto {
+  keyWord: String!
+  page: Float! = 1
+  includePosts: Boolean! = true
+  includeComments: Boolean! = true
+  includeUsers: Boolean! = true
 }
 
 type Mutation {

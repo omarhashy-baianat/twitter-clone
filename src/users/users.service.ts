@@ -1,16 +1,12 @@
 import { Injectable, UnauthorizedException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { User } from './entities/user.entity';
-import {
-  CustomRepositoryCannotInheritRepositoryError,
-  In,
-  Repository,
-} from 'typeorm';
+import { In, Like, Repository } from 'typeorm';
 import { UserRole } from 'src/enums/user-roles.enum';
 import { AuthType } from 'src/enums/auth-type.emum';
 import { UpdateProfileDto } from './dtos/update-profile.dto';
 import { MediaService } from 'src/media/media.service';
-import { Post } from 'src/posts/entities/post.entity';
+import { Raw } from 'typeorm';
 
 @Injectable()
 export class UsersService {
@@ -73,6 +69,26 @@ export class UsersService {
     partialUser.lastName = updateProfileDto.lastName;
 
     return this.updateUser(user, partialUser);
+  }
+
+  async searchUsers(keyWord: string, page: number) {
+    const take = 2;
+    const skip = (page - 1) * take;
+    return await this.userRepository.findAndCount({
+      where: [
+        {
+          firstName: Like(`%${keyWord}%`),
+        },
+        {
+          lastName: Like(`%${keyWord}%`),
+        },
+      ],
+      skip,
+      take,
+      order: {
+        createdAt: 'DESC',
+      },
+    });
   }
 
   findOneByEmail(email: string, relations: string[] = []) {

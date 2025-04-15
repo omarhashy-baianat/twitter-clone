@@ -6,7 +6,7 @@ import {
 } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Post } from './entities/post.entity';
-import { Repository } from 'typeorm';
+import { Like, Repository } from 'typeorm';
 import { CreatePostDto } from './dtos/create-post.dto';
 import { MediaService } from 'src/media/media.service';
 import { User } from 'src/users/entities/user.entity';
@@ -103,6 +103,22 @@ export class PostsService {
     return this.postRepository.save(post);
   }
 
+  async searchPosts(keyWord: string, page: number) {
+    const take = 2;
+    const skip = (page - 1) * take;
+    return this.postRepository.findAndCount({
+      where: {
+        content: Like(`%${keyWord}%`),
+      },
+      skip,
+      take,
+      order: {
+        createdAt: 'DESC',
+      },
+      relations: ['user' , 'media'],
+    });
+  }
+
   addLike(post: Post) {
     post.likesCounter++;
     return this.postRepository.save(post);
@@ -132,6 +148,4 @@ export class PostsService {
     post.repostsCounter--;
     return this.postRepository.save(post);
   }
-
 }
-
