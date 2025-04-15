@@ -110,7 +110,12 @@ export class CommentsService {
     const post = await this.postsService.findPostById(postId);
     if (!post) throw new NotFoundException();
     const limit = 3;
-    const comments = await this.findManyCommentsByPost(post, limit, page);
+    const comments = await this.findManyCommentsByPost(post, limit, page, [
+      'media',
+      'post',
+      'post.user',
+      'post.media'
+    ]);
     return paginationSerializer<Comment>(
       page,
       limit,

@@ -60,4 +60,8 @@ export class MediaService {
       relations,
     });
   }
+
+  getManyMediaByCommentIds(commentIds: string[]) {
+    
+  }
 }
