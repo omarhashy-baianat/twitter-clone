@@ -1,4 +1,4 @@
-import { Module } from '@nestjs/common';
+import { Global, Module } from '@nestjs/common';
 import { CommentsService } from './comments.service';
 import { CommentsResolver } from './comments.resolver';
 import { TypeOrmModule } from '@nestjs/typeorm';
@@ -12,3 +12,4 @@ import { PostsModule } from 'src/posts/posts.module';
   exports: [CommentsService],
 })
 export class CommentsModule {}
+

@@ -1,9 +1,11 @@
-import { Module } from '@nestjs/common';
+import { Global, Module } from '@nestjs/common';
 import { DataloaderService } from './dataloader.service';
 import { CommentsModule } from 'src/comments/comments.module';
-import { UsersModule } from 'src/users/users.module';
+
+@Global()
 @Module({
   providers: [DataloaderService],
   imports: [CommentsModule],
+  exports:[DataloaderService]
 })
 export class DataloaderModule {}

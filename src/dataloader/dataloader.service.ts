@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import DataLoader from 'dataloader';
+import * as DataLoader from 'dataloader';
 import { CommentsService } from 'src/comments/comments.service';
 import { RowComments } from 'src/common/types/row-comment.type';
 import { User } from 'src/users/entities/user.entity';
