@@ -18,6 +18,7 @@ import { paginationSerializer } from 'src/common/utils/pagination-serializer.uti
 import { getSkip } from 'src/common/utils/get-skip.util';
 import { UsersService } from 'src/users/users.service';
 import { RowComments } from 'src/common/types/row-comment.type';
+import { NotificationsService } from 'src/notifications/notifications.service';
 
 @Injectable()
 export class CommentsService {
@@ -25,7 +26,7 @@ export class CommentsService {
     @InjectRepository(Comment) private commentRepository: Repository<Comment>,
     private mediaService: MediaService,
     private postsService: PostsService,
-    private userService: UsersService,
+    private notificationsService: NotificationsService,
   ) {}
   async createComment(createCommentDto: CreateCommentDto, user: User) {
     const mediaArray = await this.mediaService.getManyByIds(
@@ -49,7 +50,10 @@ export class CommentsService {
       user,
       post,
     });
-    return this.commentRepository.save(comment);
+
+    const savedComment = await this.commentRepository.save(comment);
+    this.notificationsService.sendNotification(post.user , "new comment" , "comment added to your post")
+    return savedComment;
   }
 
   async updateComment(updateCommentDto: UpdateCommentDto, user: User) {

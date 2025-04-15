@@ -8,8 +8,12 @@ import { PostsModule } from 'src/posts/posts.module';
 
 @Module({
   providers: [CommentsResolver, CommentsService],
-  imports: [TypeOrmModule.forFeature([Comment]), MediaModule, PostsModule],
+  imports: [
+    TypeOrmModule.forFeature([Comment]),
+    MediaModule,
+    PostsModule,
+    CommentsModule,
+  ],
   exports: [CommentsService],
 })
 export class CommentsModule {}
-
