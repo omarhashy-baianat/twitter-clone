@@ -9,5 +9,4 @@ const SearchUnion = createUnionType({
   types: () => [Post, Comment, User],
 });
 
-export const SearchUnionData =
-  paginationObjectTypeFactory(SearchUnion);
+export const SearchUnionData = paginationObjectTypeFactory(SearchUnion);

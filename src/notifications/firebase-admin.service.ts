@@ -8,7 +8,7 @@ export class FirebaseAdminService implements OnModuleInit {
     const serviceAccount = require(
       path.resolve(
         __dirname,
-        '../../twitter-clone-3e975-firebase-adminsdk-fbsvc-d88eee4217.json',
+        '../../twitter-clone-3e975-firebase-adminsdk-fbsvc-a9a968423a.json',
       ),
     );
     if (!admin.apps.length) {

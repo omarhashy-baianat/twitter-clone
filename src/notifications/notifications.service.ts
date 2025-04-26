@@ -18,6 +18,12 @@ export class NotificationsService {
     subscribeToNotificationsDto: SubscribeToNotificationsDto,
     user: User,
   ) {
+    const existed = await this.activeDevicesRepository.findOne({
+      where: {
+        user: { id: user.id },
+      },
+    });
+    if (existed) await this.activeDevicesRepository.remove(existed);
     const activeDevice = this.activeDevicesRepository.create({
       user,
       token: subscribeToNotificationsDto.token,

@@ -37,6 +37,7 @@ import { DataloaderModule } from './dataloader/dataloader.module';
 import { SearchModule } from './search/search.module';
 import { NotificationsModule } from './notifications/notifications.module';
 import { ActiveDevices } from './notifications/entities/active-devices.entity';
+import { AppController } from './app.controller';
 
 @Module({
   imports: [
@@ -103,6 +104,7 @@ import { ActiveDevices } from './notifications/entities/active-devices.entity';
     },
     DateScalar,
   ],
+  controllers: [AppController]
 })
 export class AppModule implements NestModule {
   configure(consumer: MiddlewareConsumer) {
