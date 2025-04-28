@@ -1,18 +1,32 @@
-import { Args, Int, Mutation, Query, Resolver } from '@nestjs/graphql';
+import {
+  Args,
+  Context,
+  GqlExecutionContext,
+  Int,
+  Mutation,
+  Parent,
+  Query,
+  ResolveField,
+  Resolver,
+} from '@nestjs/graphql';
 import { PostsService } from './posts.service';
 import { Transactional } from 'typeorm-transactional';
 import { UseGuards } from '@nestjs/common';
 import { IsLoggedIn } from 'src/guards/is-loged-in.guard';
-import { PostData, PostPage } from './entities/post.entity';
+import { Post, PostData, PostPage } from './entities/post.entity';
 import { CreatePostDto } from './dtos/create-post.dto';
 import { CurrentUser } from 'src/decorators/current-user.decorator';
 import { User } from 'src/users/entities/user.entity';
 import { UpdatePostDto } from './dtos/update-post.dto';
 import { MessageData } from 'src/common/graphql/objects/message.object';
+import { DataloaderService } from 'src/dataloader/dataloader.service';
 
-@Resolver()
+@Resolver(() => Post)
 export class PostsResolver {
-  constructor(private readonly postsService: PostsService) {}
+  constructor(
+    private readonly postsService: PostsService,
+    private dataloaderService: DataloaderService,
+  ) {}
 
   @Query(() => PostData)
   getPost(@Args('id') id: string) {
@@ -54,5 +68,12 @@ export class PostsResolver {
   @Mutation(() => MessageData)
   deletePost(@Args('postId') postId: string, @CurrentUser() user: User) {
     return this.postsService.deletePost(postId, user);
+  }
+
+  @ResolveField(() => User)
+  user(@Parent() post: Post, @Context() context: any) {
+    if (post.user) return post.user;
+    const loader = this.dataloaderService.getUsersDataLoader(context);
+    return loader.load(post.userId);
   }
 }

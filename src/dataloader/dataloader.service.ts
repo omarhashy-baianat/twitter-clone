@@ -1,10 +1,11 @@
-import { Injectable } from '@nestjs/common';
+import { Global, Injectable } from '@nestjs/common';
 import * as DataLoader from 'dataloader';
 import { CommentsService } from 'src/comments/comments.service';
 import { RowComments } from 'src/common/types/row-comment.type';
 import { User } from 'src/users/entities/user.entity';
 import { UsersService } from 'src/users/users.service';
 
+@Global()
 @Injectable()
 export class DataloaderService {
   constructor(
@@ -27,7 +28,7 @@ export class DataloaderService {
     });
   }
 
-  getCommentUserDataloader(context: any) {
+  getCommentUserDataloader(context: any): DataLoader<string, User> {
     if (!context.commentUserDataloader) {
       context.commentUserDataloader = new DataLoader<string, User>(
         async (commentIds: string[]) => {
@@ -51,12 +52,12 @@ export class DataloaderService {
     return context.commentUserDataloader;
   }
 
-  getUsersDataLoader(context: any) {
+  getUsersDataLoader(context: any): DataLoader<string, User> {
     if (!context.usersDataLoader) {
       context.usersDataLoader = new DataLoader<string, User>(
         async (userIds: string[]) => this.getUsers(userIds),
       );
     }
-    return context.usersDataLoader;
+    return context.usersDataLoader; 
   }
 }
