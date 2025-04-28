@@ -1,4 +1,9 @@
-import { BadRequestException, Injectable } from '@nestjs/common';
+import {
+  BadRequestException,
+  Injectable,
+  NotFoundException,
+  UnauthorizedException,
+} from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Media } from './entities/media.entity';
 import { In, Repository } from 'typeorm';
@@ -61,5 +66,17 @@ export class MediaService {
     });
   }
 
-  getManyMediaByCommentIds(commentIds: string[]) {}
+  async removeMedia(id: string, user: User) {
+    const media = await this.mediaRepository.findOne({
+      where: {
+        id,
+      },
+      relations: ['user'],
+    });
+    if (!media) throw new NotFoundException('resource not found');
+    if (media.user.id != user.id)
+      throw new UnauthorizedException('unauthorized');
+    removeFile(media.fileName);
+    return this.mediaRepository.remove(media);
+  }
 }

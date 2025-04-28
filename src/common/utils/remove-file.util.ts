@@ -1,11 +1,8 @@
 import * as fs from 'fs';
 import * as path from 'path';
 
-export async function removeFile(
-  fileName: string,
-  uploadDir: string = './uploads',
-): Promise<boolean> {
-  const filePath = path.join(uploadDir, fileName);
+export async function removeFile(fileName: string): Promise<boolean> {
+  const filePath = path.join(process.cwd(), 'uploads', fileName);
 
   try {
     await fs.promises.unlink(filePath);

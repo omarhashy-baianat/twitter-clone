@@ -236,6 +236,7 @@ input SearchFilterDto {
 type Mutation {
   updateUserProfile(profileData: UpdateProfileDto!): UserData!
   UploadFile(fileData: uploadFileDto!): MediaData!
+  removeFile(fileId: String!): MessageData!
   seedSuperAdmin: UserData!
   registerWithEmail(userData: RegisterWithEmailDto!): UserData!
   registerWithGoogle(usrData: RegisterWithGoogleDto!): UserData!
@@ -282,6 +283,13 @@ input uploadFileDto {
   file: File
 }
 
+type MessageData {
+  success: Boolean!
+  statusCode: Int!
+  messages: [String!]!
+  data: Message
+}
+
 input RegisterWithEmailDto {
   firstName: String!
   lastName: String!
@@ -300,13 +308,6 @@ input RegisterWithGoogleDto {
 input VerifyUserEmailDto {
   email: String!
   otp: String!
-}
-
-type MessageData {
-  success: Boolean!
-  statusCode: Int!
-  messages: [String!]!
-  data: Message
 }
 
 input ResetUserPasswordDto {

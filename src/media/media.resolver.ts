@@ -8,6 +8,7 @@ import { UseGuards } from '@nestjs/common';
 import { IsLoggedIn } from 'src/guards/is-loged-in.guard';
 import { CurrentUser } from 'src/decorators/current-user.decorator';
 import { User } from 'src/users/entities/user.entity';
+import { MessageData } from 'src/common/graphql/objects/message.object';
 
 @Resolver()
 export class MediaResolver {
@@ -22,6 +23,13 @@ export class MediaResolver {
     @Context('req') req: Request,
     @CurrentUser() user: User,
   ) {
-    return this.mediaService.uploadFile(uploadFileDto, file, req , user);
+    return this.mediaService.uploadFile(uploadFileDto, file, req, user);
+  }
+
+  @Mutation(() => MessageData)
+  @Transactional()
+  @UseGuards(IsLoggedIn)
+  removeFile(@Args('fileId') fileId: string,@CurrentUser() user: User) {
+    return this.mediaService.removeMedia(fileId, user);
   }
 }

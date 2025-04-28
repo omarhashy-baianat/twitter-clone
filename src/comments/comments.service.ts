@@ -16,7 +16,6 @@ import { UpdateCommentDto } from './dtos/update-comment.dto';
 import { validate as isUUID } from 'uuid';
 import { paginationSerializer } from 'src/common/utils/pagination-serializer.util';
 import { getSkip } from 'src/common/utils/get-skip.util';
-import { UsersService } from 'src/users/users.service';
 import { RowComments } from 'src/common/types/row-comment.type';
 import { NotificationsService } from 'src/notifications/notifications.service';
 
