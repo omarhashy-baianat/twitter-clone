@@ -115,7 +115,7 @@ export class PostsService {
       order: {
         createdAt: 'DESC',
       },
-      relations: ['user' , 'media'],
+      relations: ['user', 'media'],
     });
   }
 

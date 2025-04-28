@@ -54,14 +54,12 @@ export class MediaService {
     });
   }
 
-  getManyByIds(ids: string[], relations: string[] = []) {
+  getManyByIds(ids: string[] = [], relations: string[] = []): Promise<Media[]> {
     return this.mediaRepository.find({
       where: { id: In(ids) },
       relations,
     });
   }
 
-  getManyMediaByCommentIds(commentIds: string[]) {
-    
-  }
+  getManyMediaByCommentIds(commentIds: string[]) {}
 }

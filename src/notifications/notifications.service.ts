@@ -4,6 +4,7 @@ import { ActiveDevice } from './entities/active-devices.entity';
 import { Repository } from 'typeorm';
 import { User } from 'src/users/entities/user.entity';
 import { FirebaseAdminService } from './firebase-admin.service';
+import { Token } from 'graphql';
 
 @Injectable()
 export class NotificationsService {
@@ -13,10 +14,13 @@ export class NotificationsService {
     private readonly firebaseService: FirebaseAdminService,
   ) {}
 
-  async addActiveDevice(
-    token: string,
-    user: User,
-  ) {
+  async addActiveDevice(token: string, user: User) {
+    const existed = await this.activeDevicesRepository.findOne({
+      where: {
+        token,
+      },
+    });
+    if (existed?.id) return existed;
     let activeDevice = this.activeDevicesRepository.create({
       user,
       token,
@@ -35,23 +39,24 @@ export class NotificationsService {
   }
 
   async sendNotification(user: User, title: string, body: string) {
-    const tokens = await this.activeDevicesRepository.find({
+    const activeDevices = await this.activeDevicesRepository.find({
       where: {
         user: { id: user.id },
       },
     });
 
-    tokens.forEach(({ token }) => {
-      this.sendNotificationMessage(token, title, body);
+    activeDevices.forEach((activeDevice) => {
+      this.sendNotificationMessage(activeDevice, title, body);
     });
   }
 
   private async sendNotificationMessage(
-    token: string,
+    activeDevice: ActiveDevice,
     title: string,
     body: string,
   ) {
-    if (!token) return;
+    if (!activeDevice.token) return;
+    const token = activeDevice.token;
     const message = {
       notification: {
         title,
@@ -64,7 +69,8 @@ export class NotificationsService {
       const response = await this.firebaseService.messaging.send(message);
       return response;
     } catch (error) {
-      console.error(error);
+      // delete the FCM-token if it's invalid!!!!!
+      await this.activeDevicesRepository.remove(activeDevice);
     }
   }
 }

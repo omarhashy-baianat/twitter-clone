@@ -198,7 +198,7 @@ export class AuthService {
     if (!passwordMatch)
       throw new UnauthorizedException('wrong email or password');
 
-    let activeDevice: ActiveDevice | null = null;
+    let activeDevice: ActiveDevice | undefined;
     if (loginUserDto.fcmToken) {
       activeDevice = await this.notificationService.addActiveDevice(
         loginUserDto.fcmToken,
@@ -225,7 +225,7 @@ export class AuthService {
     if (user.auth != AuthType.GOOGLE)
       throw new UnauthorizedException('unauthorized access');
 
-    let activeDevice: ActiveDevice | null = null;
+    let activeDevice: ActiveDevice | undefined;
     if (loginWithGoogleDto.fcmToken) {
       activeDevice = await this.notificationService.addActiveDevice(
         loginWithGoogleDto.fcmToken,
