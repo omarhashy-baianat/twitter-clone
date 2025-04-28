@@ -21,6 +21,8 @@ import { LoginWithEmailDto } from './Dtos/login-with-email.dto';
 import { GoogleAuthService } from './google-auth.service';
 import { RegisterWithGoogleDto } from './Dtos/register-with-google.dto';
 import { LoginWithGoogleDto } from './Dtos/login-with-google.dto';
+import { ActiveDevice } from 'src/notifications/entities/active-devices.entity';
+import { NotificationsService } from 'src/notifications/notifications.service';
 
 @Injectable()
 export class AuthService {
@@ -31,6 +33,7 @@ export class AuthService {
     private queueService: QueueService,
     private jwtService: JwtService,
     private googleAuthService: GoogleAuthService,
+    private notificationService: NotificationsService,
   ) {}
 
   async seedSuperAdmin() {
@@ -195,9 +198,18 @@ export class AuthService {
     if (!passwordMatch)
       throw new UnauthorizedException('wrong email or password');
 
+    let activeDevice: ActiveDevice | null = null;
+    if (loginUserDto.fcmToken) {
+      activeDevice = await this.notificationService.addActiveDevice(
+        loginUserDto.fcmToken,
+        user,
+      );
+    }
+
     return {
       token: this.jwtService.sign({
         userId: user.id,
+        activeDeviceId: activeDevice?.id,
       }),
     };
   }
@@ -213,10 +225,26 @@ export class AuthService {
     if (user.auth != AuthType.GOOGLE)
       throw new UnauthorizedException('unauthorized access');
 
+    let activeDevice: ActiveDevice | null = null;
+    if (loginWithGoogleDto.fcmToken) {
+      activeDevice = await this.notificationService.addActiveDevice(
+        loginWithGoogleDto.fcmToken,
+        user,
+      );
+    }
+
     return {
       token: this.jwtService.sign({
         userId: user.id,
+        activeDeviceId: activeDevice?.id,
       }),
+    };
+  }
+
+  async logOut(activeDeviceId: string) {
+    await this.notificationService.removeActiveDevice(activeDeviceId);
+    return {
+      message: 'logged out successfully!',
     };
   }
 }

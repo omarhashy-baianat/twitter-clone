@@ -31,7 +31,8 @@ export class IsLoggedIn implements CanActivate {
       if (!user) throw new Error();
 
       request.user = user;
-      
+      if (decoded.activeDeviceId)
+        request.activeDeviceId = decoded.activeDeviceId;
       return true;
     } catch (error) {
       throw new UnauthorizedException('unauthorized access');

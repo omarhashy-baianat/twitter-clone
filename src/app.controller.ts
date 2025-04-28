@@ -27,8 +27,5 @@ export class AppController {
 
     return file.pipe(res);
   }
-  @Get('*')
-  getHello() {
-    throw new NotFoundException();
-  }
+
 }

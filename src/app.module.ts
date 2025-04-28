@@ -36,7 +36,7 @@ import { FileHandler } from './middlewares/file-handler.middleware';
 import { DataloaderModule } from './dataloader/dataloader.module';
 import { SearchModule } from './search/search.module';
 import { NotificationsModule } from './notifications/notifications.module';
-import { ActiveDevices } from './notifications/entities/active-devices.entity';
+import { ActiveDevice } from './notifications/entities/active-devices.entity';
 import { AppController } from './app.controller';
 
 @Module({
@@ -70,7 +70,7 @@ import { AppController } from './app.controller';
             Bookmark,
             Otp,
             Follow,
-            ActiveDevices,
+            ActiveDevice,
           ],
           database: config.get<string>('POSTGRES_DB'),
           synchronize: true,
@@ -104,7 +104,7 @@ import { AppController } from './app.controller';
     },
     DateScalar,
   ],
-  controllers: [AppController]
+  controllers: [AppController],
 })
 export class AppModule implements NestModule {
   configure(consumer: MiddlewareConsumer) {

@@ -18,6 +18,7 @@ import { RegisterWithGoogleDto } from './Dtos/register-with-google.dto';
 import { LoginWithGoogleDto } from './Dtos/login-with-google.dto';
 import { IsLoggedIn } from 'src/guards/is-loged-in.guard';
 import { CurrentUser } from 'src/decorators/current-user.decorator';
+import { ActiveDevice } from 'src/decorators/get-active-device-id.decorator';
 
 @Resolver()
 export class AuthResolver {
@@ -84,25 +85,14 @@ export class AuthResolver {
   }
 
   @UseGuards(IsLoggedIn)
+  @Mutation(() => MessageData)
+  async logOut(@ActiveDevice() activeDevice: string) {
+    return this.authService.logOut(activeDevice);
+  }
+
+  @UseGuards(IsLoggedIn)
   @Query(() => UserData)
   async getProfile(@CurrentUser() currentUser: User) {
     return currentUser;
-  }
-
-  @Query(() => MessageData)
-  sayHello() {
-    return {
-      message: 'Hello, world',
-    };
-  }
-  @Query(() => String)
-  testException() {
-    throw new BadRequestException();
-    return {
-      success: true,
-      statusCode: 200,
-      message: 'Hello!',
-      data: { test: 'value' },
-    };
   }
 }

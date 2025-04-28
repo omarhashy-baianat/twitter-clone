@@ -1,9 +1,6 @@
 import { Field, InputType } from '@nestjs/graphql';
 import { Transform } from 'class-transformer';
-import {
-  IsNotEmpty,
-  IsString,
-} from 'class-validator';
+import { IsNotEmpty, IsOptional, IsString } from 'class-validator';
 
 @InputType()
 export class LoginWithGoogleDto {
@@ -12,4 +9,10 @@ export class LoginWithGoogleDto {
   @Transform(({ value }) => value.trim())
   @Field()
   token: string;
+
+  @IsOptional()
+  @IsString()
+  @IsNotEmpty()
+  @Field({ nullable: true })
+  fcmToken?: string;
 }

@@ -127,8 +127,6 @@ scalar File
 
 type Query {
   getProfile: UserData!
-  sayHello: MessageData!
-  testException: String!
   getUserLike(postId: String!): LikeData!
   getPost(id: String!): PostData!
   getComment(id: String!): CommentData!
@@ -144,13 +142,6 @@ type UserData {
   statusCode: Int!
   messages: [String!]!
   data: User
-}
-
-type MessageData {
-  success: Boolean!
-  statusCode: Int!
-  messages: [String!]!
-  data: Message
 }
 
 type LikeData {
@@ -240,12 +231,12 @@ type Mutation {
   verifyResetUserPassword(newPasswordData: VerifyResetPasswordDto!): UserData!
   loginWithEmail(userCredentialsData: LoginWithEmailDto!): jwtTokenData!
   loginWithGoogle(userCredentialsData: LoginWithGoogleDto!): jwtTokenData!
+  logOut: MessageData!
   createLike(postId: String!): LikeData!
   removeLike(PostId: String!): MessageData!
   createPost(postData: CreatePostDto!): PostData!
   updatePost(updatePostData: UpdatePostDto!): PostData!
   deletePost(postId: String!): MessageData!
-  subscribeToNotifications(subscriptionData: SubscribeToNotificationsDto!): MessageData!
   createComment(commentData: CreateCommentDto!): CommentData!
   updateComment(commentData: UpdateCommentDto!): CommentData!
   deleteComment(id: String!): MessageData!
@@ -298,6 +289,13 @@ input VerifyUserEmailDto {
   otp: String!
 }
 
+type MessageData {
+  success: Boolean!
+  statusCode: Int!
+  messages: [String!]!
+  data: Message
+}
+
 input ResetUserPasswordDto {
   email: String!
 }
@@ -318,10 +316,12 @@ type jwtTokenData {
 input LoginWithEmailDto {
   email: String!
   password: String!
+  fcmToken: String
 }
 
 input LoginWithGoogleDto {
   token: String!
+  fcmToken: String
 }
 
 input CreatePostDto {
@@ -333,10 +333,6 @@ input UpdatePostDto {
   id: String!
   content: String
   mediaIds: [String!]
-}
-
-input SubscribeToNotificationsDto {
-  token: String!
 }
 
 input CreateCommentDto {

@@ -8,6 +8,7 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { Otp } from './entities/otp.entity';
 import { QueueModule } from 'src/queue/queue.module';
 import { GoogleAuthService } from './google-auth.service';
+import { NotificationsModule } from 'src/notifications/notifications.module';
 
 @Module({
   providers: [
@@ -18,6 +19,6 @@ import { GoogleAuthService } from './google-auth.service';
     OtpService,
     GoogleAuthService,
   ],
-  imports: [TypeOrmModule.forFeature([Otp]), QueueModule],
+  imports: [TypeOrmModule.forFeature([Otp]), QueueModule, NotificationsModule],
 })
 export class AuthModule {}

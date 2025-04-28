@@ -8,7 +8,7 @@ import {
 } from 'typeorm';
 
 @Entity()
-export class ActiveDevices {
+export class ActiveDevice {
   @PrimaryGeneratedColumn()
   id: string;
 
