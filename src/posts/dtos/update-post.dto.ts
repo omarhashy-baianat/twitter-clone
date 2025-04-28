@@ -25,13 +25,13 @@ export class UpdatePostDto {
   @Field({ nullable: true })
   content: string;
 
-  @ArrayMaxSize(4)
-  @IsOptional()
-  @IsUUID('4', { each: true })
-  @Validate(FileIdValidator, [null, MediaTarget.POST], {
-    each: true,
-    message: 'Invalid file ID or file does not match media type/target',
-  })
-  @Field(() => [String], { nullable: true })
-  mediaIds: string[];
+  // @ArrayMaxSize(4)
+  // @IsOptional()
+  // @IsUUID('4', { each: true })
+  // @Validate(FileIdValidator, [null, MediaTarget.POST], {
+  //   each: true,
+  //   message: 'Invalid file ID or file does not match media type/target',
+  // })
+  // @Field(() => [String], { nullable: true })
+  // mediaIds: string[];
 }

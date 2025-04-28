@@ -52,7 +52,11 @@ export class CommentsService {
     });
 
     const savedComment = await this.commentRepository.save(comment);
-    this.notificationsService.sendNotification(post.user , "new comment" , "comment added to your post")
+    this.notificationsService.sendNotification(
+      post.user,
+      'new comment',
+      'comment added to your post',
+    );
     return savedComment;
   }
 
@@ -68,18 +72,6 @@ export class CommentsService {
     if (comment.user.id != user.id)
       throw new UnauthorizedException('unauthorized access');
     const partialComment: Partial<Comment> = {};
-
-    if (updateCommentDto?.mediaIds) {
-      const mediaArray = await this.mediaService.getManyByIds(
-        updateCommentDto.mediaIds,
-        ['user'],
-      );
-      mediaArray.forEach((media) => {
-        if (media.user.id != user.id)
-          throw new UnauthorizedException('unauthorized request');
-      });
-      partialComment.media = mediaArray;
-    }
 
     partialComment.content = updateCommentDto.content;
     const updatedComment = this.commentRepository.merge(

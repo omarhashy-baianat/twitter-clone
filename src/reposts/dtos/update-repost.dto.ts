@@ -25,13 +25,13 @@ export class UpdateRepostDto {
   @Field()
   content: string;
 
-  @IsOptional()
-  @ArrayMaxSize(4)
-  @IsUUID('all', { each: true })
-  @Validate(FileIdValidator, [null, MediaTarget.COMMENT], {
-    each: true,
-    message: 'Invalid file ID or file does not match media type/target',
-  })
-  @Field(() => [String], { nullable: true })
-  mediaIds: string[];
+  // @IsOptional()
+  // @ArrayMaxSize(4)
+  // @IsUUID('all', { each: true })
+  // @Validate(FileIdValidator, [null, MediaTarget.COMMENT], {
+  //   each: true,
+  //   message: 'Invalid file ID or file does not match media type/target',
+  // })
+  // @Field(() => [String], { nullable: true })
+  // mediaIds: string[];
 }

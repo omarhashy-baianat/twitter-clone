@@ -47,18 +47,6 @@ export class PostsService {
       throw new UnauthorizedException('unauthorized access');
     const partialPost: Partial<Post> = {};
 
-    if (updatePostDto?.mediaIds) {
-      const mediaArray = await this.mediaService.getManyByIds(
-        updatePostDto.mediaIds,
-        ['user'],
-      );
-      mediaArray.forEach((media) => {
-        if (media.user.id != user.id)
-          throw new UnauthorizedException('unauthorized request');
-      });
-      partialPost.media = mediaArray;
-    }
-
     partialPost.content = updatePostDto.content;
     const updatedPost = this.postRepository.merge(post, partialPost);
     return this.postRepository.save(updatedPost);

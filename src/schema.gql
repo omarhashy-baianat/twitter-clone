@@ -345,7 +345,6 @@ input CreatePostDto {
 input UpdatePostDto {
   id: String!
   content: String
-  mediaIds: [String!]
 }
 
 input CreateCommentDto {
@@ -357,7 +356,6 @@ input CreateCommentDto {
 input UpdateCommentDto {
   id: String!
   content: String!
-  mediaIds: [String!]
 }
 
 input CreateRepostDto {
@@ -369,5 +367,4 @@ input CreateRepostDto {
 input UpdateRepostDto {
   id: String!
   content: String!
-  mediaIds: [String!]
 }

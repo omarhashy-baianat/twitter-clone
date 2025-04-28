@@ -65,17 +65,6 @@ export class RepostsService {
       throw new UnauthorizedException('unauthorized access');
     const partialRepost: Partial<Repost> = {};
 
-    if (updateRepostDto?.mediaIds) {
-      const mediaArray = await this.mediaService.getManyByIds(
-        updateRepostDto.mediaIds,
-        ['user'],
-      );
-      mediaArray.forEach((media) => {
-        if (media.user.id != user.id)
-          throw new UnauthorizedException('unauthorized request');
-      });
-      partialRepost.media = mediaArray;
-    }
     partialRepost.content = updateRepostDto.content;
     const updatedRepost = this.repostRepository.merge(repost, partialRepost);
     return this.repostRepository.save(updatedRepost);
@@ -83,10 +72,10 @@ export class RepostsService {
 
   async deleteRepost(id: string, user: User) {
     if (!isUUID(id)) throw new BadRequestException('ID should be a valid uuid');
-    const repost = await this.findRepostById(id, ['user','post']);
+    const repost = await this.findRepostById(id, ['user', 'post']);
     if (!repost) throw new NotFoundException();
     if (repost.user.id != user.id) throw new UnauthorizedException();
-    await this.postsService.removeRepost(repost.post)
+    await this.postsService.removeRepost(repost.post);
     await this.removeByRepost(repost);
     return { message: 'repost removed successfully' };
   }
