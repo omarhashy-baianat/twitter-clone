@@ -2,6 +2,7 @@ import { Field, ObjectType } from '@nestjs/graphql';
 import { objectTypeFactory } from 'src/common/graphql/objects/base-model.object';
 import { User } from 'src/users/entities/user.entity';
 import {
+  Column,
   CreateDateColumn,
   Entity,
   ManyToOne,
@@ -22,6 +23,12 @@ export class Follow {
   @ManyToOne(() => User, (user) => user.followers)
   @Field(() => User)
   follower: User;
+
+  @Column()
+  followerId: string;
+
+  @Column()
+  followingId: string;
 
   @CreateDateColumn()
   @Field()

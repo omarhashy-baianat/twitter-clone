@@ -1,9 +1,9 @@
-import { Args, Mutation, Query, Resolver } from '@nestjs/graphql';
+import { Args, Int, Mutation, Query, Resolver } from '@nestjs/graphql';
 import { PostsService } from './posts.service';
 import { Transactional } from 'typeorm-transactional';
 import { UseGuards } from '@nestjs/common';
 import { IsLoggedIn } from 'src/guards/is-loged-in.guard';
-import { PostData } from './entities/post.entity';
+import { PostData, PostPage } from './entities/post.entity';
 import { CreatePostDto } from './dtos/create-post.dto';
 import { CurrentUser } from 'src/decorators/current-user.decorator';
 import { User } from 'src/users/entities/user.entity';
@@ -17,6 +17,16 @@ export class PostsResolver {
   @Query(() => PostData)
   getPost(@Args('id') id: string) {
     return this.postsService.getPost(id);
+  }
+
+  @UseGuards(IsLoggedIn)
+  @Query(() => PostPage)
+  getTimeLine(
+    @CurrentUser() currentUser: User,
+    @Args('page', { type: () => Int, nullable: true, defaultValue: 1 })
+    page: number,
+  ) {
+    return this.postsService.getFollowingPosts(currentUser, page);
   }
 
   @Transactional()

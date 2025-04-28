@@ -6,18 +6,21 @@ import {
 } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Post } from './entities/post.entity';
-import { Like, Repository } from 'typeorm';
+import { In, Like, Repository } from 'typeorm';
 import { CreatePostDto } from './dtos/create-post.dto';
 import { MediaService } from 'src/media/media.service';
 import { User } from 'src/users/entities/user.entity';
 import { UpdatePostDto } from './dtos/update-post.dto';
 import { validate as isUUID } from 'uuid';
+import { FollowsService } from 'src/follows/follows.service';
+import { paginationSerializer } from 'src/common/utils/pagination-serializer.util';
 
 @Injectable()
 export class PostsService {
   constructor(
     @InjectRepository(Post) private postRepository: Repository<Post>,
     private mediaService: MediaService,
+    private followsService: FollowsService,
   ) {}
 
   async createPost(createPostDto: CreatePostDto, user: User) {
@@ -68,8 +71,28 @@ export class PostsService {
     return post;
   }
 
-  async getFollowingPosts(user: User) {
-    
+  async getFollowingPosts(user: User, page: number = 1) {
+    if (page < 1) {
+      throw new BadRequestException('page can not be less than one!');
+    }
+    const followingsIds = await this.followsService.getUserFollowingIds(user);
+
+    const take = 3;
+    const skip = take * (page - 1);
+    const [posts, postsCount] = await this.postRepository.findAndCount({
+      skip,
+      take,
+      where: {
+        user: {
+          id: In(followingsIds),
+        },
+      },
+      relations: ['media'],
+      order: {
+        createdAt: 'DESC',
+      },
+    });
+    return paginationSerializer<Post>(page, take, postsCount, posts);
   }
 
   async deletePost(id: string, user: User) {

@@ -17,6 +17,7 @@ import { Field, ObjectType } from '@nestjs/graphql';
 import { objectTypeFactory } from 'src/common/graphql/objects/base-model.object';
 import { User } from 'src/users/entities/user.entity';
 import { SrvRecord } from 'dns';
+import { paginationObjectTypeFactory } from 'src/common/graphql/objects/pagination.factory';
 
 @Entity()
 @ObjectType()
@@ -92,3 +93,4 @@ export class Post {
 }
 
 export const PostData = objectTypeFactory<Post>(Post);
+export const PostPage = paginationObjectTypeFactory<Post>(Post);

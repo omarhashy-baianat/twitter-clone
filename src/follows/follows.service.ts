@@ -8,6 +8,7 @@ import { UsersService } from 'src/users/users.service';
 import { Follow } from './entity/follow.entity';
 import { Repository } from 'typeorm';
 import { User } from 'src/users/entities/user.entity';
+import { ResetUserPasswordDto } from 'src/auth/Dtos/reset-user-password.dto';
 
 @Injectable()
 export class FollowsService {
@@ -72,5 +73,16 @@ export class FollowsService {
       },
       relations: [...new Set([...['follower', 'following'], ...relations])],
     });
+  }
+
+  async getUserFollowingIds(user: User) {
+    const followings = await this.followRepository.find({
+      where: {
+        follower: {
+          id: user.id,
+        },
+      },
+    });
+    return followings.map((follow) => follow.followingId);
   }
 }

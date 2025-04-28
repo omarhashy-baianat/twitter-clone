@@ -129,9 +129,10 @@ type Query {
   getProfile: UserData!
   getUserLike(postId: String!): LikeData!
   getPost(id: String!): PostData!
+  getTimeLine(page: Int = 1): PostPageData!
+  getFollow(followingId: String!): FollowData!
   getComment(id: String!): CommentData!
   getPostComment(postId: String!, Page: Float): CommentPageData!
-  getFollow(followingId: String!): FollowData!
   getRepost(id: String!): RepostData!
   getUserBookmark(postId: String!): BookmarkData!
   search(filter: SearchFilterDto!): undefinedPageData!
@@ -158,6 +159,25 @@ type PostData {
   data: Post
 }
 
+type PostPageData {
+  success: Boolean!
+  statusCode: Int!
+  messages: [String!]!
+  data: PostPage
+}
+
+type PostPage {
+  pageInfo: PageInfo!
+  items: [Post!]
+}
+
+type FollowData {
+  success: Boolean!
+  statusCode: Int!
+  messages: [String!]!
+  data: Follow
+}
+
 type CommentData {
   success: Boolean!
   statusCode: Int!
@@ -175,13 +195,6 @@ type CommentPageData {
 type CommentPage {
   pageInfo: PageInfo!
   items: [Comment!]
-}
-
-type FollowData {
-  success: Boolean!
-  statusCode: Int!
-  messages: [String!]!
-  data: Follow
 }
 
 type RepostData {
@@ -237,11 +250,11 @@ type Mutation {
   createPost(postData: CreatePostDto!): PostData!
   updatePost(updatePostData: UpdatePostDto!): PostData!
   deletePost(postId: String!): MessageData!
+  createFollow(followingId: String!): FollowData!
+  deleteFollow(followingId: String!): MessageData!
   createComment(commentData: CreateCommentDto!): CommentData!
   updateComment(commentData: UpdateCommentDto!): CommentData!
   deleteComment(id: String!): MessageData!
-  createFollow(followingId: String!): FollowData!
-  deleteFollow(followingId: String!): MessageData!
   createRepost(repostData: CreateRepostDto!): RepostData!
   updateRepost(repostData: UpdateRepostDto!): RepostData!
   deleteRepost(repostId: String!): MessageData!
