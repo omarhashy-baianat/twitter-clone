@@ -11,6 +11,21 @@ export class DataloaderService {
     private usersService: UsersService,
     private commentsService: CommentsService,
   ) {}
+  private async getUsers(userIds: (string | null)[]) {
+    const users = await this.usersService.findManyByIds(userIds);
+    const usersMap: Record<string, User> = users.reduce(
+      (map, user) => {
+        map[user.id] = user;
+        return map;
+      },
+      {} as Record<string, User>,
+    );
+    return userIds.map((userId) => {
+      const user = userId ? usersMap[userId] || null : null;
+      if (!user) throw new Error();
+      return user;
+    });
+  }
 
   getCommentUserDataloader(context: any) {
     if (!context.commentUserDataloader) {
@@ -29,23 +44,19 @@ export class DataloaderService {
           const userIds = commentIds.map(
             (commentId) => rowCommentsMap[commentId].comment_userId || null,
           );
-
-          const users = await this.usersService.findManyByIds(userIds);
-          const usersMap: Record<string, User> = users.reduce(
-            (map, user) => {
-              map[user.id] = user;
-              return map;
-            },
-            {} as Record<string, User>,
-          );
-          return userIds.map((userId) => {
-            const user = userId ? usersMap[userId] || null : null;
-            if (!user) throw new Error();
-            return user;
-          });
+          return this.getUsers(userIds);
         },
       );
     }
     return context.commentUserDataloader;
+  }
+
+  getUsersDataLoader(context: any) {
+    if (!context.usersDataLoader) {
+      context.usersDataLoader = new DataLoader<string, User>(
+        async (userIds: string[]) => this.getUsers(userIds),
+      );
+    }
+    return context.usersDataLoader;
   }
 }
