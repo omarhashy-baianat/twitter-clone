@@ -133,7 +133,7 @@ export class CommentsService {
     const comments = await this.findManyCommentsByPost(post, limit, page, [
       'media',
       'post',
-      'post.user',
+      // 'post.user',
       'post.media',
     ]);
     return paginationSerializer<Comment>(

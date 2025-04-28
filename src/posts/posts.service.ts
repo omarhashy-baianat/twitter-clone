@@ -63,7 +63,13 @@ export class PostsService {
 
   async getPost(id: string) {
     if (!isUUID(id)) throw new BadRequestException('id should be a valid uuid');
-    return this.getPostById(id, ['media', 'user']);
+    const post = await this.getPostById(id, ['media', 'user']);
+    console.log(post?.userId);
+    return post;
+  }
+
+  async getFollowingPosts(user: User) {
+    
   }
 
   async deletePost(id: string, user: User) {

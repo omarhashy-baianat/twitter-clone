@@ -3,6 +3,7 @@ import {
   Column,
   CreateDateColumn,
   Entity,
+  JoinColumn,
   ManyToOne,
   OneToMany,
   PrimaryGeneratedColumn,
@@ -15,6 +16,7 @@ import { Bookmark } from 'src/bookmarks/entities/bookmark.entity';
 import { Field, ObjectType } from '@nestjs/graphql';
 import { objectTypeFactory } from 'src/common/graphql/objects/base-model.object';
 import { User } from 'src/users/entities/user.entity';
+import { SrvRecord } from 'dns';
 
 @Entity()
 @ObjectType()
@@ -71,7 +73,11 @@ export class Post {
   @Field(() => [Media], { nullable: true })
   media: Media[];
 
+  @Column()
+  userId: string;
+
   @ManyToOne(() => User, (user) => user.posts)
+  // @JoinColumn({ name: 'userId' })
   @Field(() => User)
   user: User;
 
