@@ -251,6 +251,7 @@ type Mutation {
   createPost(postData: CreatePostDto!): PostData!
   updatePost(updatePostData: UpdatePostDto!): PostData!
   deletePost(postId: String!): MessageData!
+  updatePostMedia(postInput: UpdatePostMediaDto!): Post!
   createFollow(followingId: String!): FollowData!
   deleteFollow(followingId: String!): MessageData!
   createComment(commentData: CreateCommentDto!): CommentData!
@@ -346,6 +347,11 @@ input CreatePostDto {
 input UpdatePostDto {
   id: String!
   content: String
+}
+
+input UpdatePostMediaDto {
+  postId: String!
+  mediaId: String!
 }
 
 input CreateCommentDto {

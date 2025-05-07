@@ -20,6 +20,7 @@ import { User } from 'src/users/entities/user.entity';
 import { UpdatePostDto } from './dtos/update-post.dto';
 import { MessageData } from 'src/common/graphql/objects/message.object';
 import { DataloaderService } from 'src/dataloader/dataloader.service';
+import { UpdatePostMediaDto } from './dtos/update-post-media.dto';
 
 @Resolver(() => Post)
 export class PostsResolver {
@@ -68,6 +69,16 @@ export class PostsResolver {
   @Mutation(() => MessageData)
   deletePost(@Args('postId') postId: string, @CurrentUser() user: User) {
     return this.postsService.deletePost(postId, user);
+  }
+
+  @Transactional()
+  @UseGuards(IsLoggedIn)
+  @Mutation(() => Post)
+  updatePostMedia(
+    @Args('postInput') input: UpdatePostMediaDto,
+    @CurrentUser() user: User,
+  ) {
+    return this.postsService.updatePostMedia(input, user);
   }
 
   @ResolveField(() => User)

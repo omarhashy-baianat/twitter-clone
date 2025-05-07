@@ -14,6 +14,8 @@ import { UpdatePostDto } from './dtos/update-post.dto';
 import { validate as isUUID } from 'uuid';
 import { FollowsService } from 'src/follows/follows.service';
 import { paginationSerializer } from 'src/common/utils/pagination-serializer.util';
+import { UpdatePostMediaDto } from './dtos/update-post-media.dto';
+import { MediaTarget } from 'src/enums/media-target.enum';
 
 @Injectable()
 export class PostsService {
@@ -50,6 +52,27 @@ export class PostsService {
     partialPost.content = updatePostDto.content;
     const updatedPost = this.postRepository.merge(post, partialPost);
     return this.postRepository.save(updatedPost);
+  }
+
+  async updatePostMedia(updatePostMedia: UpdatePostMediaDto, user: User) {
+    const post = await this.postRepository.findOne({
+      where: {
+        user: {
+          id: updatePostMedia.postId,
+        },
+      },
+      relations: ['media'],
+    });
+    const media = await this.mediaService.getMediaById(updatePostMedia.mediaId);
+
+    if (!post || !media) throw new NotFoundException();
+    if (post.userId != user.id || media.userId != user.id)
+      throw new UnauthorizedException();
+    if (media.postId || post.media.length > 3) throw new BadRequestException();
+
+    post.media.push(media);
+
+    return this.postRepository.save(post);
   }
 
   async getPost(id: string) {

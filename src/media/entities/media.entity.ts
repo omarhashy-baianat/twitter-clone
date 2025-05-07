@@ -56,9 +56,14 @@ export class Media {
 
   @ManyToOne(() => User)
   user: User;
+  @Column()
+  userId: string;
 
   @ManyToOne(() => Post, (post) => post.id, { onDelete: 'CASCADE' })
   post: Post;
+  @Column()
+  postId: string;
+
   @ManyToOne(() => Repost, (repost) => repost.media, { onDelete: 'CASCADE' })
   repost: Repost;
   @ManyToOne(() => Comment, (comment) => comment.media, { onDelete: 'CASCADE' })
